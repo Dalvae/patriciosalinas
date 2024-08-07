@@ -1,0 +1,78 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import type { WordPressPage } from "../../types/wordpress";
+
+export async function getStaticPaths() {
+  async function fetchWithRetry(url: string, retries = 3, timeout = 90000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+
+        const response = await fetch(url, {
+          signal: controller.signal,
+        });
+
+        clearTimeout(id);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(`Attempt ${i + 1} failed: ${error.message}`);
+        } else {
+          console.error(`Attempt ${i + 1} failed with an unknown error`);
+        }
+        if (i === retries - 1) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+    }
+    throw new Error("Failed after retries");
+  }
+
+  try {
+    const pages: WordPressPage[] = await fetchWithRetry(
+      "https://www.apuntesdispersos.com/wp-json/wp/v2/pages?_embed"
+    );
+
+    return pages.map((page) => ({
+      params: { slug: page.slug },
+      props: { page },
+    }));
+  } catch (error) {
+    console.error("Error fetching pages:", error);
+    // En lugar de lanzar el error, devolvemos un array vacío
+    // Esto permitirá que el build continúe, pero sin páginas generadas
+    return [];
+  }
+}
+
+interface Props {
+  page: WordPressPage;
+}
+
+const { page } = Astro.props;
+---
+
+{
+  page ? (
+    <Layout title={page.title.rendered}>
+      <h1>{page.title.rendered}</h1>
+      {page._embedded?.["wp:featuredmedia"]?.[0] && (
+        <img
+          src={page._embedded["wp:featuredmedia"][0].source_url}
+          alt={page.title.rendered}
+        />
+      )}
+      <div set:html={page.content.rendered} />
+    </Layout>
+  ) : (
+    <Layout title="Página no encontrada">
+      <h1>Página no encontrada</h1>
+      <p>Lo sentimos, no se pudo cargar la página solicitada.</p>
+    </Layout>
+  )
+}

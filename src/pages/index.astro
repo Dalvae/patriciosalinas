@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageList from "../components/PageList.astro";
+
+async function fetchWithTimeout(url: string, timeout = 8000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+async function fetchWithRetry(url: string, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fetchWithTimeout(url);
+    } catch (e) {
+      if (i === retries - 1) throw e;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // espera 1 segundo antes de reintentar
+    }
+  }
+}
+
+let pages = [];
+let error = null;
+
+try {
+  pages = await fetchWithRetry(
+    "https://www.apuntesdispersos.com/wp-json/wp/v2/pages?_embed"
+  );
+} catch (e) {
+  console.error("Error fetching pages:", e);
+  error = e;
+}
+---
+
+<Layout title="Patricio Salinas">
+  <h1>Patricio Salinas</h1>
+  {
+    error ? (
+      <p>
+        Hubo un problema al cargar las páginas. Por favor, intenta recargar la
+        página.
+      </p>
+    ) : (
+      <>
+        <h2>Páginas</h2>
+        <PageList pages={pages} />
+      </>
+    )
+  }
+</Layout>

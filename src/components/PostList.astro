@@ -1,0 +1,25 @@
+---
+let posts = [];
+try {
+  const response = await fetch(
+    "https://www.apuntesdispersos.com/wp-json/wp/v2/posts?_embed"
+  );
+  posts = await response.json();
+} catch (error) {
+  console.error("Error fetching posts:", error);
+}
+---
+
+{
+  posts.length > 0 ? (
+    <ul>
+      {posts.map((post: any) => (
+        <li>
+          <a href={`/post/${post.slug}`}>{post.title.rendered}</a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No se pudieron cargar los posts. Por favor, intenta más tarde.</p>
+  )
+}

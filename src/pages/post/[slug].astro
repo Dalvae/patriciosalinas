@@ -1,0 +1,52 @@
+---
+interface WordPressPost {
+  slug: string;
+  title: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
+  featured_media: number;
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+    }>;
+  };
+}
+
+export async function getStaticPaths() {
+  try {
+    const response = await fetch(
+      "https://www.apuntesdispersos.com/wp-json/wp/v2/posts?_embed"
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const posts: WordPressPost[] = await response.json();
+    return posts.map((post) => ({
+      params: { slug: post.slug },
+      props: { post },
+    }));
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return []; // Retorna un array vacío o algún contenido por defecto
+  }
+}
+
+const { post } = Astro.props;
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title={post.title.rendered}>
+  <h1>{post.title.rendered}</h1>
+  {
+    post.featured_media !== 0 && post._embedded?.["wp:featuredmedia"]?.[0] && (
+      <img
+        src={post._embedded["wp:featuredmedia"][0].source_url}
+        alt={post.title.rendered}
+      />
+    )
+  }
+  <div set:html={post.content.rendered} />
+</Layout>
