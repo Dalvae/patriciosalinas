@@ -1,13 +1,17 @@
 ---
+import Navbar from "../components/Navbar.astro";
+import { getPages } from "../lib/graphql-queries";
 export interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+const pages = await getPages();
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -16,13 +20,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="/">Inicio</a>
-        <a href="/posts">Posts</a>
-        <a href="/pages">Páginas</a>
-      </nav>
-    </header>
+    <Navbar pages={pages} currentPath={currentPath} />
     <main>
       <slot />
     </main>

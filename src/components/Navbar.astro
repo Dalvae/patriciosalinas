@@ -1,0 +1,66 @@
+---
+import type { Page } from "../types/types";
+
+export interface Props {
+  pages: Page[];
+  currentPath: string;
+}
+
+const { pages = [], currentPath } = Astro.props;
+
+function getPageLink(uri: string): string {
+  if (uri === "/") return "/";
+  return `/page${uri}`;
+}
+
+function isCurrentPage(pageUri: string): boolean {
+  const fullPageUri = getPageLink(pageUri);
+  return (
+    currentPath === fullPageUri || (currentPath === "/" && fullPageUri === "/")
+  );
+}
+---
+
+<nav>
+  <ul>
+    <li><a href="/" class={isCurrentPage("/") ? "active" : ""}>Inicio</a></li>
+    {
+      pages.map((page) => (
+        <li>
+          <a
+            href={getPageLink(page.uri)}
+            class={isCurrentPage(page.uri) ? "active" : ""}
+          >
+            {page.title}
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
+        >Blog</a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  nav {
+    background-color: #f8f9fa;
+    padding: 1rem;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+  }
+  a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  a:hover,
+  a.active {
+    color: #007bff;
+  }
+</style>

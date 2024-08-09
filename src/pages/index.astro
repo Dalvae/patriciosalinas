@@ -1,61 +1,51 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageList from "../components/PageList.astro";
+import { getHomePageContent, getPages, getPosts } from "../lib/graphql-queries";
+import type { Page, Post } from "../types/types";
 
-async function fetchWithTimeout(url: string, timeout = 8000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-
-  try {
-    const response = await fetch(url, {
-      signal: controller.signal,
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } finally {
-    clearTimeout(id);
-  }
-}
-
-async function fetchWithRetry(url: string, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await fetchWithTimeout(url);
-    } catch (e) {
-      if (i === retries - 1) throw e;
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // espera 1 segundo antes de reintentar
-    }
-  }
-}
-
-let pages = [];
-let error = null;
+let homeContent: { title: string; content: string } | null = null;
+let pages: Page[] = [];
+let posts: Post[] = [];
+let error: Error | null = null;
 
 try {
-  pages = await fetchWithRetry(
-    "https://www.apuntesdispersos.com/wp-json/wp/v2/pages?_embed"
-  );
+  const [homeContentData, pagesData, postsData] = await Promise.all([
+    getHomePageContent(),
+    getPages(),
+    getPosts(),
+  ]);
+
+  homeContent = homeContentData;
+  pages = pagesData;
+  posts = postsData;
 } catch (e) {
-  console.error("Error fetching pages:", e);
-  error = e;
+  console.error("Error fetching data:", e);
+  error = e instanceof Error ? e : new Error("An unknown error occurred");
 }
 ---
 
 <Layout title="Patricio Salinas">
-  <h1>Patricio Salinas</h1>
   {
     error ? (
       <p>
-        Hubo un problema al cargar las páginas. Por favor, intenta recargar la
+        Hubo un problema al cargar el contenido. Por favor, intenta recargar la
         página.
       </p>
     ) : (
-      <>
-        <h2>Páginas</h2>
-        <PageList pages={pages} />
-      </>
+      <main>
+        <h1>{homeContent?.title}</h1>
+        <div set:html={homeContent?.content} />
+
+        <h2>Últimas entradas del blog</h2>
+        <ul>
+          {posts.slice(0, 5).map((post) => (
+            <li>
+              <a href={post.uri}>{post.title}</a>
+              <p set:html={post.excerpt} />
+            </li>
+          ))}
+        </ul>
+      </main>
     )
   }
 </Layout>
