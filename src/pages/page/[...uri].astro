@@ -1,10 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ProtectedImage from "../../components/ProtectedImage.astro";
 import {
   getPageByURI,
   getPages,
   getAllPageURIs,
 } from "../../lib/graphql-queries";
+import {
+  extractImagesFromHTML,
+  replaceImagesWithPlaceholders,
+} from "../../utils/htmlUtils";
 import type { Page } from "../../types/types";
 
 export async function getStaticPaths() {
@@ -20,15 +25,20 @@ export async function getStaticPaths() {
 
 const { uri } = Astro.params;
 let page: Page | null = null;
-let pages: Page[] = [];
+// let pages: Page[] = [];  // Comentado si no se usa
 let error: Error | null = null;
 
 try {
-  [page, pages] = await Promise.all([getPageByURI(uri || "home"), getPages()]);
+  [page] = await Promise.all([getPageByURI(uri || "home")]);
 } catch (e) {
   console.error("Error fetching data:", e);
   error = e instanceof Error ? e : new Error("An unknown error occurred");
 }
+
+const images = page ? extractImagesFromHTML(page.content) : [];
+const contentWithoutImages = page
+  ? replaceImagesWithPlaceholders(page.content)
+  : "";
 ---
 
 <Layout title={page?.title || "Página no encontrada"}>
@@ -42,7 +52,15 @@ try {
       <main>
         <article>
           <h1>{page.title}</h1>
-          <div set:html={page.content} />
+          {images.map((img) => (
+            <ProtectedImage
+              src={img.src}
+              alt={img.alt}
+              width={img.width}
+              height={img.height}
+            />
+          ))}
+          <div set:html={contentWithoutImages} />
         </article>
       </main>
     ) : (

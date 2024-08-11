@@ -1,0 +1,100 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+  width: number | string;
+  height: number | string;
+}
+
+const { src, alt, width, height } = Astro.props;
+---
+
+<div
+  class="protected-image-container"
+  style={`width:${width}px;height:${height}px;`}
+>
+  <canvas width={width} height={height} data-src={src} data-alt={alt}></canvas>
+</div>
+
+<script>
+  function loadProtectedImages() {
+    const canvases = document.querySelectorAll(
+      ".protected-image-container canvas"
+    );
+    canvases.forEach((canvas) => {
+      if (canvas instanceof HTMLCanvasElement) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          const img = new Image();
+          img.crossOrigin = "Anonymous";
+          img.src = canvas.dataset.src || "";
+          img.onload = function () {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Agregar marca de agua en la esquina inferior derecha con margen
+            const text = "© Patricio Salinas";
+            const fontSize = 20;
+            const margin = 20; // Margen de 20 píxeles
+            ctx.font = `${fontSize}px Arial`;
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            const textWidth = ctx.measureText(text).width;
+            ctx.fillText(
+              text,
+              canvas.width - textWidth - margin,
+              canvas.height - margin
+            );
+          };
+        }
+      }
+    });
+  }
+
+  // Prevenir clic derecho
+  document.addEventListener(
+    "contextmenu",
+    function (e) {
+      if (
+        e.target instanceof HTMLCanvasElement &&
+        e.target.closest(".protected-image-container")
+      ) {
+        e.preventDefault();
+      }
+    },
+    false
+  );
+
+  // Prevenir arrastre de la imagen
+  document.addEventListener(
+    "dragstart",
+    function (e) {
+      if (
+        e.target instanceof HTMLCanvasElement &&
+        e.target.closest(".protected-image-container")
+      ) {
+        e.preventDefault();
+      }
+    },
+    false
+  );
+
+  // Desactivar tecla "PrtSc" para copia de pantalla
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "PrintScreen") {
+      e.preventDefault();
+      alert("La copia de pantalla está deshabilitada.");
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", loadProtectedImages);
+</script>
+
+<style>
+  .protected-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .protected-image-container canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
