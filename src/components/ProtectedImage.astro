@@ -22,32 +22,33 @@ const { src, alt, width, height } = Astro.props;
       ".protected-image-container canvas"
     );
     canvases.forEach((canvas) => {
-      if (canvas instanceof HTMLCanvasElement) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          const img = new Image();
-          img.crossOrigin = "Anonymous";
-          img.src = canvas.dataset.src || "";
-          img.onload = function () {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  if (canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = canvas.dataset.src || "";
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            // Agregar marca de agua en la esquina inferior derecha con margen
-            const text = "© Patricio Salinas";
-            const fontSize = 20;
-            const margin = 20; // Margen de 20 píxeles
-            ctx.font = `${fontSize}px Arial`;
-            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-            const textWidth = ctx.measureText(text).width;
-            ctx.fillText(
-              text,
-              canvas.width - textWidth - margin,
-              canvas.height - margin
-            );
-          };
-        }
-      }
-    });
+        // Agregar marca de agua en la esquina inferior derecha con margen porcentual
+        const text = "© Patricio Salinas";
+        const fontSize = 20;
+        const marginX = canvas.width * 0.05;  // 5% del ancho
+        const marginY = canvas.height * 0.05; // 5% del alto
+        ctx.font = `${fontSize}px Arial`;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        const textWidth = ctx.measureText(text).width;
+        ctx.fillText(
+          text,
+          canvas.width - textWidth - marginX,
+          canvas.height - marginY
+        );
+      };
+    }
   }
+});
+
 
   // Prevenir clic derecho
   document.addEventListener(
