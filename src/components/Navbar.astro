@@ -81,10 +81,7 @@ function isCurrentItem(itemUri: string): boolean {
   <div class="language-switcher">
     {
       Object.entries(languages).map(([code, label]) => (
-        <a
-          href={`/${code}${currentPath.slice(lang.length + 1)}`}
-          class={lang === code ? "active" : ""}
-        >
+        <a href={`/${code}`} class={lang === code ? "active" : ""}>
           {label}
         </a>
       ))
