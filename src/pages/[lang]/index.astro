@@ -1,0 +1,47 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getHomePageContent, getPages } from "../../lib/graphql-queries";
+import type { Post } from "../../types/types";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+let homeContent: { title: string; content: string } | null = null;
+let posts: Post[] = [];
+let error: Error | null = null;
+
+try {
+  const [homeContentData] = await Promise.all([
+    getHomePageContent(lang),
+    getPages(lang),
+    // Puedes agregar aquí las funciones adicionales si es necesario
+  ]);
+  homeContent = homeContentData;
+} catch (e) {
+  console.error("Error fetching data:", e);
+  error = e instanceof Error ? e : new Error("An unknown error occurred");
+}
+---
+
+<Layout title="Patricio Salinas">
+  {
+    error ? (
+      <p>{t("error.loading")}</p>
+    ) : (
+      <main>
+        <h1>{homeContent?.title}</h1>
+        <div set:html={homeContent?.content} />
+        <h2>{t("home.latestPosts")}</h2>
+        <ul>
+          {posts.slice(0, 5).map((post) => (
+            <li>
+              <a href={`/${lang}${post.uri}`}>{post.title}</a>
+              <p set:html={post.excerpt} />
+            </li>
+          ))}
+        </ul>
+      </main>
+    )
+  }
+</Layout>

@@ -1,5 +1,7 @@
 ---
 import type { Page } from "../types/types";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { languages } from "../i18n/ui";
 
 export interface Props {
   pages: Page[];
@@ -7,52 +9,76 @@ export interface Props {
 }
 
 const { pages = [], currentPath } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 function getPageLink(uri: string): string {
-  if (uri === "/") return "/";
-  return `/page${uri}`;
+  if (uri === "/") return `/${lang}`;
+  return `/${lang}/page${uri}`;
 }
 
 function isCurrentPage(pageUri: string): boolean {
   const fullPageUri = getPageLink(pageUri);
   return (
-    currentPath === fullPageUri || (currentPath === "/" && fullPageUri === "/")
+    currentPath === fullPageUri ||
+    (currentPath === `/${lang}` && fullPageUri === `/${lang}`)
   );
 }
 ---
 
 <nav>
   <ul>
-    <li><a href="/" class={isCurrentPage("/") ? "active" : ""}>Inicio</a></li>
+    <li>
+      <a href={`/${lang}`} class={isCurrentPage("/") ? "active" : ""}
+        >{t("nav.home")}</a>
+    </li>
     {
       pages.map((page) => (
         <li>
-          <a
+          <a>
             href={getPageLink(page.uri)}
             class={isCurrentPage(page.uri) ? "active" : ""}
-          >
             {page.title}
           </a>
         </li>
       ))
     }
     <li>
-      <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
-        >Blog</a>
+      <a
+        href={`/${lang}/blog`}
+        class={currentPath.startsWith(`/${lang}/blog`) ? "active" : ""}
+      >
+        {t("nav.blog")}
+      </a>
     </li>
   </ul>
+  <div class="language-switcher">
+    {
+      Object.entries(languages).map(([code, label]) => (
+        <a
+          href={`/${code}${currentPath.slice(3)}`}
+          class={lang === code ? "active" : ""}
+        >
+          {label}
+        </a>
+      ))
+    }
+  </div>
 </nav>
 
 <style>
   nav {
     background-color: #f8f9fa;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    justify-content: space-around;
+    gap: 1rem;
   }
   a {
     text-decoration: none;
@@ -62,5 +88,18 @@ function isCurrentPage(pageUri: string): boolean {
   a:hover,
   a.active {
     color: #007bff;
+  }
+  .language-switcher {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .language-switcher a {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #e9ecef;
+  }
+  .language-switcher a.active {
+    background-color: #007bff;
+    color: white;
   }
 </style>

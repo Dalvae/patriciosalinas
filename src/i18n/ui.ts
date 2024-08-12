@@ -1,0 +1,40 @@
+export const languages = {
+  en: "English",
+  es: "Español",
+  sv: "Svenska",
+};
+
+export const defaultLang = "en" as const;
+
+export const ui = {
+  en: {
+    "error.loading":
+      "There was a problem loading the content. Please try reloading the page.",
+    "home.latestPosts": "Latest blog posts",
+    "nav.home": "Home",
+    "nav.about": "About",
+    "nav.projects": "Projects",
+    "nav.blog": "Blog",
+    "footer.copyright": "All rights reserved.",
+  },
+  es: {
+    "error.loading":
+      "Hubo un problema al cargar el contenido. Por favor, intenta recargar la página.",
+    "home.latestPosts": "Últimas entradas del blog",
+    "nav.home": "Inicio",
+    "nav.about": "Acerca de",
+    "nav.projects": "Proyectos",
+    "nav.blog": "Blog",
+    "footer.copyright": "Todos los derechos reservados.",
+  },
+  sv: {
+    "error.loading":
+      "Det uppstod ett problem vid inläsning av innehållet. Försök att ladda om sidan.",
+    "home.latestPosts": "Senaste blogginlägg",
+    "nav.home": "Hem",
+    "nav.about": "Om",
+    "nav.projects": "Projekt",
+    "nav.blog": "Blogg",
+    "footer.copyright": "Alla rättigheter förbehållna.",
+  },
+} as const;

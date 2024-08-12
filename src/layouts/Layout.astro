@@ -1,17 +1,21 @@
 ---
 import Navbar from "../components/Navbar.astro";
 import { getPages } from "../lib/graphql-queries";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
 export interface Props {
   title: string;
 }
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const { title } = Astro.props;
-const pages = await getPages();
+const pages = await getPages(lang); // Asumiendo que has actualizado getPages para aceptar un parámetro de idioma
 const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -26,7 +30,8 @@ const currentPath = Astro.url.pathname;
     </main>
     <footer>
       <p>
-        © {new Date().getFullYear()} Mi Blog Astro. Todos los derechos reservados.
+        © {new Date().getFullYear()}
+        {t("footer.copyright")}
       </p>
     </footer>
   </body>

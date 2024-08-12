@@ -1,51 +1,17 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { getHomePageContent, getPages, getPosts } from "../lib/graphql-queries";
-import type { Page, Post } from "../types/types";
+//index.astro
+import HomePage from "../components/HomePage.astro";
+import { getLangFromUrl } from "../i18n/utils";
 
-let homeContent: { title: string; content: string } | null = null;
-let pages: Page[] = [];
-let posts: Post[] = [];
-let error: Error | null = null;
-
-try {
-  const [homeContentData, pagesData, postsData] = await Promise.all([
-    getHomePageContent(),
-    getPages(),
-    getPosts(),
-  ]);
-
-  homeContent = homeContentData;
-  pages = pagesData;
-  posts = postsData;
-} catch (e) {
-  console.error("Error fetching data:", e);
-  error = e instanceof Error ? e : new Error("An unknown error occurred");
+export function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "sv" } },
+  ];
 }
+
+const { lang } = Astro.params as { lang: "en" | "es" | "sv" };
 ---
 
-<Layout title="Patricio Salinas">
-  {
-    error ? (
-      <p>
-        Hubo un problema al cargar el contenido. Por favor, intenta recargar la
-        página.
-      </p>
-    ) : (
-      <main>
-        <h1>{homeContent?.title}</h1>
-        <div set:html={homeContent?.content} />
-
-        <h2>Últimas entradas del blog</h2>
-        <ul>
-          {posts.slice(0, 5).map((post) => (
-            <li>
-              <a href={post.uri}>{post.title}</a>
-              <p set:html={post.excerpt} />
-            </li>
-          ))}
-        </ul>
-      </main>
-    )
-  }
-</Layout>
+<HomePage lang={lang} />

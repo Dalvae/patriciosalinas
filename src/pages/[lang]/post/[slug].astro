@@ -1,0 +1,22 @@
+---
+import PostPage from "../../../components/PostPage.astro";
+import { getAllPages } from "../../../lib/graphql-queries";
+
+export async function getStaticPaths() {
+  const pages = await getAllPages();
+
+  return pages.map((page) => {
+    const pathParts = page.uri.split("/").filter(Boolean);
+    const lang = pathParts[0];
+    const slug = pathParts[pathParts.length - 1];
+
+    return {
+      params: { lang, slug },
+    };
+  });
+}
+
+const { lang, slug } = Astro.params;
+---
+
+<PostPage lang={lang} slug={slug} />

@@ -1,8 +1,14 @@
+export type Lang = "en" | "es" | "sv";
+
 export interface Page {
   id: string;
   title: string;
   uri: string;
-  content: string;
+  content: string | null;
+  excerpt?: string;
+  language: {
+    slug: string;
+  };
   featuredImage?: {
     node: {
       sourceUrl: string;
@@ -32,4 +38,7 @@ export interface Post {
   date: string;
   excerpt: string;
   content: string;
+  language: {
+    slug: string;
+  };
 }
