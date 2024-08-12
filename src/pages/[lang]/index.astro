@@ -1,23 +1,38 @@
 ---
+//src/pages/[lang]/index.astro
 import Layout from "../../layouts/Layout.astro";
-import { getHomePageContent, getPages } from "../../lib/graphql-queries";
-import type { Post } from "../../types/types";
+import {
+  getHomePageContent,
+  getPages,
+  getPosts,
+} from "../../lib/graphql-queries";
+import type { Post, Page, Lang } from "../../types/types";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+export function getStaticPaths() {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "sv" } },
+  ];
+}
 
+const { lang } = Astro.params as { lang: Lang };
+const t = useTranslations(lang);
 let homeContent: { title: string; content: string } | null = null;
+let pages: Page[] = [];
 let posts: Post[] = [];
 let error: Error | null = null;
 
 try {
-  const [homeContentData] = await Promise.all([
+  const [homeContentData, pagesData, postsData] = await Promise.all([
     getHomePageContent(lang),
     getPages(lang),
-    // Puedes agregar aquí las funciones adicionales si es necesario
+    getPosts(lang),
   ]);
   homeContent = homeContentData;
+  pages = pagesData;
+  posts = postsData;
 } catch (e) {
   console.error("Error fetching data:", e);
   error = e instanceof Error ? e : new Error("An unknown error occurred");

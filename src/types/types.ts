@@ -42,3 +42,14 @@ export interface Post {
     slug: string;
   };
 }
+
+export interface ProcessedPage extends Page {
+  images: Array<{
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  }>;
+  paragraphs: string[];
+  headers: string[];
+}

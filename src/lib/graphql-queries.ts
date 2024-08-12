@@ -1,98 +1,20 @@
-import type { Page, Post, Lang } from "../types/types";
+import type { Page, Post, Lang, ProcessedPage } from "../types/types";
+import { JSDOM } from "jsdom";
 
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
-const DEFAULT_TIMEOUT = 60000; // 60 segundos
-const MAX_RETRIES = 5;
+const DEFAULT_TIMEOUT = 60000; // 60 seconds
+const MAX_RETRIES = 3;
 
-async function fetchWithTimeout(
-  resource: string,
-  options: RequestInit & { timeout?: number } = {}
-) {
-  const { timeout = DEFAULT_TIMEOUT } = options;
-
-  const controller = new AbortController();
-  const id = setTimeout(() => {
-    controller.abort();
-    console.error(`Request timed out after ${timeout}ms`);
-  }, timeout);
-
-  try {
-    console.log(`Fetching ${resource}...`);
-    const response = await fetch(resource, {
-      ...options,
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      console.error(`HTTP error! status: ${response.status}`);
-      console.error(
-        `Response headers:`,
-        Object.fromEntries(response.headers.entries())
-      );
-      const text = await response.text();
-      console.error(`Response body:`, text);
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response;
-  } catch (error) {
-    console.error(`Fetch error:`, error);
-    throw error;
-  } finally {
-    clearTimeout(id);
-  }
-}
-
-async function fetchGraphQLWithRetry(
-  query: string,
-  variables = {},
-  maxRetries = MAX_RETRIES,
-  timeout = DEFAULT_TIMEOUT
-) {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      console.log(`Attempt ${i + 1} for query: ${query.slice(0, 50)}...`);
-      const response = await fetchWithTimeout(GRAPHQL_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, variables }),
-        timeout: timeout,
-      });
-
-      const result = await response.json();
-
-      if (result.errors) {
-        console.error(
-          "GraphQL errors:",
-          JSON.stringify(result.errors, null, 2)
-        );
-        throw new Error(result.errors.map((e: any) => e.message).join(", "));
-      }
-
-      return result.data;
-    } catch (error) {
-      console.error(`Attempt ${i + 1} failed:`, error);
-      if (error instanceof AggregateError) {
-        console.error("AggregateError details:", error.errors);
-      }
-      if (i === maxRetries - 1) throw error;
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000 * Math.pow(2, i))
-      );
-    }
-  }
-  throw new Error(`Failed after ${maxRetries} attempts`);
-}
-
+// Main function to execute GraphQL queries
 async function executeQuery<T>(
   query: string,
   variables = {},
-  retries = 3
+  retries = MAX_RETRIES
 ): Promise<T> {
   for (let i = 0; i < retries; i++) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 60000); // 30 segundos de timeout
+      const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
 
       const response = await fetch(GRAPHQL_ENDPOINT, {
         method: "POST",
@@ -125,7 +47,8 @@ async function executeQuery<T>(
   throw new Error(`Failed after ${retries} attempts`);
 }
 
-export async function getPages(lang: "en" | "es" | "sv"): Promise<Page[]> {
+// Function to get pages
+export async function getPages(lang: Lang): Promise<Page[]> {
   const query = `
     query GetPages($lang: LanguageCodeFilterEnum!) {
       pages(first: 100, where: { language: $lang }) {
@@ -145,6 +68,7 @@ export async function getPages(lang: "en" | "es" | "sv"): Promise<Page[]> {
   return pages.nodes;
 }
 
+// Function to get posts
 export async function getPosts(lang: Lang): Promise<Post[]> {
   const query = `
     query GetPosts($lang: LanguageCodeFilterEnum!) {
@@ -166,12 +90,13 @@ export async function getPosts(lang: Lang): Promise<Post[]> {
   return data.posts.nodes;
 }
 
+// Function to get home page content
 export async function getHomePageContent(
   lang: Lang
 ): Promise<{ title: string; content: string }> {
   const query = `
-    query GetHomePageContent($lang: LanguageCodeFilterEnum!) {
-      pages(where: { language: $lang, slug: "home" }) {
+    query GetHomePageContent($lang: LanguageCodeEnum!) {
+      pages(where: { language: $lang, status: PUBLISH }, first: 1) {
         nodes {
           title
           content
@@ -186,10 +111,11 @@ export async function getHomePageContent(
   return data.pages.nodes[0] || { title: "", content: "" };
 }
 
-export async function getPostBySlug(slug: string, lang: string): Promise<Post> {
+// Function to get a post by slug
+export async function getPostBySlug(slug: string, lang: Lang): Promise<Post> {
   const query = `
-    query GetPostBySlug($slug: ID!, $lang: LanguageCodeFilterEnum!) {
-      post(id: $slug, idType: SLUG, language: $lang) {
+    query GetPostBySlug($slug: ID!, $lang: LanguageCodeEnum!) {
+      post(id: $slug, idType: SLUG) {
         id
         title
         slug
@@ -199,7 +125,6 @@ export async function getPostBySlug(slug: string, lang: string): Promise<Post> {
         excerpt
         language {
           code
-          locale
         }
       }
     }
@@ -210,6 +135,8 @@ export async function getPostBySlug(slug: string, lang: string): Promise<Post> {
   });
   return data.post;
 }
+
+// Function to get a page by slug
 export async function getPageBySlug(slug: string): Promise<Page> {
   const query = `
     query GetPageBySlug($slug: ID!) {
@@ -226,7 +153,9 @@ export async function getPageBySlug(slug: string): Promise<Page> {
   const data = await executeQuery<{ page: Page }>(query, { slug });
   return data.page;
 }
-export async function getAllPages(): Promise<Page[]> {
+
+/// Function to get all pages with specific content blocks
+export async function getAllPages(): Promise<ProcessedPage[]> {
   const query = `
     query GetAllPages {
       pages(first: 1000) {
@@ -235,24 +164,53 @@ export async function getAllPages(): Promise<Page[]> {
           title
           slug
           uri
-          content
           language {
             slug
           }
+          content
         }
       }
     }
   `;
   try {
     const data = await executeQuery<{ pages: { nodes: Page[] } }>(query);
-    return data.pages.nodes;
+
+    return data.pages.nodes.map((page) => {
+      let images: ProcessedPage["images"] = [];
+      let paragraphs: string[] = [];
+      let headers: string[] = [];
+
+      if (page.content) {
+        const dom = new JSDOM(page.content);
+        const doc = dom.window.document;
+
+        images = Array.from(doc.querySelectorAll("img")).map((img) => ({
+          src: img.getAttribute("src") || "",
+          alt: img.getAttribute("alt") || "",
+          width: parseInt(img.getAttribute("width") || "0", 10),
+          height: parseInt(img.getAttribute("height") || "0", 10),
+        }));
+        paragraphs = Array.from(doc.querySelectorAll("p")).map(
+          (p) => p.innerHTML || ""
+        );
+        headers = Array.from(
+          doc.querySelectorAll("h1, h2, h3, h4, h5, h6")
+        ).map((h) => h.innerHTML || "");
+      }
+
+      return {
+        ...page,
+        images,
+        paragraphs,
+        headers,
+      };
+    });
   } catch (error) {
     console.error("Error fetching pages:", error);
-    // Retorna un array vacío o datos mock en caso de error
     return [];
   }
 }
-
+// Function to get all page slugs
 export async function getAllPageSlugs(): Promise<string[]> {
   const query = `
     query GetAllPageSlugs {
@@ -270,6 +228,7 @@ export async function getAllPageSlugs(): Promise<string[]> {
   return data.pages.nodes.map((page) => page.slug);
 }
 
+// Function to get all page URIs
 export async function getAllPageURIs(): Promise<string[]> {
   const query = `
     query GetAllPageURIs {
@@ -289,6 +248,7 @@ export async function getAllPageURIs(): Promise<string[]> {
     .filter((uri) => uri !== "");
 }
 
+// Function to get all post slugs
 export async function getAllPostSlugs(): Promise<string[]> {
   const query = `
     query GetAllPostSlugs {
@@ -306,6 +266,7 @@ export async function getAllPostSlugs(): Promise<string[]> {
   return data.posts.nodes.map((post) => post.slug);
 }
 
+// Function to get a page by URI
 export async function getPageByURI(uri: string): Promise<Page | null> {
   console.log(`Fetching page for URI: ${uri}`);
   const query = `

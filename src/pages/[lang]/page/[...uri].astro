@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import ProtectedImage from "../../../components/ProtectedImage.astro";
 import { getPageByURI, getAllPages } from "../../../lib/graphql-queries";
-import type { Page, Lang } from "../../../types/types";
+import type { ProcessedPage, Lang } from "../../../types/types";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
@@ -22,28 +22,17 @@ const { lang, uri } = Astro.params as { lang: Lang; uri?: string };
 const { pageData } = Astro.props;
 const t = useTranslations(lang);
 
-let page: Page | null = pageData;
+let page: ProcessedPage | null = pageData;
 let error: Error | null = null;
 
 if (!page && lang && uri) {
   try {
-    page = await getPageByURI(`/${lang}/${uri}`);
+    page = (await getPageByURI(`/${lang}/${uri}`)) as ProcessedPage;
   } catch (e) {
     console.error("Error fetching page:", e);
     error = e instanceof Error ? e : new Error("An unknown error occurred");
   }
 }
-
-function replaceImages(content: string) {
-  return content.replace(
-    /<img(.*?)src="(.*?)"(.*?)>/g,
-    (_, before, src, after) => {
-      return `<ProtectedImage${before}src="${src}"${after} />`;
-    }
-  );
-}
-
-const pageContent = page && page.content ? replaceImages(page.content) : "";
 ---
 
 <Layout title={page?.title || "Patricio Salinas"}>
@@ -53,11 +42,20 @@ const pageContent = page && page.content ? replaceImages(page.content) : "";
     ) : page ? (
       <main>
         <h1>{page.title}</h1>
-        {page.content ? (
-          <div set:html={pageContent} />
-        ) : (
-          <p>No content available for this page.</p>
-        )}
+        {page.headers.map((header) => (
+          <h2 set:html={header} />
+        ))}
+        {page.images.map((image) => (
+          <ProtectedImage
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+          />
+        ))}
+        {page.paragraphs.map((paragraph) => (
+          <p set:html={paragraph} />
+        ))}
       </main>
     ) : (
       <p>{t("error.loading")}</p>

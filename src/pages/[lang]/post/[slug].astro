@@ -1,19 +1,39 @@
 ---
 import PostPage from "../../../components/PostPage.astro";
-import { getAllPages } from "../../../lib/graphql-queries";
+import { getPosts } from "../../../lib/graphql-queries";
+import type { Lang } from "../../../types/types";
 
 export async function getStaticPaths() {
-  const pages = await getAllPages();
+  const languages: Lang[] = ["en", "es", "sv"]; // Add all supported languages here
 
-  return pages.map((page) => {
-    const pathParts = page.uri.split("/").filter(Boolean);
-    const lang = pathParts[0];
-    const slug = pathParts[pathParts.length - 1];
+  const allPaths = await Promise.all(
+    languages.map(async (lang) => {
+      const posts = await getPosts(lang);
+      return posts
+        .map((post) => {
+          if (!post.uri || typeof post.uri !== "string") {
+            console.warn(
+              `Post with ID ${post.id} has an invalid or missing URI. Skipping...`
+            );
+            return null;
+          }
 
-    return {
-      params: { lang, slug },
-    };
-  });
+          const pathParts = post.uri.split("/").filter(Boolean);
+          const slug = pathParts.length > 1 ? pathParts[1] : null;
+
+          if (slug === null) {
+            return null;
+          }
+
+          return {
+            params: { lang, slug },
+          };
+        })
+        .filter(Boolean);
+    })
+  );
+
+  return allPaths.flat();
 }
 
 const { lang, slug } = Astro.params;

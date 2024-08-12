@@ -1,15 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getPostBySlug } from "../lib/graphql-queries";
-import type { Post } from "../types/types";
+import type { Post, Lang } from "../types/types";
 
 export interface Props {
-  lang: string;
+  lang: Lang; // Cambiado de string a Lang
   slug: string;
 }
 
 const { lang, slug } = Astro.props;
-
 let post: Post | null = null;
 let error: Error | null = null;
 

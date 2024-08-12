@@ -1,6 +1,6 @@
 ---
+//src/components/layouts/Layout.astro
 import Navbar from "../components/Navbar.astro";
-import { getPages } from "../lib/graphql-queries";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 export interface Props {
@@ -10,7 +10,6 @@ export interface Props {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const { title } = Astro.props;
-const pages = await getPages(lang); // Asumiendo que has actualizado getPages para aceptar un parámetro de idioma
 const currentPath = Astro.url.pathname;
 ---
 
@@ -24,7 +23,7 @@ const currentPath = Astro.url.pathname;
     <title>{title}</title>
   </head>
   <body>
-    <Navbar pages={pages} currentPath={currentPath} />
+    <Navbar currentPath={currentPath} />
     <main>
       <slot />
     </main>

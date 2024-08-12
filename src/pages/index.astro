@@ -1,17 +1,25 @@
 ---
-//index.astro
-import HomePage from "../components/HomePage.astro";
-import { getLangFromUrl } from "../i18n/utils";
+export const prerender = false;
 
-export function getStaticPaths() {
-  return [
-    { params: { lang: "en" } },
-    { params: { lang: "es" } },
-    { params: { lang: "sv" } },
-  ];
+function getBrowserLanguage(accept: string | null): string {
+  if (!accept) return "en";
+
+  const languages = ["en", "es", "sv"];
+  const browserPreferences = accept
+    .split(",")
+    .map((lang) => lang.trim().toLowerCase().split("-")[0]);
+
+  for (const pref of browserPreferences) {
+    if (languages.includes(pref)) {
+      return pref;
+    }
+  }
+
+  return "en";
 }
 
-const { lang } = Astro.params as { lang: "en" | "es" | "sv" };
+const acceptLanguage = Astro.request.headers.get("accept-language");
+const detectedLanguage = getBrowserLanguage(acceptLanguage);
 ---
 
-<HomePage lang={lang} />
+<meta http-equiv="refresh" content={`0;url=/${detectedLanguage}`} />

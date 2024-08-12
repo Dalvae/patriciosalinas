@@ -1,27 +1,35 @@
 ---
-import type { Page } from "../types/types";
+import type { Page, Post, Lang } from "../types/types";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
+import { getPages, getPosts } from "../lib/graphql-queries";
 
 export interface Props {
-  pages: Page[];
   currentPath: string;
 }
 
-const { pages = [], currentPath } = Astro.props;
-const lang = getLangFromUrl(Astro.url);
+const { currentPath } = Astro.props;
+const lang = getLangFromUrl(Astro.url) as Lang;
 const t = useTranslations(lang);
 
-function getPageLink(uri: string): string {
-  if (uri === "/") return `/${lang}`;
-  return `/${lang}/page${uri}`;
+// Fetch pages and posts
+const pages = await getPages(lang);
+const posts = await getPosts(lang);
+
+function getItemLink(item: Page | Post, type: "page" | "post"): string {
+  if (item.uri === `/${lang}/`) return `/${lang}`;
+
+  const parts = item.uri.split("/").filter(Boolean);
+  if (parts.length > 1) {
+    parts.splice(1, 0, type); // Insert 'page' or 'post' after the language code
+  }
+  return "/" + parts.join("/");
 }
 
-function isCurrentPage(pageUri: string): boolean {
-  const fullPageUri = getPageLink(pageUri);
+function isCurrentItem(itemUri: string): boolean {
   return (
-    currentPath === fullPageUri ||
-    (currentPath === `/${lang}` && fullPageUri === `/${lang}`)
+    currentPath === itemUri ||
+    (currentPath === `/${lang}` && itemUri === `/${lang}`)
   );
 }
 ---
@@ -29,20 +37,38 @@ function isCurrentPage(pageUri: string): boolean {
 <nav>
   <ul>
     <li>
-      <a href={`/${lang}`} class={isCurrentPage("/") ? "active" : ""}
-        >{t("nav.home")}</a>
+      <a href={`/${lang}`} class={isCurrentItem("/") ? "active" : ""}>
+        {t("nav.home")}
+      </a>
     </li>
     {
-      pages.map((page) => (
+      pages.map((item) => (
         <li>
-          <a>
-            href={getPageLink(page.uri)}
-            class={isCurrentPage(page.uri) ? "active" : ""}
-            {page.title}
+          <a
+            href={getItemLink(item, "page")}
+            class={isCurrentItem(item.uri) ? "active" : ""}
+          >
+            {item.title}
           </a>
         </li>
       ))
     }
+    <li>
+      <a href="#" class="dropdown-toggle">
+        {/* Agrega una clase para el estilo del dropdown */}
+        {t("nav.blog")}
+      </a>
+      <ul class="dropdown-menu">
+        {/* Agrega una clase para el estilo del dropdown */}
+        {
+          posts.map((post) => (
+            <li>
+              <a href={getItemLink(post, "post")}>{post.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </li>
     <li>
       <a
         href={`/${lang}/blog`}
@@ -56,7 +82,7 @@ function isCurrentPage(pageUri: string): boolean {
     {
       Object.entries(languages).map(([code, label]) => (
         <a
-          href={`/${code}${currentPath.slice(3)}`}
+          href={`/${code}${currentPath.slice(lang.length + 1)}`}
           class={lang === code ? "active" : ""}
         >
           {label}
