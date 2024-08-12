@@ -1,4 +1,5 @@
 ---
+//src/pages/index.astro
 export const prerender = false;
 
 function getBrowserLanguage(accept: string | null): string {
@@ -20,6 +21,8 @@ function getBrowserLanguage(accept: string | null): string {
 
 const acceptLanguage = Astro.request.headers.get("accept-language");
 const detectedLanguage = getBrowserLanguage(acceptLanguage);
+console.log("Detected language:", detectedLanguage);
+return Astro.redirect(`/${detectedLanguage}`);
 ---
 
 <meta http-equiv="refresh" content={`0;url=/${detectedLanguage}`} />
