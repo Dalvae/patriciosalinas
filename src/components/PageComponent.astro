@@ -11,7 +11,6 @@ interface Props {
 }
 
 const { lang, uri, page } = Astro.props;
-const t = useTranslations(lang);
 
 let homeContent = null;
 if (uri === undefined || uri === "") {
