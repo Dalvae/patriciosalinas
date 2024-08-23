@@ -1,0 +1,47 @@
+---
+import ProtectedImage from "@components/ProtectedImage.astro";
+interface Props {
+  content: string;
+}
+const { content } = Astro.props;
+
+// Función para extraer los atributos de la imagen
+function extractImageAttributes(content: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, "text/html");
+  const img = doc.querySelector("img");
+  if (img) {
+    return {
+      src: img.getAttribute("src") || "",
+      alt: img.getAttribute("alt") || "",
+      width: img.getAttribute("width") || "100%",
+      height: img.getAttribute("height") || "auto",
+    };
+  }
+  return null;
+}
+
+const imageAttributes = extractImageAttributes(content);
+---
+
+<div class="image-block">
+  {
+    imageAttributes ? (
+      <ProtectedImage
+        src={imageAttributes.src}
+        alt={imageAttributes.alt}
+        width={imageAttributes.width}
+        height={imageAttributes.height}
+      />
+    ) : (
+      <div set:html={content} />
+    )
+  }
+</div>
+
+<style>
+  .image-block {
+    /* Estilos para bloques de imagen */
+    margin-bottom: 1rem;
+  }
+</style>

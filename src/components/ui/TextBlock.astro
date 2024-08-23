@@ -1,0 +1,16 @@
+---
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="text-block" set:html={content} />
+
+<style>
+  .text-block {
+    /* Estilos para bloques de texto */
+    margin-bottom: 1rem;
+  }
+</style>

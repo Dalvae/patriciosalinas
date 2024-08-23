@@ -3,6 +3,9 @@ import Layout from "../layouts/Layout.astro";
 import { getHomePageContent } from "../lib/graphql-queries";
 import type { Page, Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
+import Gallery from "./ui/Gallery.astro";
+import TextBlock from "./ui/TextBlock.astro";
+import ImageBlock from "./ui/ImageBlock.astro";
 
 interface Props {
   lang: Lang;
@@ -11,7 +14,6 @@ interface Props {
 }
 
 const { lang, uri, page } = Astro.props;
-
 let homeContent = null;
 if (uri === undefined || uri === "") {
   try {
@@ -22,10 +24,51 @@ if (uri === undefined || uri === "") {
 }
 
 const title = homeContent ? homeContent.title : page.title;
-const content = homeContent ? homeContent.content : page.content;
+const content = (homeContent ? homeContent.content : page.content) || "";
+
+function parseContent(content: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, "text/html");
+  return Array.from(doc.body.children);
+}
+
+type ComponentMapping = {
+  component: any;
+  props: { content: string } | { innerHTML: string };
+};
+
+function mapElementToComponent(element: Element): ComponentMapping | undefined {
+  switch (element.tagName.toLowerCase()) {
+    case "div":
+      if (
+        element.classList.contains("wp-block-group") &&
+        element.classList.contains("custom-gallery")
+      ) {
+        return { component: Gallery, props: { content: element.outerHTML } };
+      }
+      break;
+    case "p":
+      return { component: TextBlock, props: { content: element.outerHTML } };
+    case "figure":
+      return { component: ImageBlock, props: { content: element.outerHTML } };
+    default:
+      return { component: "div", props: { innerHTML: element.outerHTML } };
+  }
+}
+
+const contentElements = parseContent(content);
 ---
 
 <Layout title={title}>
   <h1>{title}</h1>
-  <div set:html={content} />
+  {
+    contentElements.map((element) => {
+      const mapping = mapElementToComponent(element);
+      if (mapping) {
+        const { component: Component, props } = mapping;
+        return <Component {...props} />;
+      }
+      return null;
+    })
+  }
 </Layout>
