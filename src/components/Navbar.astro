@@ -18,14 +18,8 @@ const posts = await getPosts(lang);
 
 function getItemLink(item: Page | Post, type: "page" | "post"): string {
   if (item.uri === `/${lang}/`) return `/${lang}`;
-
-  const parts = item.uri.split("/").filter(Boolean);
-  if (parts.length > 1) {
-    parts.splice(1, 0, type); // Insert 'page' or 'post' after the language code
-  }
-  return "/" + parts.join("/");
+  return item.uri; // Simplemente devuelve la URI tal como viene de WordPress
 }
-
 function isCurrentItem(itemUri: string): boolean {
   return (
     currentPath === itemUri ||

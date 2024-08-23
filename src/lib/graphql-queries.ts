@@ -2,8 +2,14 @@ import type { Page, Post, Lang, ProcessedPage } from "../types/types";
 import { JSDOM } from "jsdom";
 
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
-const DEFAULT_TIMEOUT = 60000; // 60 seconds
+const DEFAULT_TIMEOUT = 120000; // 120 seconds
 const MAX_RETRIES = 3;
+
+// Define a type for the GraphQL response
+interface GraphQLResponse<T> {
+  data: T;
+  errors?: { message: string }[];
+}
 
 // Main function to execute GraphQL queries
 async function executeQuery<T>(
@@ -13,32 +19,45 @@ async function executeQuery<T>(
 ): Promise<T> {
   for (let i = 0; i < retries; i++) {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
+      console.log(`Attempt ${i + 1}: Starting fetch to ${GRAPHQL_ENDPOINT}`);
 
-      const response = await fetch(GRAPHQL_ENDPOINT, {
+      const fetchPromise = fetch(GRAPHQL_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, variables }),
-        signal: controller.signal,
       });
 
-      clearTimeout(timeoutId);
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("Fetch timeout")), DEFAULT_TIMEOUT)
+      );
+
+      const response: Response = await Promise.race([
+        fetchPromise,
+        timeoutPromise,
+      ]);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
+      const result: GraphQLResponse<T> = await response.json();
 
-      if (result.errors) {
-        throw new Error(result.errors.map((e: any) => e.message).join(", "));
+      if (result.errors && result.errors.length > 0) {
+        throw new Error(result.errors.map((e) => e.message).join(", "));
       }
 
       return result.data;
     } catch (error) {
-      console.error(`Attempt ${i + 1} failed:`, error);
+      console.error(`Attempt ${i + 1} failed:`);
+      if (error instanceof AggregateError) {
+        error.errors.forEach((e, index) => {
+          console.error(`  Sub-error ${index + 1}:`, e);
+        });
+      } else {
+        console.error(error);
+      }
       if (i === retries - 1) throw error;
+      console.log(`Waiting before retry...`);
       await new Promise((resolve) =>
         setTimeout(resolve, 1000 * Math.pow(2, i))
       );
@@ -65,6 +84,7 @@ export async function getPages(lang: Lang): Promise<Page[]> {
   const { pages } = await executeQuery<{ pages: { nodes: Page[] } }>(query, {
     lang: lang.toUpperCase(),
   });
+
   return pages.nodes;
 }
 
@@ -266,29 +286,17 @@ export async function getAllPostSlugs(): Promise<string[]> {
   return data.posts.nodes.map((post) => post.slug);
 }
 
-// Function to get a page by URI
 export async function getPageByURI(uri: string): Promise<Page | null> {
-  console.log(`Fetching page for URI: ${uri}`);
   const query = `
-    query GetPageByURI($uri: ID!) {
+    query GetPageByURI($uri: String!) {
       pageBy(uri: $uri) {
         id
         title
-        uri
         content
-        excerpt
+        uri
+        slug
         language {
           slug
-        }
-        featuredImage {
-          node {
-            sourceUrl
-            altText
-            mediaDetails {
-              width
-              height
-            }
-          }
         }
       }
     }
@@ -296,10 +304,9 @@ export async function getPageByURI(uri: string): Promise<Page | null> {
 
   try {
     const data = await executeQuery<{ pageBy: Page | null }>(query, { uri });
-    console.log(`Successfully fetched page for URI: ${uri}`);
     return data.pageBy;
   } catch (error) {
-    console.error(`Failed to fetch page for URI: ${uri}`, error);
+    console.error("Error fetching page by URI:", error);
     return null;
   }
 }

@@ -5,7 +5,6 @@ export interface Page {
   title: string;
   uri: string;
   content: string | null;
-  excerpt?: string;
   language: {
     slug: string;
   };

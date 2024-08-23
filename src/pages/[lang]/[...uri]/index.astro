@@ -1,0 +1,56 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getPageByURI, getAllPageURIs } from "../../../lib/graphql-queries";
+import type { Lang, Page } from "../../../types/types";
+import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
+
+export async function getStaticPaths() {
+  const allURIs = await getAllPageURIs();
+  return allURIs.map((uri) => {
+    const pathParts = uri.split("/").filter(Boolean);
+    const lang = pathParts[0] as Lang;
+    const pageUri = pathParts.slice(1).join("/") || undefined;
+    return {
+      params: { lang, uri: pageUri },
+    };
+  });
+}
+
+const { lang, uri } = Astro.params as { lang: Lang; uri?: string };
+const t = useTranslations(lang);
+
+let page: Page | null = null;
+let error: Error | null = null;
+
+if (lang && uri) {
+  try {
+    page = await getPageByURI(`/${lang}/${uri}`);
+    if (!page) {
+      error = new Error("Page not found");
+    }
+  } catch (e) {
+    console.error("Error fetching page:", e);
+    error = e instanceof Error ? e : new Error("An unknown error occurred");
+  }
+}
+
+// // Redirigir si la URL contiene '/page/'
+// if (uri?.startsWith("page/")) {
+//   return Astro.redirect(`/${lang}/${uri.replace("page/", "")}`);
+// }
+---
+
+<Layout title={page?.title || "Patricio Salinas"}>
+  {
+    error ? (
+      <p>{t("error.loading")}</p>
+    ) : page ? (
+      <main>
+        <h1>{page.title}</h1>
+        <article set:html={page.content} />
+      </main>
+    ) : (
+      <p>{t("error.loading")}</p>
+    )
+  }
+</Layout>

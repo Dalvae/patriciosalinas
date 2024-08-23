@@ -1,5 +1,4 @@
 ---
-//src/pages/[lang]/index.astro
 import Layout from "../../layouts/Layout.astro";
 import {
   getHomePageContent,
@@ -7,7 +6,7 @@ import {
   getPosts,
 } from "../../lib/graphql-queries";
 import type { Post, Page, Lang } from "../../types/types";
-// import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 export function getStaticPaths() {
   return [
@@ -19,7 +18,13 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Lang };
 const t = useTranslations(lang);
-let homeContent: { title: string; content: string } | null = null;
+
+interface HomeContent {
+  title: string;
+  content: string;
+}
+
+let homeContent: HomeContent | null = null;
 let pages: Page[] = [];
 let posts: Post[] = [];
 let error: Error | null = null;
@@ -30,6 +35,7 @@ try {
     getPages(lang),
     getPosts(lang),
   ]);
+
   homeContent = homeContentData;
   pages = pagesData;
   posts = postsData;
@@ -43,10 +49,10 @@ try {
   {
     error ? (
       <p>{t("error.loading")}</p>
-    ) : (
+    ) : homeContent ? (
       <main>
-        <h1>{homeContent?.title}</h1>
-        <div set:html={homeContent?.content} />
+        <h1>{homeContent.title}</h1>
+        <div set:html={homeContent.content} />
         <h2>{t("home.latestPosts")}</h2>
         <ul>
           {posts.slice(0, 5).map((post) => (
@@ -57,6 +63,8 @@ try {
           ))}
         </ul>
       </main>
+    ) : (
+      <p>{t("error.loading")}</p>
     )
   }
 </Layout>
