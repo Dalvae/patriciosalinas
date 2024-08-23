@@ -6,6 +6,7 @@ import Gallery from "./ui/Gallery.astro";
 import TextBlock from "./ui/TextBlock.astro";
 import ImageBlock from "./ui/ImageBlock.astro";
 import { JSDOM } from "jsdom";
+import Block from "./Block.astro";
 
 interface Props {
   lang: Lang;
@@ -52,7 +53,7 @@ function mapElementToComponent(element: Element): ComponentMapping | undefined {
     case "figure":
       return { component: ImageBlock, props: { content: element.outerHTML } };
     default:
-      return { component: "div", props: { innerHTML: element.outerHTML } };
+      return { component: Block, props: { content: element.outerHTML } };
   }
 }
 
