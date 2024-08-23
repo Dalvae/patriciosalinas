@@ -27,14 +27,12 @@ const imageAttributes = extractImageAttributes(content);
 ---
 
 {
-  imageAttributes ? (
+  imageAttributes && (
     <ProtectedImage
       src={imageAttributes.src}
       alt={imageAttributes.alt}
       width={imageAttributes.width}
       height={imageAttributes.height}
     />
-  ) : (
-    <div set:html={content} />
   )
 }
