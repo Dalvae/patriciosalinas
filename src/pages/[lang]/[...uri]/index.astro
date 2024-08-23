@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import { getPageByURI, getAllPageURIs } from "../../../lib/graphql-queries";
 import type { Lang, Page } from "../../../types/types";
-import PageComponent from "../../../components/PageComponent.astro";
+import PageComponent from "../../../components/PageContent.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 
 export async function getStaticPaths() {

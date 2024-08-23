@@ -1,5 +1,4 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import { getHomePageContent } from "../lib/graphql-queries";
 import type { Page, Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
@@ -60,16 +59,14 @@ function mapElementToComponent(element: Element): ComponentMapping | undefined {
 const contentElements = parseContent(content);
 ---
 
-<Layout title={title}>
-  <h1>{title}</h1>
-  {
-    contentElements.map((element) => {
-      const mapping = mapElementToComponent(element);
-      if (mapping) {
-        const { component: Component, props } = mapping;
-        return <Component {...props} />;
-      }
-      return null;
-    })
-  }
-</Layout>
+<h1>{title}</h1>
+{
+  contentElements.map((element) => {
+    const mapping = mapElementToComponent(element);
+    if (mapping) {
+      const { component: Component, props } = mapping;
+      return <Component {...props} />;
+    }
+    return null;
+  })
+}
