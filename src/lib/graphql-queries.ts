@@ -110,7 +110,6 @@ export async function getPosts(lang: Lang): Promise<Post[]> {
   return data.posts.nodes;
 }
 
-// Function to get home page content
 export async function getHomePageContent(
   lang: Lang
 ): Promise<{ title: string; content: string }> {
@@ -125,12 +124,25 @@ export async function getHomePageContent(
     }
   `;
 
-  const data = await executeQuery<{
-    pages: { nodes: Array<{ title: string; content: string }> };
-  }>(query, { lang: lang.toUpperCase() });
-  return data.pages.nodes[0] || { title: "", content: "" };
-}
+  try {
+    const data = await executeQuery<{
+      pages: { nodes: Array<{ title: string; content: string }> };
+    }>(query, { lang: lang.toUpperCase() });
 
+    if (data && data.pages && data.pages.nodes && data.pages.nodes.length > 0) {
+      return data.pages.nodes[0];
+    } else {
+      console.warn(`No home page content found for language: ${lang}`);
+      return { title: "", content: "" };
+    }
+  } catch (error) {
+    console.error(
+      `Error fetching home page content for language ${lang}:`,
+      error
+    );
+    return { title: "", content: "" };
+  }
+}
 // Function to get a post by slug
 export async function getPostBySlug(slug: string, lang: Lang): Promise<Post> {
   const query = `
