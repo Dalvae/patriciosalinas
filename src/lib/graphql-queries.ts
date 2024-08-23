@@ -114,7 +114,7 @@ export async function getHomePageContent(
   lang: Lang
 ): Promise<{ title: string; content: string }> {
   const query = `
-    query GetHomePageContent($lang: LanguageCodeEnum!) {
+    query GetHomePageContent($lang: LanguageCodeFilterEnum!) {
       pages(where: { language: $lang, status: PUBLISH }, first: 1) {
         nodes {
           title

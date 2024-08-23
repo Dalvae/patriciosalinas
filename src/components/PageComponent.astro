@@ -28,15 +28,9 @@ const title = homeContent ? homeContent.title : page.title;
 const content = (homeContent ? homeContent.content : page.content) || "";
 
 function parseContent(content: string) {
-  if (typeof window !== "undefined" && window.DOMParser) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, "text/html");
-    return Array.from(doc.body.children);
-  } else {
-    const dom = new JSDOM(content);
-    const doc = dom.window.document;
-    return Array.from(doc.body.children);
-  }
+  const dom = new JSDOM(content);
+  const doc = dom.window.document;
+  return Array.from(doc.body.children);
 }
 
 type ComponentMapping = {
