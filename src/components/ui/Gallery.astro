@@ -1,5 +1,4 @@
 ---
-// Gallery.astro
 import ParsedImage from "./ParsedImage.astro";
 import { JSDOM } from "jsdom";
 
@@ -12,20 +11,45 @@ const { content } = Astro.props;
 function parseGalleryContent(content: string) {
   const dom = new JSDOM(content);
   const doc = dom.window.document;
-  return Array.from(doc.querySelectorAll("img")).map((img) => img.outerHTML);
+  const columns = doc.querySelectorAll(".wp-block-column");
+
+  return Array.from(columns).map((column) => {
+    const img = column.querySelector("img");
+    const caption = column.querySelector("p.has-text-align-center");
+    return {
+      imageHtml: img ? img.outerHTML : "",
+      caption: caption ? caption.textContent : "",
+    };
+  });
 }
 
-const galleryImages = parseGalleryContent(content);
+const galleryItems = parseGalleryContent(content);
 ---
 
 <div class="gallery">
-  {galleryImages.map((imageHtml) => <ParsedImage content={imageHtml} />)}
+  {
+    galleryItems.map((item) => (
+      <div class="gallery-item">
+        <ParsedImage content={item.imageHtml} />
+        {item.caption && <p class="caption">{item.caption}</p>}
+      </div>
+    ))
+  }
 </div>
 
 <style>
   .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
+  }
+  .gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .caption {
+    margin-top: 0.5rem;
+    text-align: center;
   }
 </style>

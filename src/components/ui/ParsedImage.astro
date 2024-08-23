@@ -1,6 +1,6 @@
 ---
 import { JSDOM } from "jsdom";
-import ProtectedImage from "@components/ui/ProtectedImage.astro";
+import ProtectedImage from "./ProtectedImage.astro";
 
 interface Props {
   content: string;
@@ -26,24 +26,15 @@ function extractImageAttributes(content: string) {
 const imageAttributes = extractImageAttributes(content);
 ---
 
-<div class="image-container">
-  {
-    imageAttributes ? (
-      <ProtectedImage
-        src={imageAttributes.src}
-        alt={imageAttributes.alt}
-        width={imageAttributes.width}
-        height={imageAttributes.height}
-      />
-    ) : (
-      <div set:html={content} />
-    )
-  }
-</div>
-
-<style>
-  .image-container {
-    /* Estilos comunes para contenedores de imagen */
-    margin-bottom: 1rem;
-  }
-</style>
+{
+  imageAttributes ? (
+    <ProtectedImage
+      src={imageAttributes.src}
+      alt={imageAttributes.alt}
+      width={imageAttributes.width}
+      height={imageAttributes.height}
+    />
+  ) : (
+    <div set:html={content} />
+  )
+}
