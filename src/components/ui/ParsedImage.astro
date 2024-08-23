@@ -1,0 +1,49 @@
+---
+import { JSDOM } from "jsdom";
+import ProtectedImage from "@components/ui/ProtectedImage.astro";
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+
+function extractImageAttributes(content: string) {
+  const dom = new JSDOM(content);
+  const doc = dom.window.document;
+  const img = doc.querySelector("img");
+  if (img) {
+    return {
+      src: img.getAttribute("src") || "",
+      alt: img.getAttribute("alt") || "",
+      width: img.getAttribute("width") || "100%",
+      height: img.getAttribute("height") || "auto",
+    };
+  }
+  return null;
+}
+
+const imageAttributes = extractImageAttributes(content);
+---
+
+<div class="image-container">
+  {
+    imageAttributes ? (
+      <ProtectedImage
+        src={imageAttributes.src}
+        alt={imageAttributes.alt}
+        width={imageAttributes.width}
+        height={imageAttributes.height}
+      />
+    ) : (
+      <div set:html={content} />
+    )
+  }
+</div>
+
+<style>
+  .image-container {
+    /* Estilos comunes para contenedores de imagen */
+    margin-bottom: 1rem;
+  }
+</style>
