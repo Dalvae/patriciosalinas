@@ -93,17 +93,19 @@ const { content, class: className } = Astro.props;
 
     .has-drop-cap::first-letter {
       @apply font-serif text-primary-600 float-left leading-8 text-6xl;
-      /* font-size: 75px; */
-      /* line-height: 60px; */
       padding-top: 4px;
       padding-right: 8px;
       padding-left: 3px;
+    }
 
-      @supports (initial-letter: 4) or (-webkit-initial-letter: 4) {
+    @supports (initial-letter: 4) or (-webkit-initial-letter: 4) {
+      .has-drop-cap::first-letter {
         initial-letter: 4;
         -webkit-initial-letter: 4;
         font-size: unset;
-        @apply float-none leading-normal p-0;
+        float: none;
+        leading: normal;
+        padding: 0;
       }
     }
 
