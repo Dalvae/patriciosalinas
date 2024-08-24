@@ -15,18 +15,9 @@ interface Props {
 }
 
 const { lang, uri, page } = Astro.props;
-let homeContent = null;
 
-if (uri === undefined || uri === "") {
-  try {
-    homeContent = await getHomePageContent(lang);
-  } catch (error) {
-    console.error("Error fetching home page content:", error);
-  }
-}
-
-const title = homeContent ? homeContent.title : page.title;
-const content = (homeContent ? homeContent.content : page.content) || "";
+const title = page.title;
+const content = page.content || "";
 
 function parseContent(content: string) {
   const dom = new JSDOM(content);
