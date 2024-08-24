@@ -19,17 +19,10 @@ async function executeQuery<T>(
   retries = MAX_RETRIES
 ): Promise<T> {
   // Convertir los códigos de idioma a mayúsculas
-  const processedVariables = Object.entries(variables).reduce(
-    (acc, [key, value]) => {
-      if (key === "lang" || key.toLowerCase().includes("language")) {
-        acc[key] = typeof value === "string" ? value.toUpperCase() : value;
-      } else {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {} as Record<string, any>
-  );
+  const processedVariables = {
+    ...variables,
+    lang: variables.lang?.toUpperCase(),
+  };
   console.log("Processed variables:", processedVariables); // Añadir este log
   for (let i = 0; i < retries; i++) {
     try {
