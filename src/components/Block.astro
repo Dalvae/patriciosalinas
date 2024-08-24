@@ -1,9 +1,15 @@
 ---
+interface Props {
+  content?: string;
+  class?: string;
+}
+
 const { content, class: className } = Astro.props;
-// TODO: Convert this for new MD
 ---
 
-<div class:list={["prose wp-blocks flow-root", className]} set:html={content} />
+<div class:list={["prose wp-blocks flow-root", className]}>
+  {content ? <Fragment set:html={content} /> : <slot />}
+</div>
 
 <style>
   /* WordPress Core Block Styling */
