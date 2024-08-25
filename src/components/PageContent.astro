@@ -9,12 +9,10 @@ import Block from "./Block.astro";
 import { JSDOM } from "jsdom";
 
 interface Props {
-  lang: Lang;
-  uri?: string;
   page: Page;
 }
 
-const { lang, uri, page } = Astro.props;
+const { page } = Astro.props;
 
 const title = page.title;
 const content = page.content || "";

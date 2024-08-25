@@ -6,6 +6,7 @@ export interface Page {
   uri: string;
   content: string | null;
   isFrontPage: boolean;
+  slug: string;
   language: {
     slug: string;
   };
