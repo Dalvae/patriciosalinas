@@ -12,6 +12,10 @@ export interface Props {
 const { currentPath, lang, pages } = Astro.props;
 const t = useTranslations(lang);
 
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function isCurrentItem(itemUri: string): boolean {
   return (
     currentPath === itemUri ||
@@ -66,7 +70,9 @@ const navStructure = createNavStructure(
         >
           {item.children && item.children.length > 0 ? (
             <>
-              <span class="dropdown-toggle">{item.title}</span>
+              <span class="dropdown-toggle">
+                {capitalizeFirstLetter(item.title)}
+              </span>
               <ul class="dropdown-menu">
                 {item.children.map((child: any) => (
                   <li>

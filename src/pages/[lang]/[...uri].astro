@@ -1,0 +1,55 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPages } from "../../lib/graphql-queries";
+import type { Page, Lang } from "../../types/types";
+import { useTranslations } from "../../i18n/utils";
+import PageContent from "../../components/PageContent.astro";
+
+export async function getStaticPaths() {
+  const languages: Lang[] = ["en", "es", "sv"];
+
+  const allPagesPerLang = await Promise.all(
+    languages.map(async (lang) => {
+      const pages = await getPages(lang);
+
+      return pages.map((page) => ({
+        params: {
+          lang,
+          uri: page.isFrontPage
+            ? undefined
+            : page.uri.replace(`/${lang}/`, "").replace(/^\//, ""),
+        },
+        props: {
+          pages,
+          currentPage: page,
+          isHomePage: page.isFrontPage,
+        },
+      }));
+    })
+  );
+
+  return allPagesPerLang.flat().map((page) => ({
+    params: page.params,
+    props: page.props,
+  }));
+}
+
+const { lang, uri } = Astro.params;
+const { pages, currentPage, isHomePage } = Astro.props;
+const t = useTranslations(lang as Lang);
+
+console.log("Rendering page:", {
+  lang,
+  uri,
+  isHomePage,
+  currentPage: currentPage?.title,
+});
+
+if (!currentPage) {
+  return Astro.redirect("/404");
+}
+---
+
+<Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
+  <PageContent page={currentPage} />
+</Layout>

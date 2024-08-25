@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
 const DEFAULT_TIMEOUT = 120000; // 120 seconds
-const MAX_RETRIES = 8;
+const MAX_RETRIES = 20;
 
 // Define a type for the GraphQL response
 interface GraphQLResponse<T> {
@@ -109,33 +109,6 @@ export async function getPosts(lang: Lang): Promise<Post[]> {
   return data.posts.nodes;
 }
 
-export async function getHomePageContent(lang: Lang): Promise<Page | null> {
-  const query = `
-    query GetHomePageByLang($lang: LanguageCodeFilterEnum!) {
-      pages(where: { language: $lang }) {
-        nodes {
-          id
-          title
-          content
-          isFrontPage
-          language {
-            slug
-          }
-        }
-      }
-    }
-  `;
-
-  const data = await executeQuery<{ pages: { nodes: Page[] } }>(query, {
-    lang: lang,
-  });
-
-  // Filtrar la página que tiene isFrontPage como true
-  const homePage = data.pages.nodes.find((page) => page.isFrontPage);
-
-  return homePage || null;
-}
-
 // Function to get a post by slug
 export async function getPostBySlug(slug: string, lang: Lang): Promise<Post> {
   const query = `
@@ -178,140 +151,25 @@ export async function getPageBySlug(slug: string): Promise<Page> {
   const data = await executeQuery<{ page: Page }>(query, { slug });
   return data.page;
 }
-
-/// Function to get all pages with specific content blocks
-export async function getAllPages(): Promise<ProcessedPage[]> {
+export async function getAllPagesLang(lang: Lang): Promise<Page[]> {
   const query = `
-    query GetAllPages {
-      pages(first: 1000) {
+    query GetPages($lang: LanguageCodeFilterEnum!) {
+      pages(first: 100, where: { language: $lang }) {
         nodes {
           id
+          uri
           title
           slug
           uri
-          language {
-            slug
-          }
-          content
-        }
-      }
-    }
-  `;
-  try {
-    const data = await executeQuery<{ pages: { nodes: Page[] } }>(query);
-
-    return data.pages.nodes.map((page) => {
-      let images: ProcessedPage["images"] = [];
-      let paragraphs: string[] = [];
-      let headers: string[] = [];
-
-      if (page.content) {
-        const dom = new JSDOM(page.content);
-        const doc = dom.window.document;
-
-        images = Array.from(doc.querySelectorAll("img")).map((img) => ({
-          src: img.getAttribute("src") || "",
-          alt: img.getAttribute("alt") || "",
-          width: parseInt(img.getAttribute("width") || "0", 10),
-          height: parseInt(img.getAttribute("height") || "0", 10),
-        }));
-        paragraphs = Array.from(doc.querySelectorAll("p")).map(
-          (p) => p.innerHTML || ""
-        );
-        headers = Array.from(
-          doc.querySelectorAll("h1, h2, h3, h4, h5, h6")
-        ).map((h) => h.innerHTML || "");
-      }
-
-      return {
-        ...page,
-        images,
-        paragraphs,
-        headers,
-      };
-    });
-  } catch (error) {
-    console.error("Error fetching pages:", error);
-    return [];
-  }
-}
-// Function to get all page slugs
-export async function getAllPageSlugs(): Promise<string[]> {
-  const query = `
-    query GetAllPageSlugs {
-      pages(first: 1000) {
-        nodes {
-          slug
+          isFrontPage
         }
       }
     }
   `;
 
-  const data = await executeQuery<{ pages: { nodes: { slug: string }[] } }>(
-    query
-  );
-  return data.pages.nodes.map((page) => page.slug);
-}
+  const { pages } = await executeQuery<{ pages: { nodes: Page[] } }>(query, {
+    lang: lang,
+  });
 
-// Function to get all page URIs
-export async function getAllPageURIs(): Promise<string[]> {
-  const query = `
-    query GetAllPageURIs {
-      pages(first: 1000) {
-        nodes {
-          uri
-        }
-      }
-    }
-  `;
-
-  const data = await executeQuery<{ pages: { nodes: { uri: string }[] } }>(
-    query
-  );
-  return data.pages.nodes
-    .map((page) => page.uri.replace(/^\/|\/$/g, ""))
-    .filter((uri) => uri !== "");
-}
-
-// Function to get all post slugs
-export async function getAllPostSlugs(): Promise<string[]> {
-  const query = `
-    query GetAllPostSlugs {
-      posts(first: 1000) {
-        nodes {
-          slug
-        }
-      }
-    }
-  `;
-
-  const data = await executeQuery<{ posts: { nodes: { slug: string }[] } }>(
-    query
-  );
-  return data.posts.nodes.map((post) => post.slug);
-}
-
-export async function getPageByURI(uri: string): Promise<Page | null> {
-  const query = `
-    query GetPageByURI($uri: String!) {
-      pageBy(uri: $uri) {
-        id
-        title
-        content
-        uri
-        slug
-        language {
-          slug
-        }
-      }
-    }
-  `;
-
-  try {
-    const data = await executeQuery<{ pageBy: Page | null }>(query, { uri });
-    return data.pageBy;
-  } catch (error) {
-    console.error("Error fetching page by URI:", error);
-    return null;
-  }
+  return pages.nodes;
 }

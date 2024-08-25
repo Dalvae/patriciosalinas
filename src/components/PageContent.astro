@@ -1,9 +1,6 @@
 ---
-import { getHomePageContent } from "../lib/graphql-queries";
-import type { Page, Lang } from "../types/types";
-import { useTranslations } from "../i18n/utils";
+import type { Page } from "../types/types";
 import Gallery from "./ui/Gallery.astro";
-import TextBlock from "./ui/TextBlock.astro";
 import ImageBlock from "./ui/ImageBlock.astro";
 import Block from "./Block.astro";
 import { JSDOM } from "jsdom";
@@ -13,7 +10,6 @@ interface Props {
 }
 
 const { page } = Astro.props;
-
 const title = page.title;
 const content = page.content || "";
 
@@ -25,25 +21,25 @@ function parseContent(content: string) {
 
 type ComponentMapping = {
   component: any;
-  props: { content: string } | { innerHTML: string };
+  props: { content: string };
 };
 
-function mapElementToComponent(element: Element): ComponentMapping | undefined {
+function mapElementToComponent(element: Element): ComponentMapping {
   switch (element.tagName.toLowerCase()) {
     case "div":
       if (
-        element.classList.contains("wp-block-group") &&
-        element.classList.contains("custom-gallery")
+        (element.classList.contains("wp-block-gallery") &&
+          element.classList.contains("custom-gallery")) ||
+        (element.classList.contains("wp-block-group") &&
+          element.classList.contains("is-nowrap"))
       ) {
         return { component: Gallery, props: { content: element.outerHTML } };
       }
-      break;
-    case "p":
-      return { component: TextBlock, props: { content: element.outerHTML } };
+      return { component: Block, props: { content: element.outerHTML } };
     case "figure":
       return { component: ImageBlock, props: { content: element.outerHTML } };
     default:
-      return { component: "div", props: { innerHTML: element.outerHTML } };
+      return { component: Block, props: { content: element.outerHTML } };
   }
 }
 
@@ -53,13 +49,9 @@ const contentElements = parseContent(content);
 <Block>
   <h1>{title}</h1>
   {
-    contentElements.map((element) => {
-      const mapping = mapElementToComponent(element);
-      if (mapping) {
-        const { component: Component, props } = mapping;
-        return <Component {...props} />;
-      }
-      return null;
+    contentElements.map((element, index) => {
+      const { component: Component, props } = mapElementToComponent(element);
+      return <Component key={index} {...props} />;
     })
   }
 </Block>
