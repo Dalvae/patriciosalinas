@@ -1,9 +1,10 @@
+import HomePage from "@components/HomePage.astro";
 import type { Page, Post, Lang, ProcessedPage } from "../types/types";
 import { JSDOM } from "jsdom";
 
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
 const DEFAULT_TIMEOUT = 120000; // 120 seconds
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 8;
 
 // Define a type for the GraphQL response
 interface GraphQLResponse<T> {
@@ -68,9 +69,12 @@ export async function getPages(lang: Lang): Promise<Page[]> {
       pages(first: 100, where: { language: $lang }) {
         nodes {
           id
+          uri
           title
           slug
           uri
+          isFrontPage
+          content
         }
       }
     }
@@ -105,9 +109,7 @@ export async function getPosts(lang: Lang): Promise<Post[]> {
   return data.posts.nodes;
 }
 
-export async function getHomePageContent(
-  lang: Lang
-): Promise<{ title: string; content: string } | null> {
+export async function getHomePageContent(lang: Lang): Promise<Page | null> {
   const query = `
     query GetHomePageByLang($lang: LanguageCodeFilterEnum!) {
       pages(where: { language: $lang }) {
@@ -124,40 +126,16 @@ export async function getHomePageContent(
     }
   `;
 
-  try {
-    const data = await executeQuery<{
-      pages: {
-        nodes: Array<{
-          id: string;
-          title: string;
-          content: string;
-          isFrontPage: boolean;
-          language: { slug: string };
-        }>;
-      };
-    }>(query, { lang }); // Removido .toLowerCase()
+  const data = await executeQuery<{ pages: { nodes: Page[] } }>(query, {
+    lang: lang,
+  });
 
-    const homePage = data?.pages.nodes.find(
-      (page) => page.isFrontPage && page.language.slug === lang.toLowerCase()
-    );
+  // Filtrar la página que tiene isFrontPage como true
+  const homePage = data.pages.nodes.find((page) => page.isFrontPage);
 
-    if (homePage) {
-      return {
-        title: homePage.title,
-        content: homePage.content,
-      };
-    } else {
-      console.warn(`No home page content found for language: ${lang}`);
-      return null;
-    }
-  } catch (error) {
-    console.error(
-      `Error fetching home page content for language ${lang}:`,
-      error
-    );
-    return null;
-  }
+  return homePage || null;
 }
+
 // Function to get a post by slug
 export async function getPostBySlug(slug: string, lang: Lang): Promise<Post> {
   const query = `

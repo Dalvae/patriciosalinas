@@ -34,7 +34,7 @@ const { src, alt, width, height } = Astro.props;
             // Agregar marca de agua en la esquina inferior derecha con margen
             const text = "© Patricio Salinas";
             const fontSize = 20;
-            const margin = 20; // Margen de 20 píxeles
+            const margin = 20;
             ctx.font = `${fontSize}px Arial`;
             ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
             const textWidth = ctx.measureText(text).width;

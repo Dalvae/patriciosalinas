@@ -1,81 +1,101 @@
 ---
-import type { Page, Post, Lang } from "../types/types";
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import type { Page, Lang } from "../types/types";
+import { useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
-import { getPages, getPosts } from "../lib/graphql-queries";
 
 export interface Props {
   currentPath: string;
+  lang: Lang;
+  pages: Page[];
 }
 
-const { currentPath } = Astro.props;
-const lang = getLangFromUrl(Astro.url) as Lang;
+const { currentPath, lang, pages } = Astro.props;
 const t = useTranslations(lang);
 
-// Fetch pages and posts
-const pages = await getPages(lang);
-const posts = await getPosts(lang);
-
-function getItemLink(item: Page | Post, type: "page" | "post"): string {
-  if (item.uri === `/${lang}/`) return `/${lang}`;
-  return item.uri; // Simplemente devuelve la URI tal como viene de WordPress
-}
 function isCurrentItem(itemUri: string): boolean {
   return (
     currentPath === itemUri ||
     (currentPath === `/${lang}` && itemUri === `/${lang}`)
   );
 }
+
+function createNavStructure(pages: Page[]): any[] {
+  const structure: any[] = [];
+  pages.forEach((page) => {
+    const parts = page.uri.split("/").filter(Boolean);
+    let current = structure;
+    parts.forEach((part, index) => {
+      if (index !== 0) {
+        const existing = current.find((item) => item.slug === part);
+        if (existing) {
+          current = existing.children;
+        } else {
+          const newItem = {
+            slug: part,
+            title: index === parts.length - 1 ? page.title : part,
+            uri: page.uri,
+            children: [],
+          };
+          current.push(newItem);
+          current = newItem.children;
+        }
+      }
+    });
+  });
+  return structure;
+}
+
+const navStructure = createNavStructure(
+  pages.filter((page) => !page.isFrontPage)
+);
 ---
 
 <nav>
-  <ul>
+  <ul class="main-menu">
     <li>
-      <a href={`/${lang}`} class={isCurrentItem("/") ? "active" : ""}>
+      <a href={`/${lang}`} class:list={[{ active: isCurrentItem(`/${lang}`) }]}>
         {t("nav.home")}
       </a>
     </li>
     {
-      pages.map((item) => (
-        <li>
-          <a
-            href={getItemLink(item, "page")}
-            class={isCurrentItem(item.uri) ? "active" : ""}
-          >
-            {item.title}
-          </a>
+      navStructure.map((item) => (
+        <li
+          class:list={[
+            { "has-dropdown": item.children && item.children.length > 0 },
+          ]}
+        >
+          {item.children && item.children.length > 0 ? (
+            <>
+              <span class="dropdown-toggle">{item.title}</span>
+              <ul class="dropdown-menu">
+                {item.children.map((child: any) => (
+                  <li>
+                    <a
+                      href={child.uri}
+                      class:list={[{ active: isCurrentItem(child.uri) }]}
+                    >
+                      {child.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <a
+              href={item.uri}
+              class:list={[{ active: isCurrentItem(item.uri) }]}
+            >
+              {item.title}
+            </a>
+          )}
         </li>
       ))
     }
-    <li>
-      <a href="#" class="dropdown-toggle">
-        {/* Agrega una clase para el estilo del dropdown */}
-        {t("nav.blog")}
-      </a>
-      <ul class="dropdown-menu">
-        {/* Agrega una clase para el estilo del dropdown */}
-        {
-          posts.map((post) => (
-            <li>
-              <a href={getItemLink(post, "post")}>{post.title}</a>
-            </li>
-          ))
-        }
-      </ul>
-    </li>
-    <li>
-      <a
-        href={`/${lang}/blog`}
-        class={currentPath.startsWith(`/${lang}/blog`) ? "active" : ""}
-      >
-        {t("nav.blog")}
-      </a>
-    </li>
   </ul>
   <div class="language-switcher">
     {
       Object.entries(languages).map(([code, label]) => (
-        <a href={`/${code}`} class={lang === code ? "active" : ""}>
+        <a href={`/${code}`} class:list={[{ active: lang === code }]}>
           {label}
         </a>
       ))
@@ -91,20 +111,46 @@ function isCurrentItem(itemUri: string): boolean {
     justify-content: space-between;
     align-items: center;
   }
-  ul {
+  .main-menu,
+  .dropdown-menu {
     list-style-type: none;
     padding: 0;
+    margin: 0;
+  }
+  .main-menu {
     display: flex;
     gap: 1rem;
   }
-  a {
+  .main-menu > li {
+    position: relative;
+  }
+  a,
+  .dropdown-toggle {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    cursor: pointer;
   }
   a:hover,
-  a.active {
+  a.active,
+  .dropdown-toggle:hover {
     color: #007bff;
+  }
+  .has-dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .dropdown-menu li {
+    padding: 0.5rem 1rem;
   }
   .language-switcher {
     display: flex;

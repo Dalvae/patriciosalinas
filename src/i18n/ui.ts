@@ -10,6 +10,7 @@ export const ui = {
   en: {
     "error.loading":
       "There was a problem loading the content. Please try reloading the page.",
+    "error.noHomePage": "No home page found. Please check your settings.",
     "home.latestPosts": "Latest blog posts",
     "nav.home": "Home",
     "nav.about": "About",
@@ -20,6 +21,8 @@ export const ui = {
   es: {
     "error.loading":
       "Hubo un problema al cargar el contenido. Por favor, intenta recargar la página.",
+    "error.noHomePage":
+      "No se encontró la página de inicio. Por favor, revisa tus configuraciones.",
     "home.latestPosts": "Últimas entradas del blog",
     "nav.home": "Inicio",
     "nav.about": "Acerca de",
@@ -30,6 +33,8 @@ export const ui = {
   sv: {
     "error.loading":
       "Det uppstod ett problem vid inläsning av innehållet. Försök att ladda om sidan.",
+    "error.noHomePage":
+      "Ingen startsida hittades. Kontrollera dina inställningar.",
     "home.latestPosts": "Senaste blogginlägg",
     "nav.home": "Hem",
     "nav.about": "Om",

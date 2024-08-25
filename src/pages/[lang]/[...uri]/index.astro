@@ -1,56 +1,35 @@
 ---
-//pages/[lang]/[...uri]/index.astro
-
 import Layout from "../../../layouts/Layout.astro";
-import { getPageByURI, getAllPageURIs } from "../../../lib/graphql-queries";
-import type { Lang, Page } from "../../../types/types";
-import PageComponent from "../../../components/PageContent.astro";
-import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
+import { getPages } from "../../../lib/graphql-queries";
+import type { Lang } from "../../../types/types";
+import PageContent from "../../../components/PageContent.astro";
+import { useTranslations } from "../../../i18n/utils";
 
 export async function getStaticPaths() {
-  const allURIs = await getAllPageURIs();
-  return allURIs.map((uri) => {
-    const pathParts = uri.split("/").filter(Boolean);
-    const lang = pathParts[0] as Lang;
-    const pageUri = pathParts.slice(1).join("/") || undefined;
-    return {
-      params: { lang, uri: pageUri },
-    };
-  });
+  const languages: Lang[] = ["en", "es", "sv"];
+
+  return Promise.all(
+    languages.map(async (lang) => {
+      const pages = await getPages(lang);
+
+      return pages
+        .filter((page) => !page.isFrontPage)
+        .map((page) => ({
+          params: {
+            lang,
+            uri: page.uri.split("/").slice(2).join("/"),
+          },
+          props: { pages, page },
+        }));
+    })
+  ).then((results) => results.flat());
 }
 
-const { lang, uri } = Astro.params as { lang: Lang; uri?: string };
+const { lang } = Astro.params as { lang: Lang };
+const { pages, page } = Astro.props;
 const t = useTranslations(lang);
-
-let page: Page | null = null;
-let error: Error | null = null;
-
-if (lang && uri) {
-  try {
-    page = await getPageByURI(`/${lang}/${uri}`);
-    if (!page) {
-      error = new Error("Page not found");
-    }
-  } catch (e) {
-    console.error("Error fetching page:", e);
-    error = e instanceof Error ? e : new Error("An unknown error occurred");
-  }
-}
-
-// // Redirigir si la URL contiene '/page/'
-// if (uri?.startsWith("page/")) {
-//   return Astro.redirect(`/${lang}/${uri.replace("page/", "")}`);
-// }
 ---
 
-<Layout title={page?.title || "Patricio Salinas"}>
-  {
-    error ? (
-      <p>{t("error.loading")}</p>
-    ) : page ? (
-      <PageComponent lang={lang} uri={uri} page={page} />
-    ) : (
-      <p>{t("error.loading")}</p>
-    )
-  }
+<Layout title={page.title} lang={lang} pages={pages}>
+  <PageContent lang={lang} uri={page.uri} page={page} />
 </Layout>
