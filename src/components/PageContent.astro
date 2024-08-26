@@ -15,7 +15,7 @@ const content = page.content || "";
 function parseContent(content: string) {
   const dom = new JSDOM(content);
   const doc = dom.window.document;
-  return Array.from(doc.body.children);
+  return Array.from(doc.querySelectorAll("*")); // Selecciona todos los elementos
 }
 
 type ComponentMapping =
@@ -26,37 +26,57 @@ type ComponentMapping =
   | { component: null; props: { content: string } };
 
 function mapElementToComponent(element: Element): ComponentMapping {
-  switch (element.tagName.toLowerCase()) {
-    case "img":
-      return {
-        component: ProtectedImage,
-        props: {
-          src: element.getAttribute("src") || "",
-          alt: element.getAttribute("alt") || "",
-          width: element.getAttribute("width") || "100%",
-          height: element.getAttribute("height") || "auto",
-        },
-      };
-    default:
-      return { component: null, props: { content: element.outerHTML } };
+  if (element.tagName.toLowerCase() === "img") {
+    return {
+      component: ProtectedImage,
+      props: {
+        src: element.getAttribute("src") || "",
+        alt: element.getAttribute("alt") || "",
+        width: element.getAttribute("width") || "100%",
+        height: element.getAttribute("height") || "auto",
+      },
+    };
   }
+  return { component: null, props: { content: element.outerHTML } };
 }
 
 const contentElements = parseContent(content);
+
+// Debugging
+console.log("Total elements:", contentElements.length);
+console.log(
+  "Image elements:",
+  contentElements.filter((el) => el.tagName.toLowerCase() === "img").length
+);
+
+const mappedComponents = contentElements.map(mapElementToComponent);
+
+// More debugging
+console.log("Total mapped components:", mappedComponents.length);
+console.log(
+  "ProtectedImage components:",
+  mappedComponents.filter((m) => m.component === ProtectedImage).length
+);
 ---
 
 <div class="mx-auto max-w-5xl">
   <article class="wp-blocks prose max-w-none">
     {!isHomePage && <h1>{title}</h1>}
     {
-      contentElements.map((element) => {
-        const { component: Component, props } = mapElementToComponent(element);
-        return Component ? (
+      mappedComponents.map(({ component: Component, props }) =>
+        Component ? (
           <Component {...props} />
         ) : (
           <Fragment set:html={props.content} />
-        );
-      })
+        )
+      )
     }
   </article>
 </div>
+
+<script>
+  console.log(
+    "Client-side: Total ProtectedImage components rendered:",
+    document.querySelectorAll(".protected-image-container").length
+  );
+</script>
