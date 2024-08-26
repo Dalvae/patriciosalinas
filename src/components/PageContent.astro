@@ -48,10 +48,10 @@ const contentElements = parseContent(content);
   <article class="wp-blocks prose max-w-none">
     <h1>{title}</h1>
     {
-      contentElements.map((element, index) => {
+      contentElements.map((element) => {
         const { component: Component, props } = mapElementToComponent(element);
         return Component ? (
-          <Component key={index} {...props} />
+          <Component {...props} />
         ) : (
           <Fragment set:html={props.content} />
         );
