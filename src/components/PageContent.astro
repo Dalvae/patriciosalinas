@@ -1,7 +1,6 @@
 ---
 import type { Page } from "../types/types";
-import Gallery from "./ui/Gallery.astro";
-import ImageBlock from "./ui/ImageBlock.astro";
+import ProtectedImage from "./ui/ProtectedImage.astro";
 import { JSDOM } from "jsdom";
 
 interface Props {
@@ -20,28 +19,23 @@ function parseContent(content: string) {
 
 type ComponentMapping =
   | {
-      component: any;
-      props: { content: string };
+      component: typeof ProtectedImage;
+      props: { src: string; alt: string; width?: string; height?: string };
     }
-  | {
-      component: null;
-      props: { content: string };
-    };
+  | { component: null; props: { content: string } };
 
 function mapElementToComponent(element: Element): ComponentMapping {
   switch (element.tagName.toLowerCase()) {
-    case "div":
-      if (
-        (element.classList.contains("wp-block-gallery") &&
-          element.classList.contains("custom-gallery")) ||
-        (element.classList.contains("wp-block-group") &&
-          element.classList.contains("is-nowrap"))
-      ) {
-        return { component: Gallery, props: { content: element.outerHTML } };
-      }
-      return { component: null, props: { content: element.outerHTML } };
-    case "figure":
-      return { component: ImageBlock, props: { content: element.outerHTML } };
+    case "img":
+      return {
+        component: ProtectedImage,
+        props: {
+          src: element.getAttribute("src") || "",
+          alt: element.getAttribute("alt") || "",
+          width: element.getAttribute("width") || "100%",
+          height: element.getAttribute("height") || "auto",
+        },
+      };
     default:
       return { component: null, props: { content: element.outerHTML } };
   }

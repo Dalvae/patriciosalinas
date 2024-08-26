@@ -2,26 +2,24 @@
 export interface Props {
   src: string;
   alt: string;
-  width: number | string;
-  height: number | string;
+  width?: string;
+  height?: string;
 }
-
-const { src, alt, width, height } = Astro.props;
+const { src, alt, width = "100%", height = "auto" } = Astro.props;
 ---
 
 <div
   class="protected-image-container"
-  style={`width:${width}px;height:${height}px;`}
+  style={`max-width:${width};max-height:${height};`}
 >
-  <canvas width={width} height={height} data-src={src} data-alt={alt}></canvas>
+  <canvas data-src={src} data-alt={alt}></canvas>
 </div>
 
 <script>
   function loadProtectedImages() {
-    const canvases = document.querySelectorAll(
-      ".protected-image-container canvas"
-    );
-    canvases.forEach((canvas) => {
+    const containers = document.querySelectorAll(".protected-image-container");
+    containers.forEach((container) => {
+      const canvas = container.querySelector("canvas");
       if (canvas instanceof HTMLCanvasElement) {
         const ctx = canvas.getContext("2d");
         if (ctx) {
@@ -29,19 +27,21 @@ const { src, alt, width, height } = Astro.props;
           img.crossOrigin = "Anonymous";
           img.src = canvas.dataset.src || "";
           img.onload = function () {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
 
-            // Agregar marca de agua en la esquina inferior derecha con margen
+            // Add watermark
             const text = "© Patricio Salinas";
-            const fontSize = 20;
-            const margin = 20;
+            const fontSize = Math.max(12, img.width * 0.02);
+            const margin = fontSize;
             ctx.font = `${fontSize}px Arial`;
             ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
             const textWidth = ctx.measureText(text).width;
             ctx.fillText(
               text,
-              canvas.width - textWidth - margin,
-              canvas.height - margin
+              img.width - textWidth - margin,
+              img.height - margin
             );
           };
         }
@@ -49,7 +49,7 @@ const { src, alt, width, height } = Astro.props;
     });
   }
 
-  // Prevenir clic derecho
+  // Prevent right-click
   document.addEventListener(
     "contextmenu",
     function (e) {
@@ -63,7 +63,7 @@ const { src, alt, width, height } = Astro.props;
     false
   );
 
-  // Prevenir arrastre de la imagen
+  // Prevent image drag
   document.addEventListener(
     "dragstart",
     function (e) {
@@ -77,11 +77,11 @@ const { src, alt, width, height } = Astro.props;
     false
   );
 
-  // Desactivar tecla "PrtSc" para copia de pantalla
+  // Disable "PrtSc" key for screenshot
   document.addEventListener("keydown", function (e) {
     if (e.key === "PrintScreen") {
       e.preventDefault();
-      alert("La copia de pantalla está deshabilitada.");
+      alert("Screenshots are disabled.");
     }
   });
 
@@ -94,7 +94,8 @@ const { src, alt, width, height } = Astro.props;
     overflow: hidden;
   }
   .protected-image-container canvas {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 </style>
