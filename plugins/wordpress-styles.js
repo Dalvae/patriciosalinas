@@ -185,6 +185,16 @@ module.exports = plugin(
           },
         },
       },
+      // Nuevos estilos agregados
+      ".is-content-justification-center": {
+        justifyContent: "center",
+      },
+      ".is-nowrap": {
+        whiteSpace: "nowrap",
+      },
+      ".is-layout-flex": {
+        display: "flex",
+      },
     });
 
     // Componentes dinámicos usando matchComponents

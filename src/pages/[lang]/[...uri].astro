@@ -51,5 +51,5 @@ if (!currentPage) {
 ---
 
 <Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
-  <PageContent page={currentPage} />
+  <PageContent page={currentPage} isHomePage={isHomePage} />
 </Layout>
