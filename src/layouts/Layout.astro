@@ -37,3 +37,16 @@ const currentPath = Astro.url.pathname;
     </footer>
   </body>
 </html>
+<style>
+  body {
+    /* Añade un padding-top para compensar el navbar fijo */
+    padding-top: 60px; /* Ajusta este valor según la altura de tu navbar */
+  }
+
+  main {
+    /* Asegúrate de que el contenido principal ocupe todo el espacio disponible */
+    min-height: calc(
+      100vh - 60px - 100px
+    ); /* Resta la altura del navbar y el footer */
+  }
+</style>
