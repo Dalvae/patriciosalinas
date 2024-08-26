@@ -64,11 +64,7 @@ console.log(
     {!isHomePage && <h1>{title}</h1>}
     {
       mappedComponents.map(({ component: Component, props }) =>
-        Component ? (
-          <Component {...props} />
-        ) : (
-          <Fragment set:html={props.content} />
-        )
+        Component ? <Component {...props} /> : <div set:html={props.content} />
       )
     }
   </article>
