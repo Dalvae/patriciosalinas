@@ -1,7 +1,7 @@
 ---
 import type { Page } from "../types/types";
 import ProtectedImage from "./ui/ProtectedImage.astro";
-import { JSDOM } from "jsdom";
+import { parse, HTMLElement, Node } from "node-html-parser";
 
 interface Props {
   page: Page;
@@ -12,67 +12,56 @@ const { page, isHomePage } = Astro.props;
 const title = page.title;
 const content = page.content || "";
 
-function parseContent(content: string) {
-  const dom = new JSDOM(content);
-  const doc = dom.window.document;
-  return Array.from(doc.querySelectorAll("*")); // Selecciona todos los elementos
-}
+const root = parse(content);
 
-type ComponentMapping =
-  | {
-      component: typeof ProtectedImage;
-      props: { src: string; alt: string; width?: string; height?: string };
+function processNode(
+  node: Node
+): Array<{ type: "html" | "image"; content: any }> {
+  if (node.nodeType === 1) {
+    // Element node
+    const element = node as HTMLElement;
+    if (element.tagName === "IMG") {
+      return [
+        {
+          type: "image",
+          content: {
+            src: element.getAttribute("src"),
+            alt: element.getAttribute("alt") || "",
+            width: element.getAttribute("width"),
+            height: element.getAttribute("height"),
+          },
+        },
+      ];
+    } else {
+      const childResults = element.childNodes.flatMap(processNode);
+      element.childNodes.forEach((child) => child.remove());
+      return [{ type: "html", content: element.toString() }, ...childResults];
     }
-  | { component: null; props: { content: string } };
-
-function mapElementToComponent(element: Element): ComponentMapping {
-  if (element.tagName.toLowerCase() === "img") {
-    return {
-      component: ProtectedImage,
-      props: {
-        src: element.getAttribute("src") || "",
-        alt: element.getAttribute("alt") || "",
-        width: element.getAttribute("width") || "100%",
-        height: element.getAttribute("height") || "auto",
-      },
-    };
   }
-  return { component: null, props: { content: element.outerHTML } };
+  return [{ type: "html", content: node.toString() }];
 }
 
-const contentElements = parseContent(content);
-
-// Debugging
-console.log("Total elements:", contentElements.length);
-console.log(
-  "Image elements:",
-  contentElements.filter((el) => el.tagName.toLowerCase() === "img").length
-);
-
-const mappedComponents = contentElements.map(mapElementToComponent);
-
-// More debugging
-console.log("Total mapped components:", mappedComponents.length);
-console.log(
-  "ProtectedImage components:",
-  mappedComponents.filter((m) => m.component === ProtectedImage).length
-);
+const processedContent = root.childNodes.flatMap(processNode);
 ---
 
 <div class="mx-auto max-w-5xl">
   <article class="wp-blocks prose max-w-none">
     {!isHomePage && <h1>{title}</h1>}
     {
-      mappedComponents.map(({ component: Component, props }) =>
-        Component ? <Component {...props} /> : <div set:html={props.content} />
-      )
+      processedContent.map((item) => {
+        if (item.type === "html") {
+          return <Fragment set:html={item.content} />;
+        } else if (item.type === "image") {
+          return (
+            <ProtectedImage
+              src={item.content.src || ""}
+              alt={item.content.alt}
+              width={item.content.width}
+              height={item.content.height}
+            />
+          );
+        }
+      })
     }
   </article>
 </div>
-
-<script>
-  console.log(
-    "Client-side: Total ProtectedImage components rendered:",
-    document.querySelectorAll(".protected-image-container").length
-  );
-</script>
