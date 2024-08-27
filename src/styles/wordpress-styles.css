@@ -1,0 +1,212 @@
+/* Importación de estilos de bloques de WordPress */
+@import "../../node_modules/@wordpress/block-library/build-style/common.css";
+@import "../../node_modules/@wordpress/block-library/build-style/style.css";
+@import "../../node_modules/@wordpress/block-library/build-style/theme.css";
+
+/* Estilos personalizados */
+.wp-block-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.columns-default {
+  gap: 1em;
+}
+
+.is-layout-flex,
+.wp-block-gallery-is-layout-flex,
+.has-nested-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.is-cropped img {
+  object-fit: cover;
+  height: 100%;
+}
+
+/* Ajustes para diferentes números de columnas */
+@media (min-width: 600px) {
+  .columns-2 .wp-block-image,
+  .columns-3 .wp-block-image,
+  .columns-4 .wp-block-image,
+  .columns-5 .wp-block-image,
+  .columns-6 .wp-block-image,
+  .columns-7 .wp-block-image,
+  .columns-8 .wp-block-image {
+    width: calc(50% - 1em);
+  }
+}
+
+@media (min-width: 782px) {
+  .columns-3 .wp-block-image,
+  .columns-4 .wp-block-image,
+  .columns-5 .wp-block-image,
+  .columns-6 .wp-block-image {
+    width: calc(33.33% - 1em);
+  }
+
+  .columns-4 .wp-block-image {
+    width: calc(25% - 1em);
+  }
+}
+
+/* Ajustes específicos para imágenes dentro de galerías */
+.wp-block-gallery .wp-block-image {
+  margin: 0;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+:root {
+  --wp--style--global--content-size: 1200px;
+}
+
+.is-layout-constrained {
+  max-width: 64rem;
+}
+
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  max-width: 64rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.wp-block-group {
+  box-sizing: border-box;
+  /* display: flex; */
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.wp-block-group.is-nowrap {
+  flex-wrap: nowrap;
+}
+
+.wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.wp-block-column {
+  flex-grow: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.wp-block-group.is-layout-flex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  overflow-x: hidden;
+  max-width: 100%;
+  padding-bottom: 1rem;
+}
+
+.wp-block-group.is-layout-flex > * {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.wp-block-image {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.wp-block-image img,
+.wp-block-image .protectedImageContainer {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Ajustes para diferentes tamaños de pantalla */
+@media (max-width: 600px) {
+  .wp-block-group.is-layout-flex {
+    flex-direction: column;
+  }
+
+  .wp-block-group.is-layout-flex > * {
+    width: 100%;
+  }
+}
+
+.wp-block-group .wp-block-image,
+.wp-block-columns .wp-block-image {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wp-block-group .protectedImageContainer,
+.wp-block-columns .protectedImageContainer {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 600px) {
+  .wp-block-column {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  .wp-block-column:not(:first-child) {
+    margin-left: 32px;
+  }
+}
+
+@media (min-width: 782px) {
+  .wp-block-column:not(:first-child) {
+    margin-left: 2em;
+  }
+}
+
+/* .wp-block-group.is-nowrap .wp-block-image {
+  flex: 0 0 auto;
+  margin-right: 1em;
+}
+
+.wp-block-group.is-nowrap.is-layout-flex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  overflow-x: auto; 
+  width: 100%;
+  max-width: 100%;
+}
+
+.wp-block-group.is-nowrap.is-layout-flex > figure.wp-block-image {
+  flex: 1 1 0; 
+  min-width: 0; 
+  margin: 0;
+}
+
+.wp-block-group.is-nowrap.is-layout-flex > figure.wp-block-image > div {
+  width: 100% !important;
+  height: 0 !important; 
+  padding-bottom: 100% !important; 
+  position: relative;
+}
+
+.wp-block-group.is-nowrap.is-layout-flex > figure.wp-block-image > div > canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+} */

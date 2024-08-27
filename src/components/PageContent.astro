@@ -1,7 +1,8 @@
 ---
 import type { Page } from "../types/types";
-import ProtectedImage from "./ui/ProtectedImage.astro";
+import ProtectedImage from "./ui/ReactProtrectedImage";
 import { parse, HTMLElement, Node, NodeType } from "node-html-parser";
+import "../styles/wordpress-styles.css";
 
 interface Props {
   page: Page;
@@ -49,7 +50,7 @@ function processNode(
 const processedContent = root.childNodes.flatMap(processNode);
 ---
 
-<div class="mx-auto max-w-5xl">
+<div class="mx-auto max-w-2xl">
   <article class="wp-blocks prose max-w-none">
     {!isHomePage && <h1>{title}</h1>}
     {
@@ -59,6 +60,7 @@ const processedContent = root.childNodes.flatMap(processNode);
         } else if (item.type === "image") {
           return (
             <ProtectedImage
+              client:load
               src={item.content.src || ""}
               alt={item.content.alt}
               width={item.content.width}
