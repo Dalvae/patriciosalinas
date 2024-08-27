@@ -57,6 +57,9 @@ module.exports = plugin(
         ".is-layout-constrained > *": {
           marginTop: "1.2rem",
         },
+        ".is-layout-flex": {
+          display: "flex",
+        },
         p: {
           marginTop: "1.5rem",
           fontSize: "1.125rem",
@@ -94,6 +97,47 @@ module.exports = plugin(
         },
         ".has-huge-font-size": {
           fontSize: "2.25rem",
+        },
+        // Nuevos estilos agregados
+        ".is-content-justification-center": {
+          justifyContent: "center",
+        },
+        ".is-nowrap": {
+          whiteSpace: "nowrap",
+        },
+        ".is-layout-flex": {
+          display: "flex",
+        },
+        ".wp-block-group": {
+          display: "block",
+        },
+        "wp-block-group-is-layout-flex": {
+          display: "flex",
+        },
+        ".columns-default": {
+          // Estilos para columnas por defecto
+          "& > *": {
+            width: "100%",
+            "@screen sm": {
+              width: "50%",
+            },
+            "@screen md": {
+              width: "33.333%",
+            },
+          },
+        },
+
+        ".is-cropped": {
+          "& img": {
+            height: "100%",
+            flexGrow: "1",
+            objectFit: "cover",
+          },
+        },
+
+        ".wp-block-gallery-is-layout-flex": {
+          display: "flex",
+          flexWrap: "wrap",
         },
         "hr.wp-block-separator": {
           margin: "1.5rem 0",
@@ -195,6 +239,37 @@ module.exports = plugin(
       ".is-layout-flex": {
         display: "flex",
       },
+      ".wp-block-group": {
+        display: "block",
+      },
+      "wp-block-group-is-layout-flex": {
+        display: "flex",
+      },
+      ".columns-default": {
+        // Estilos para columnas por defecto
+        "& > *": {
+          width: "100%",
+          "@screen sm": {
+            width: "50%",
+          },
+          "@screen md": {
+            width: "33.333%",
+          },
+        },
+      },
+
+      ".is-cropped": {
+        "& img": {
+          height: "100%",
+          flexGrow: "1",
+          objectFit: "cover",
+        },
+      },
+
+      ".wp-block-gallery-is-layout-flex": {
+        display: "flex",
+        flexWrap: "wrap",
+      },
     });
 
     // Componentes dinámicos usando matchComponents
@@ -203,6 +278,7 @@ module.exports = plugin(
         "wp-block-gallery": (value) => ({
           display: "flex",
           flexWrap: "wrap",
+          listStyle: "none",
           margin: "0 -0.5rem",
           ...(value === "aligncenter" && {
             justifyContent: "center",

@@ -6,21 +6,41 @@ export interface Props {
   height?: string;
 }
 const { src, alt, width, height } = Astro.props;
+
+function addPxIfNeeded(value: string | undefined): string {
+  if (!value) return "auto";
+  return value.endsWith("px") ? value : `${value}px`;
+}
+
+const styleWidth = addPxIfNeeded(width);
+const styleHeight = addPxIfNeeded(height);
 ---
 
 <div
-  class="protected-image-container"
-  style={`max-width:${width};max-height:${height};`}
+  class="protected-image-container mx-auto"
+  style={`max-width:${styleWidth};max-height:${styleHeight};`}
 >
   <canvas data-src={src} data-alt={alt}></canvas>
+  <div class="image-overlay">
+    <span class="expand-icon">&#x2922;</span>
+  </div>
+</div>
+
+<div class="image-modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <canvas class="modal-canvas"></canvas>
+  </div>
 </div>
 
 <script>
   function loadProtectedImages() {
-    const containers = document.querySelectorAll(".protected-image-container");
+    const containers = document.querySelectorAll<HTMLDivElement>(
+      ".protected-image-container"
+    );
     containers.forEach((container) => {
-      const canvas = container.querySelector("canvas");
-      if (canvas instanceof HTMLCanvasElement) {
+      const canvas = container.querySelector<HTMLCanvasElement>("canvas");
+      if (canvas) {
         const ctx = canvas.getContext("2d");
         if (ctx) {
           const img = new Image();
@@ -30,24 +50,84 @@ const { src, alt, width, height } = Astro.props;
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0, img.width, img.height);
-
-            // Add watermark
-            const text = "© Patricio Salinas";
-            const fontSize = Math.max(12, img.width * 0.02);
-            const margin = fontSize;
-            ctx.font = `${fontSize}px Arial`;
-            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-            const textWidth = ctx.measureText(text).width;
-            ctx.fillText(
-              text,
-              img.width - textWidth - margin,
-              img.height - margin
-            );
+            addWatermark(ctx, img.width, img.height);
           };
         }
       }
     });
   }
+
+  function addWatermark(
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+  ) {
+    const text = "© Patricio Salinas";
+    const fontSize = Math.max(12, width * 0.02);
+    const margin = fontSize;
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    const textWidth = ctx.measureText(text).width;
+    ctx.fillText(text, width - textWidth - margin, height - margin);
+  }
+
+  function setupModalFunctionality() {
+    const containers = document.querySelectorAll<HTMLDivElement>(
+      ".protected-image-container"
+    );
+    const modal = document.querySelector<HTMLDivElement>(".image-modal");
+    const modalCanvas =
+      modal?.querySelector<HTMLCanvasElement>(".modal-canvas");
+
+    if (!modal || !modalCanvas) return;
+
+    containers.forEach((container) => {
+      container.addEventListener("click", () => {
+        const canvas = container.querySelector<HTMLCanvasElement>("canvas");
+        if (!canvas) return;
+
+        const modalCtx = modalCanvas.getContext("2d");
+        if (!modalCtx) return;
+
+        modalCanvas.width = canvas.width;
+        modalCanvas.height = canvas.height;
+        modalCtx.drawImage(canvas, 0, 0);
+        addWatermark(modalCtx, canvas.width, canvas.height);
+
+        // Get the position and size of the clicked image
+        const rect = canvas.getBoundingClientRect();
+        const modalContent =
+          modal.querySelector<HTMLDivElement>(".modal-content");
+        if (!modalContent) return;
+
+        // Set initial position and size
+        modalContent.style.top = `${rect.top}px`;
+        modalContent.style.left = `${rect.left}px`;
+        modalContent.style.width = `${rect.width}px`;
+        modalContent.style.height = `${rect.height}px`;
+
+        modal.style.display = "flex";
+
+        // Trigger reflow
+        modalContent.offsetHeight;
+
+        // Animate to full size
+        modalContent.style.top = "5%";
+        modalContent.style.left = "5%";
+        modalContent.style.width = "90%";
+        modalContent.style.height = "90%";
+      });
+    });
+
+    modal.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadProtectedImages();
+    setupModalFunctionality();
+  });
 
   // Prevent right-click
   document.addEventListener(
@@ -55,7 +135,7 @@ const { src, alt, width, height } = Astro.props;
     function (e) {
       if (
         e.target instanceof HTMLCanvasElement &&
-        e.target.closest(".protected-image-container")
+        e.target.closest(".protected-image-container, .image-modal")
       ) {
         e.preventDefault();
       }
@@ -69,7 +149,7 @@ const { src, alt, width, height } = Astro.props;
     function (e) {
       if (
         e.target instanceof HTMLCanvasElement &&
-        e.target.closest(".protected-image-container")
+        e.target.closest(".protected-image-container, .image-modal")
       ) {
         e.preventDefault();
       }
@@ -84,18 +164,74 @@ const { src, alt, width, height } = Astro.props;
       alert("Screenshots are disabled.");
     }
   });
-
-  document.addEventListener("DOMContentLoaded", loadProtectedImages);
 </script>
-
 <style>
   .protected-image-container {
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
+
   .protected-image-container canvas {
     max-width: 100%;
     height: auto;
     display: block;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .protected-image-container:hover .image-overlay {
+    opacity: 1;
+  }
+
+  .expand-icon {
+    font-size: 42px;
+    font-weight: 300;
+    color: white;
+  }
+
+  .image-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modal-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
   }
 </style>

@@ -1,7 +1,7 @@
 ---
 import type { Page } from "../types/types";
 import ProtectedImage from "./ui/ProtectedImage.astro";
-import { parse, HTMLElement, Node } from "node-html-parser";
+import { parse, HTMLElement, Node, NodeType } from "node-html-parser";
 
 interface Props {
   page: Page;
@@ -11,14 +11,12 @@ interface Props {
 const { page, isHomePage } = Astro.props;
 const title = page.title;
 const content = page.content || "";
-
 const root = parse(content);
 
 function processNode(
   node: Node
 ): Array<{ type: "html" | "image"; content: any }> {
-  if (node.nodeType === 1) {
-    // Element node
+  if (node.nodeType === NodeType.ELEMENT_NODE) {
     const element = node as HTMLElement;
     if (element.tagName === "IMG") {
       return [
@@ -34,11 +32,18 @@ function processNode(
       ];
     } else {
       const childResults = element.childNodes.flatMap(processNode);
-      element.childNodes.forEach((child) => child.remove());
-      return [{ type: "html", content: element.toString() }, ...childResults];
+      const openTag = element.toString().split(">")[0] + ">";
+      const closeTag = `</${element.tagName.toLowerCase()}>`;
+      return [
+        { type: "html", content: openTag },
+        ...childResults,
+        { type: "html", content: closeTag },
+      ];
     }
+  } else if (node.nodeType === NodeType.TEXT_NODE) {
+    return [{ type: "html", content: node.text }];
   }
-  return [{ type: "html", content: node.toString() }];
+  return [];
 }
 
 const processedContent = root.childNodes.flatMap(processNode);
