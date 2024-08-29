@@ -13,7 +13,7 @@ export default {
       },
       colors: {
         primary: {
-          600: 111111,
+          600: "#111111", // Cambiado a un string hexadecimal
         },
       },
     },
