@@ -14,6 +14,12 @@ const title = page.title;
 const content = page.content || "";
 const root = parse(content);
 
+// Extract all image sources from the content
+const allImages = root
+  .querySelectorAll("img")
+  .map((img) => img.getAttribute("src"))
+  .filter((src): src is string => src !== null);
+
 function processNode(
   node: Node
 ): Array<{ type: "html" | "image"; content: any }> {
@@ -65,6 +71,7 @@ const processedContent = root.childNodes.flatMap(processNode);
               alt={item.content.alt}
               width={item.content.width}
               height={item.content.height}
+              allImages={allImages}
             />
           );
         }

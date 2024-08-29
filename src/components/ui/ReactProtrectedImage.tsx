@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Maximize2 } from "lucide-react";
+import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ProtectedImageProps {
   src: string;
   alt: string;
   width?: string;
   height?: string;
+  allImages: string[];
 }
 
 interface DialogProps {
@@ -46,10 +47,9 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center  bg-black bg-opacity-90"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
       aria-modal="true"
       role="dialog"
-      onClick={() => onOpenChange(false)}
     >
       {children}
     </div>,
@@ -71,24 +71,34 @@ export default function ProtectedImage({
   alt,
   width = "auto",
   height = "auto",
+  allImages,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    loadImage();
-  }, [src]);
+    setCurrentImageIndex(allImages.indexOf(src));
+    loadImage(src);
+  }, [src, allImages]);
 
-  const loadImage = () => {
+  const loadImage = (imageSrc: string) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
-    img.src = src;
+    img.src = imageSrc;
     img.onload = function () {
       drawImageOnCanvas(canvasRef.current, img);
+      if (isModalOpen) {
+        drawImageOnCanvas(
+          modalCanvasRef.current,
+          img,
+          window.innerWidth * 0.8,
+          window.innerHeight * 0.8
+        );
+      }
     };
   };
-
   const drawImageOnCanvas = (
     canvas: HTMLCanvasElement | null,
     img: HTMLImageElement,
@@ -139,17 +149,35 @@ export default function ProtectedImage({
     setIsModalOpen(true);
   };
 
-  useEffect(() => {
-    if (isModalOpen && modalCanvasRef.current && canvasRef.current) {
-      const img = new Image();
-      img.src = canvasRef.current.toDataURL();
-      img.onload = function () {
-        const maxWidth = window.innerWidth * 0.9;
-        const maxHeight = window.innerHeight * 0.9;
-        drawImageOnCanvas(modalCanvasRef.current, img, maxWidth, maxHeight);
-      };
+  const closeModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsModalOpen(false);
+  };
+
+  const changeImage = (direction: "next" | "prev") => {
+    const newIndex =
+      direction === "next"
+        ? (currentImageIndex + 1) % allImages.length
+        : (currentImageIndex - 1 + allImages.length) % allImages.length;
+    setCurrentImageIndex(newIndex);
+    loadImage(allImages[newIndex]);
+  };
+
+  const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    if (x < rect.width * 0.3) {
+      changeImage("prev");
+    } else if (x > rect.width * 0.7) {
+      changeImage("next");
     }
-  }, [isModalOpen]);
+  };
+
+  useEffect(() => {
+    if (isModalOpen && allImages[currentImageIndex]) {
+      loadImage(allImages[currentImageIndex]);
+    }
+  }, [isModalOpen, currentImageIndex, allImages]);
 
   return (
     <>
@@ -166,12 +194,39 @@ export default function ProtectedImage({
         </div>
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 flex items-center justify-center">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={handleDialogClick}
+        >
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              changeImage("prev");
+            }}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
           <canvas
             ref={modalCanvasRef}
-            className="max-w-full max-h-full my-auto object-contain"
+            className="max-w-[90vw] max-h-[90vh] my-auto object-contain"
           />
-        </DialogContent>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              changeImage("next");
+            }}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </div>
       </Dialog>
     </>
   );
