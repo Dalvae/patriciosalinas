@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar.astro";
 import { useTranslations } from "../i18n/utils";
 import type { Page, Lang } from "../types/types";
+import Footer from "@components/Footer.astro";
 import "../styles/app.css";
 
 export interface Props {
@@ -30,12 +31,7 @@ const currentPath = Astro.url.pathname;
     <main>
       <slot />
     </main>
-    <footer>
-      <p>
-        © {new Date().getFullYear()}
-        {t("footer.copyright")}
-      </p>
-    </footer>
+    <Footer lang={lang} />
   </body>
 </html>
 <style>

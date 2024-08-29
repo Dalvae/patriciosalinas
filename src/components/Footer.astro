@@ -1,0 +1,47 @@
+---
+import { Instagram, Twitter, Mail } from "lucide-react";
+import { useTranslations } from "../i18n/utils";
+const { lang } = Astro.props;
+
+const t = useTranslations(lang);
+---
+
+<footer
+  class="flex flex-col items-center justify-between p-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-10 sm:p-6"
+>
+  <div class="flex items-center space-x-4">
+    <a
+      href="https://www.instagram.com/patricio.salinas.a/"
+      target="_blank"
+      aria-label="Instagram"
+    >
+      <Instagram className="hover:text-rose-800" size={24} />
+    </a>
+    <a href="mailto:patricio.salinas.a@gmail.com" aria-label="Email">
+      <Mail className="hover:text-rose-800" size={24} />
+    </a>
+    <a
+      href="https://twitter.com/tuTwitter"
+      target="_blank"
+      aria-label="Twitter"
+    >
+      <Twitter className="hover:text-rose-800" size={24} />
+    </a>
+  </div>
+  <div class="text-center text-xs sm:text-right sm:mt-0 mt-4">
+    <p>
+      © {new Date().getFullYear()}
+      {t("footer.copyright")}
+    </p>
+    <p>
+      {t("footer.createdBy")}{" "}
+      <a
+        href="https://portfolio.dalvae.cl/"
+        target="_blank"
+        class="hover:underline"
+      >
+        Dalvae
+      </a>
+    </p>
+  </div>
+</footer>
