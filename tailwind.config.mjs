@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        playfair: ['"Playfair Display"', "serif"],
+        "playfair-italic": ['"Playfair Display Italic"', "serif"],
+        "abril-fatface": ['"Abril Fatface"', "serif"],
+      },
       colors: {
         primary: {
           600: 111111,

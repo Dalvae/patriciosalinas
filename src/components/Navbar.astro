@@ -1,7 +1,15 @@
 ---
+import {
+  Astronav,
+  MenuItems,
+  MenuIcon,
+  Dropdown,
+  DropdownItems,
+} from "astro-navbar";
 import type { Page, Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export interface Props {
   currentPath: string;
@@ -54,126 +62,140 @@ const navStructure = createNavStructure(
 );
 ---
 
-<nav>
-  <ul class="main-menu">
-    <li>
-      <a href={`/${lang}`} class:list={[{ active: isCurrentItem(`/${lang}`) }]}>
-        {t("nav.home")}
+<Astronav>
+  <div
+    class="flex flex-col md:flex-row md:items-center md:justify-between pt-4 pb-1 px-6 min-h-20"
+  >
+    <div class="flex justify-between items-center font-abril-fatface">
+      <a
+        href={`/${lang}`}
+        class="font-bold text-xl text-black hover:text-gray-800"
+      >
+        PATRICIO SALINAS A
       </a>
-    </li>
-    {
-      navStructure.map((item) => (
-        <li
-          class:list={[
-            { "has-dropdown": item.children && item.children.length > 0 },
-          ]}
+      <div class="md:hidden">
+        <MenuIcon class="w-6 h-6 text-gray-800" />
+      </div>
+    </div>
+    <MenuItems class="hidden md:flex md:items-center mt-4 md:mt-0">
+      <ul class="flex flex-col md:flex-row md:space-x-6">
+        {
+          navStructure.map((item) => (
+            <li class="relative group py-2 md:py-0">
+              {item.children && item.children.length > 0 ? (
+                <Dropdown class="group">
+                  <button class="flex items-center uppercase text-gray-600 hover:text-black">
+                    {item.title}
+                    <span class="chevron-icon ml-1">
+                      <ChevronDown className="w-4 h-4" />
+                    </span>
+                  </button>
+                  <DropdownItems>
+                    <ul class="bg-white md:border md:border-gray-200 md:shadow-lg md:absolute left-0 mt-2 w-48">
+                      {item.children.map((child: any) => (
+                        <li>
+                          <a
+                            href={child.uri}
+                            class={`block px-4 py-2 text-sm ${
+                              isCurrentItem(child.uri)
+                                ? "text-black active-item"
+                                : "text-gray-600 hover:text-black"
+                            }`}
+                          >
+                            {child.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </DropdownItems>
+                </Dropdown>
+              ) : (
+                <a
+                  href={item.uri}
+                  class={`block uppercase ${
+                    isCurrentItem(item.uri)
+                      ? "text-black active-item"
+                      : "text-gray-600 hover:text-black"
+                  }`}
+                >
+                  {item.title}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <Dropdown class="group ml-0 md:ml-6 mt-2 md:mt-0">
+        <button
+          class="flex items-center text-gray-600 hover:text-black italic border border-dashed border-gray-700 px-2 py-1 rounded"
         >
-          {item.children && item.children.length > 0 ? (
-            <>
-              <span class="dropdown-toggle">
-                {capitalizeFirstLetter(item.title)}
-              </span>
-              <ul class="dropdown-menu">
-                {item.children.map((child: any) => (
-                  <li>
-                    <a
-                      href={child.uri}
-                      class:list={[{ active: isCurrentItem(child.uri) }]}
-                    >
-                      {child.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <a
-              href={item.uri}
-              class:list={[{ active: isCurrentItem(item.uri) }]}
-            >
-              {item.title}
-            </a>
-          )}
-        </li>
-      ))
-    }
-  </ul>
-  <div class="language-switcher">
-    {
-      Object.entries(languages).map(([code, label]) => (
-        <a href={`/${code}`} class:list={[{ active: lang === code }]}>
-          {label}
-        </a>
-      ))
-    }
+          {lang.toUpperCase()}
+          <span class="chevron-icon ml-1">
+            <ChevronDown className="w-4 h-4" />
+          </span>
+        </button>
+        <DropdownItems>
+          <ul
+            class="bg-white md:border border-gray-200 rounded md:shadow-lg mt-2 w-full md:w-32 md:absolute md:right-0"
+          >
+            {
+              Object.entries(languages).map(([code, label]) => (
+                <li>
+                  <a
+                    href={`/${code}`}
+                    class={`block px-4 py-2 text-sm italic tracking-tight ${
+                      lang === code
+                        ? "text-black active-item"
+                        : "text-gray-600 hover:text-black"
+                    }`}
+                  >
+                    {code.toUpperCase()}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </DropdownItems>
+      </Dropdown>
+    </MenuItems>
   </div>
-</nav>
+</Astronav>
 
 <style>
   nav {
-    background-color: #f8f9fa;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
+    font-family: "Playfair Display", serif;
   }
-  .main-menu,
-  .dropdown-menu {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  nav > a {
+    font-weight: 600;
   }
-  .main-menu {
-    display: flex;
-    gap: 1rem;
-  }
-  .main-menu > li {
-    position: relative;
-  }
-  a,
-  .dropdown-toggle {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  a:hover,
-  a.active,
-  .dropdown-toggle:hover {
-    color: #007bff;
-  }
-  .has-dropdown:hover .dropdown-menu {
+  .dropdown-menu.show,
+  .mobile-dropdown-menu.show {
     display: block;
   }
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  .dropdown-menu li {
-    padding: 0.5rem 1rem;
-  }
-  .language-switcher {
-    display: flex;
-    gap: 0.5rem;
-  }
-  .language-switcher a {
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    background-color: #e9ecef;
-  }
-  .language-switcher a.active {
-    background-color: #007bff;
-    color: white;
+  .active-item {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 </style>
+
+<script>
+  function setupDropdowns() {
+    const dropdowns = document.querySelectorAll(".group");
+    dropdowns.forEach((dropdown) => {
+      const button = dropdown.querySelector("button");
+      const chevronIcon = button?.querySelector(".chevron-icon");
+
+      if (button && chevronIcon) {
+        button.addEventListener("click", () => {
+          dropdown.classList.toggle("open");
+          const isOpen = dropdown.classList.contains("open");
+          chevronIcon.innerHTML = isOpen
+            ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="18 15 12 9 6 15"></polyline></svg>'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+        });
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupDropdowns);
+</script>

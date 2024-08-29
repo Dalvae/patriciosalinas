@@ -24,7 +24,7 @@ const currentPath = Astro.url.pathname;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
+  <body class="font-playfair">
     <Navbar currentPath={currentPath} lang={lang} pages={pages} />
     <main>
       <slot />
@@ -38,11 +38,6 @@ const currentPath = Astro.url.pathname;
   </body>
 </html>
 <style>
-  body {
-    /* Añade un padding-top para compensar el navbar fijo */
-    padding-top: 60px; /* Ajusta este valor según la altura de tu navbar */
-  }
-
   main {
     /* Asegúrate de que el contenido principal ocupe todo el espacio disponible */
     min-height: calc(

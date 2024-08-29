@@ -46,7 +46,7 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-90"
+      className="fixed inset-0 z-50 flex items-center justify-center  bg-black bg-opacity-90"
       aria-modal="true"
       role="dialog"
       onClick={() => onOpenChange(false)}
@@ -169,7 +169,7 @@ export default function ProtectedImage({
         <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 flex items-center justify-center">
           <canvas
             ref={modalCanvasRef}
-            className="max-w-full max-h-full object-contain"
+            className="max-w-full max-h-full my-auto object-contain"
           />
         </DialogContent>
       </Dialog>
