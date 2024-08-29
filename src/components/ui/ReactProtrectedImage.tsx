@@ -74,31 +74,24 @@ export default function ProtectedImage({
   allImages,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    setCurrentImageIndex(allImages.indexOf(src));
-    loadImage(src);
+    loadImage(src, canvasRef.current);
+    setDialogImageIndex(allImages.indexOf(src));
   }, [src, allImages]);
 
-  const loadImage = (imageSrc: string) => {
+  const loadImage = (imageSrc: string, canvas: HTMLCanvasElement | null) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = imageSrc;
     img.onload = function () {
-      drawImageOnCanvas(canvasRef.current, img);
-      if (isModalOpen) {
-        drawImageOnCanvas(
-          modalCanvasRef.current,
-          img,
-          window.innerWidth * 0.8,
-          window.innerHeight * 0.8
-        );
-      }
+      drawImageOnCanvas(canvas, img);
     };
   };
+
   const drawImageOnCanvas = (
     canvas: HTMLCanvasElement | null,
     img: HTMLImageElement,
@@ -147,6 +140,7 @@ export default function ProtectedImage({
 
   const openModal = () => {
     setIsModalOpen(true);
+    loadImage(allImages[dialogImageIndex], modalCanvasRef.current);
   };
 
   const closeModal = (e: React.MouseEvent) => {
@@ -157,10 +151,10 @@ export default function ProtectedImage({
   const changeImage = (direction: "next" | "prev") => {
     const newIndex =
       direction === "next"
-        ? (currentImageIndex + 1) % allImages.length
-        : (currentImageIndex - 1 + allImages.length) % allImages.length;
-    setCurrentImageIndex(newIndex);
-    loadImage(allImages[newIndex]);
+        ? (dialogImageIndex + 1) % allImages.length
+        : (dialogImageIndex - 1 + allImages.length) % allImages.length;
+    setDialogImageIndex(newIndex);
+    loadImage(allImages[newIndex], modalCanvasRef.current);
   };
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -174,10 +168,10 @@ export default function ProtectedImage({
   };
 
   useEffect(() => {
-    if (isModalOpen && allImages[currentImageIndex]) {
-      loadImage(allImages[currentImageIndex]);
+    if (isModalOpen) {
+      loadImage(allImages[dialogImageIndex], modalCanvasRef.current);
     }
-  }, [isModalOpen, currentImageIndex, allImages]);
+  }, [isModalOpen, dialogImageIndex, allImages]);
 
   return (
     <>
@@ -209,7 +203,7 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("prev");
             }}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute left-[1%] md:top-1/2 top-[85%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -222,7 +216,7 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("next");
             }}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute right-[1%] md:top-1/2 top-[85%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
