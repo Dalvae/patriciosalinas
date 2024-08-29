@@ -87,12 +87,12 @@ const navStructure = createNavStructure(
                 <Dropdown class="group">
                   <button class="flex items-center uppercase text-gray-600 hover:text-black">
                     {item.title}
-                    <span class="chevron-icon ml-1">
+                    <span class="chevron-icon ml-1 group-open:rotate-180">
                       <ChevronDown className="w-4 h-4" />
                     </span>
                   </button>
                   <DropdownItems>
-                    <ul class="bg-white md:border md:border-gray-200 md:shadow-lg md:absolute left-0 mt-2 w-48">
+                    <ul class="bg-white md:border md:border-gray-200 md:shadow-lg md:absolute left-0 mt-2 w-48 z-50">
                       {item.children.map((child: any) => (
                         <li>
                           <a
@@ -131,7 +131,7 @@ const navStructure = createNavStructure(
           class="flex items-center text-gray-600 hover:text-black italic border border-dashed border-gray-700 px-2 py-1 rounded"
         >
           {lang.toUpperCase()}
-          <span class="chevron-icon ml-1">
+          <span class="chevron-icon ml-1 group-open:rotate-180">
             <ChevronDown className="w-4 h-4" />
           </span>
         </button>
@@ -178,25 +178,3 @@ const navStructure = createNavStructure(
     text-underline-offset: 4px;
   }
 </style>
-
-<script>
-  function setupDropdowns() {
-    const dropdowns = document.querySelectorAll(".group");
-    dropdowns.forEach((dropdown) => {
-      const button = dropdown.querySelector("button");
-      const chevronIcon = button?.querySelector(".chevron-icon");
-
-      if (button && chevronIcon) {
-        button.addEventListener("click", () => {
-          dropdown.classList.toggle("open");
-          const isOpen = dropdown.classList.contains("open");
-          chevronIcon.innerHTML = isOpen
-            ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="18 15 12 9 6 15"></polyline></svg>'
-            : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-        });
-      }
-    });
-  }
-
-  document.addEventListener("astro:page-load", setupDropdowns);
-</script>
