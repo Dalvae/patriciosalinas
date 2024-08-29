@@ -56,9 +56,9 @@ function processNode(
 const processedContent = root.childNodes.flatMap(processNode);
 ---
 
-<div class="mx-auto max-w-2xl">
-  <article class="wp-blocks prose max-w-none">
-    {!isHomePage && <h1>{title}</h1>}
+<div class="mx-auto max-w-4xl">
+  <article class="wp-blocks prose max-w-none p-2">
+    {!isHomePage && <h1 class="py-5">{title}</h1>}
     {
       processedContent.map((item) => {
         if (item.type === "html") {
