@@ -78,7 +78,6 @@ export default function ProtectedImage({
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
-  console.log("ProtectedImage component rendered with src:", src);
   // Verificar si el componente se renderiza
   useEffect(() => {
     loadImage(src, canvasRef.current);

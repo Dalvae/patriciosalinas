@@ -16,8 +16,8 @@ export const ui = {
     "nav.about": "About",
     "nav.projects": "Projects",
     "nav.blog": "Blog",
-    "footer.copyright": "Patricio Salinas All rights reserved.",
-    "footer.createdBy": "Created by",
+    "footer.copyright": "Patricio Salinas A All rights reserved.",
+    "footer.createdBy": "Develop by",
   },
   es: {
     "error.loading":
@@ -29,8 +29,8 @@ export const ui = {
     "nav.about": "Acerca de",
     "nav.projects": "Proyectos",
     "nav.blog": "Blog",
-    "footer.copyright": "Patricio Salinas Todos los derechos reservados.",
-    "footer.createdBy": "Creado Por",
+    "footer.copyright": "Patricio Salinas A Todos los derechos reservados.",
+    "footer.createdBy": "Desarollado por",
   },
   sv: {
     "error.loading":
@@ -42,7 +42,7 @@ export const ui = {
     "nav.about": "Om",
     "nav.projects": "Projekt",
     "nav.blog": "Blogg",
-    "footer.copyright": "Patricio Salinas Alla rättigheter förbehållna.",
-    "footer.createdBy": "Skapad Av",
+    "footer.copyright": "Patricio Salinas A Alla rättigheter förbehållna.",
+    "footer.createdBy": "Utvecklad av",
   },
 } as const;
