@@ -1,4 +1,3 @@
-import HomePage from "@components/HomePage.astro";
 import type { Page, Post, Lang, ProcessedPage } from "../types/types";
 import { JSDOM } from "jsdom";
 
