@@ -37,7 +37,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects }) => {
                   {project.title}
                 </h3>
                 <InfiniteLooper
-                  speed={50}
+                  speed={40}
                   direction={projectIndex % 2 === 0 ? "left" : "right"}
                 >
                   <div className="flex">

@@ -48,3 +48,18 @@ Y en librios Barcelona, Walter Benjamin y atacama
 En publicaciones tiene sus propias publicaciones y Agregar Prensa.
 
 - Autores yo lo sacaria,
+
+- Sacar el contenido.
+- subir
+- Borrar Projects
+- Los otros sacarlo de publicacion y ponerlo en projecto.
+- El ultimo Baile, pasarl Freature Image.-
+- Sacar Videos.
+- Barcelona.
+- Niños estan cerca dentro de los otros.
+- Sacar Sobre mi trabajo visual.
+- Encuentros sacarlo de projectos.
+
+- Exposiciones;
+  En exposiciones se pueden poner algunos videos.
+  - Pour Bou.
