@@ -9,6 +9,9 @@ interface ProtectedImageProps {
   width?: string;
   height?: string;
   allImages: string[];
+  style?: React.CSSProperties;
+  className?: string;
+  containerClassName?: string;
 }
 
 interface DialogProps {
@@ -73,46 +76,57 @@ export default function ProtectedImage({
   width = "auto",
   height = "auto",
   allImages,
+  style,
+  className = "",
+  containerClassName = "",
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
-  // Verificar si el componente se renderiza
+
   useEffect(() => {
-    loadImage(src, canvasRef.current);
+    loadImage(src, canvasRef.current, false);
     setDialogImageIndex(allImages.indexOf(src));
   }, [src, allImages]);
 
-  const loadImage = (imageSrc: string, canvas: HTMLCanvasElement | null) => {
+  const loadImage = (
+    imageSrc: string,
+    canvas: HTMLCanvasElement | null,
+    isModal: boolean
+  ) => {
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = imageSrc;
     img.onload = function () {
-      drawImageOnCanvas(canvas, img);
+      drawImageOnCanvas(canvas, img, isModal);
     };
   };
 
   const drawImageOnCanvas = (
     canvas: HTMLCanvasElement | null,
     img: HTMLImageElement,
-    maxWidth?: number,
-    maxHeight?: number
+    isModal: boolean
   ) => {
     if (canvas) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        let newWidth = img.width;
-        let newHeight = img.height;
+        let newWidth, newHeight;
 
-        if (maxWidth && maxHeight) {
+        if (isModal) {
+          const maxWidth = window.innerWidth * 0.9;
+          const maxHeight = window.innerHeight * 0.9;
+          const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+          newWidth = img.width * scale;
+          newHeight = img.height * scale;
+        } else {
           const aspectRatio = img.width / img.height;
-          if (img.height > maxHeight) {
-            newHeight = maxHeight;
+          newWidth = parseInt(width, 10) || img.width;
+          newHeight = parseInt(height, 10) || img.height;
+
+          if (width === "auto" && height !== "auto") {
             newWidth = newHeight * aspectRatio;
-          }
-          if (newWidth > maxWidth) {
-            newWidth = maxWidth;
+          } else if (height === "auto" && width !== "auto") {
             newHeight = newWidth / aspectRatio;
           }
         }
@@ -141,7 +155,7 @@ export default function ProtectedImage({
 
   const openModal = () => {
     setIsModalOpen(true);
-    loadImage(allImages[dialogImageIndex], modalCanvasRef.current);
+    loadImage(allImages[dialogImageIndex], modalCanvasRef.current, true);
   };
 
   const closeModal = (e: React.MouseEvent) => {
@@ -155,7 +169,7 @@ export default function ProtectedImage({
         ? (dialogImageIndex + 1) % allImages.length
         : (dialogImageIndex - 1 + allImages.length) % allImages.length;
     setDialogImageIndex(newIndex);
-    loadImage(allImages[newIndex], modalCanvasRef.current);
+    loadImage(allImages[newIndex], modalCanvasRef.current, true);
   };
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -170,18 +184,21 @@ export default function ProtectedImage({
 
   useEffect(() => {
     if (isModalOpen) {
-      loadImage(allImages[dialogImageIndex], modalCanvasRef.current);
+      loadImage(allImages[dialogImageIndex], modalCanvasRef.current, true);
     }
   }, [isModalOpen, dialogImageIndex, allImages]);
 
   return (
     <>
       <div
-        className="protected-image-container relative overflow-hidden cursor-pointer mx-auto"
-        style={{ maxWidth: width, maxHeight: height }}
+        className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
+        style={{ width, height, ...style }}
         onClick={openModal}
       >
-        <canvas ref={canvasRef} className="max-w-full h-auto block" />
+        <canvas
+          ref={canvasRef}
+          className={`max-w-full h-auto block ${className}`}
+        />
         <div className="image-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-start justify-end opacity-0 hover:opacity-100 transition-opacity duration-300">
           <div className="text-white m-2">
             <Maximize2 className="h-6 w-6" />

@@ -26,7 +26,36 @@
       font-display: swap;
     }
   }
-
+  @keyframes slideAnimation {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .looper {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .looper__innerList {
+    display: flex;
+    justify-content: flex-start;
+    width: fit-content;
+  }
+  
+  .looper__innerList[data-animate="true"] .looper__listInstance {
+    animation: slideAnimation linear infinite;   
+  }
+  
+  .looper__listInstance {
+    display: flex;
+    width: max-content;
+    animation: none;
+  }
+  
 @layer components {
   /* Aquí puedes agregar tus estilos personalizados para componentes */
 }
