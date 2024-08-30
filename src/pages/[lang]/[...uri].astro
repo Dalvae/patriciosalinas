@@ -1,18 +1,21 @@
 ---
-//pages/[lang].astro
 import Layout from "../../layouts/Layout.astro";
 import { getPages } from "../../lib/graphql-queries";
 import type { Page, Lang } from "../../types/types";
 import { useTranslations } from "../../i18n/utils";
 import PageContent from "../../components/PageContent.astro";
+import HomePage from "../../components/HomePage";
+import { getProjectPageSlug } from "../../lib/project-utils";
 
 export async function getStaticPaths() {
   const languages: Lang[] = ["en", "es", "sv"];
-
   const allPagesPerLang = await Promise.all(
     languages.map(async (lang) => {
       const pages = await getPages(lang);
-
+      const projectSlug = getProjectPageSlug(lang);
+      const projects = pages.filter((page) =>
+        page.uri.includes(`/${projectSlug}/`)
+      );
       return pages.map((page) => ({
         params: {
           lang,
@@ -24,19 +27,16 @@ export async function getStaticPaths() {
           pages,
           currentPage: page,
           isHomePage: page.isFrontPage,
+          projects,
         },
       }));
     })
   );
-
-  return allPagesPerLang.flat().map((page) => ({
-    params: page.params,
-    props: page.props,
-  }));
+  return allPagesPerLang.flat();
 }
 
 const { lang, uri } = Astro.params;
-const { pages, currentPage, isHomePage } = Astro.props;
+const { pages, currentPage, isHomePage, projects } = Astro.props;
 const t = useTranslations(lang as Lang);
 
 console.log("Rendering page:", {
@@ -49,8 +49,38 @@ console.log("Rendering page:", {
 if (!currentPage) {
   return Astro.redirect("/404");
 }
+
+function extractImagesFromContent(content: string): string[] {
+  const imgRegex = /<img.*?src="(.*?)".*?>/g;
+  const images: string[] = [];
+  let match;
+  while ((match = imgRegex.exec(content)) !== null) {
+    images.push(match[1]);
+  }
+  return images;
+}
+
+const projectsForHomePage = projects.map((project) => {
+  const images = extractImagesFromContent(project.content || "");
+  return {
+    title: project.title,
+    images: images,
+    link: project.uri,
+  };
+});
 ---
 
 <Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
-  <PageContent page={currentPage} isHomePage={isHomePage} />
+  {
+    isHomePage ? (
+      <HomePage
+        client:load
+        content={currentPage.content || ""}
+        projects={projectsForHomePage}
+        lang={lang as Lang}
+      />
+    ) : (
+      <PageContent page={currentPage} isHomePage={isHomePage} />
+    )
+  }
 </Layout>

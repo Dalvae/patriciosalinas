@@ -1,3 +1,4 @@
+//src/components/ui/ReactProtectedImage.tsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -77,7 +78,8 @@ export default function ProtectedImage({
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
-
+  console.log("ProtectedImage component rendered with src:", src);
+  // Verificar si el componente se renderiza
   useEffect(() => {
     loadImage(src, canvasRef.current);
     setDialogImageIndex(allImages.indexOf(src));
