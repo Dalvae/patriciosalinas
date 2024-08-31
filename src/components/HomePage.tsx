@@ -13,12 +13,23 @@ interface HomePageProps {
   lang: Lang;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ content, projects }) => {
+const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  // Filter projects with images
-  const projectsWithImages = projects.filter(
-    (project) => project.images.length > 0
+  // Function to determine if a project should be excluded
+  const shouldExcludeProject = (title: string, lang: Lang) => {
+    const exclusionMap = {
+      es: "Encuentros",
+      en: "Portraits",
+      sv: "Författare",
+    };
+    return title === exclusionMap[lang];
+  };
+
+  // Filter projects with images and exclude specific project
+  const projectsToShow = projects.filter(
+    (project) =>
+      project.images.length > 0 && !shouldExcludeProject(project.title, lang)
   );
 
   return (
@@ -31,7 +42,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects }) => {
       <div className="w-full md:w-2/3 overflow-hidden" ref={galleryRef}>
         <div className="py-16">
           <div className="space-y-8">
-            {projectsWithImages.map((project, projectIndex) => (
+            {projectsToShow.map((project, projectIndex) => (
               <React.Fragment key={projectIndex}>
                 <h3 className="text-2xl font-semibold mb-2 px-6">
                   {project.title}
@@ -45,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects }) => {
                       <div
                         key={imageIndex}
                         className="flex-shrink-0 h-64 mx-2"
-                        style={{ maxWidth: "400px" }} // Add this to limit maximum width
+                        style={{ maxWidth: "400px" }}
                       >
                         <ProtectedImage
                           src={image}
