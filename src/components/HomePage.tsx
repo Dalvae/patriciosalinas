@@ -16,20 +16,15 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  // Function to determine if a project should be excluded
-  const shouldExcludeProject = (title: string, lang: Lang) => {
-    const exclusionMap = {
-      es: "Encuentros",
-      en: "Portraits",
-      sv: "Författare",
-    };
-    return title === exclusionMap[lang];
+  // Function to determine if a project should be included
+  const shouldIncludeProject = (title: string) => {
+    return title === "Atacama" || title === "Walter Benjamin";
   };
 
-  // Filter projects with images and exclude specific project
+  // Filter projects to show only Atacama and Walter Benjamin
   const projectsToShow = projects.filter(
     (project) =>
-      project.images.length > 0 && !shouldExcludeProject(project.title, lang)
+      project.images.length > 0 && shouldIncludeProject(project.title)
   );
 
   return (
