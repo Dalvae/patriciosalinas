@@ -56,7 +56,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                       <div
                         key={imageIndex}
                         className="flex-shrink-0 h-64 mx-2"
-                        style={{ maxWidth: "400px" }}
+                        style={{ maxWidth: "500px" }}
                       >
                         <ProtectedImage
                           src={image}

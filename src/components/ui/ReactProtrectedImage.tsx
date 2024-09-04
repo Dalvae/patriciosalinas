@@ -84,6 +84,10 @@ export default function ProtectedImage({
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const modalCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     loadImage(src, canvasRef.current, false);
@@ -100,6 +104,12 @@ export default function ProtectedImage({
     img.src = imageSrc;
     img.onload = function () {
       drawImageOnCanvas(canvas, img, isModal);
+      if (!isModal) {
+        setImageDimensions({
+          width: canvas?.width || 0,
+          height: canvas?.height || 0,
+        });
+      }
     };
   };
 
@@ -131,8 +141,17 @@ export default function ProtectedImage({
           }
         }
 
-        canvas.width = newWidth;
-        canvas.height = newHeight;
+        // Set canvas size to 2x for better quality on high DPI screens
+        canvas.width = newWidth * 2;
+        canvas.height = newHeight * 2;
+        canvas.style.width = `${newWidth}px`;
+        canvas.style.height = `${newHeight}px`;
+        ctx.scale(2, 2);
+
+        // Use better quality settings
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
         ctx.drawImage(img, 0, 0, newWidth, newHeight);
         addWatermark(ctx, newWidth, newHeight);
       }
@@ -181,7 +200,6 @@ export default function ProtectedImage({
       changeImage("next");
     }
   };
-
   useEffect(() => {
     if (isModalOpen) {
       loadImage(allImages[dialogImageIndex], modalCanvasRef.current, true);
@@ -192,7 +210,11 @@ export default function ProtectedImage({
     <>
       <div
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
-        style={{ width, height, ...style }}
+        style={{
+          width: imageDimensions.width,
+          height: imageDimensions.height,
+          ...style,
+        }}
         onClick={openModal}
       >
         <canvas
