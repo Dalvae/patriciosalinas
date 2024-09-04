@@ -50,7 +50,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                     {project.images.map((image, imageIndex) => (
                       <div
                         key={imageIndex}
-                        className="flex-shrink-0 h-64 mx-2"
+                        className="flex-shrink-0 h-1/2 mx-2"
                         style={{ maxWidth: "500px" }}
                       >
                         <ProtectedImage
@@ -58,10 +58,10 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                           alt={`${project.title} - Image ${imageIndex + 1}`}
                           allImages={project.images}
                           width="auto"
-                          height="250px"
+                          height="350px"
                           style={{
                             width: "auto",
-                            height: "250px",
+                            height: "350px",
                             objectFit: "cover",
                             maxWidth: "100%",
                           }}
