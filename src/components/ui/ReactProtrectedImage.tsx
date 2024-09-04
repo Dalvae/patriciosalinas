@@ -90,6 +90,7 @@ export default function ProtectedImage({
   });
 
   useEffect(() => {
+    console.log("Loading image:", src);
     loadImage(src, canvasRef.current, false);
     setDialogImageIndex(allImages.indexOf(src));
   }, [src, allImages]);
@@ -103,13 +104,14 @@ export default function ProtectedImage({
     img.crossOrigin = "Anonymous";
     img.src = imageSrc;
     img.onload = function () {
+      console.log("Image loaded successfully:", imageSrc);
       drawImageOnCanvas(canvas, img, isModal);
       if (!isModal) {
-        setImageDimensions({
-          width: canvas?.width || 0,
-          height: canvas?.height || 0,
-        });
+        setImageDimensions({ width: img.width, height: img.height });
       }
+    };
+    img.onerror = function () {
+      console.error("Error loading image:", imageSrc);
     };
   };
 
@@ -130,34 +132,37 @@ export default function ProtectedImage({
           newWidth = img.width * scale;
           newHeight = img.height * scale;
         } else {
-          const aspectRatio = img.width / img.height;
-          newWidth = parseInt(width, 10) || img.width;
-          newHeight = parseInt(height, 10) || img.height;
+          const containerWidth = parseInt(width, 10) || img.width;
+          const containerHeight = parseInt(height, 10) || img.height;
+          const containerAspectRatio = containerWidth / containerHeight;
+          const imageAspectRatio = img.width / img.height;
 
-          if (width === "auto" && height !== "auto") {
-            newWidth = newHeight * aspectRatio;
-          } else if (height === "auto" && width !== "auto") {
-            newHeight = newWidth / aspectRatio;
+          if (containerAspectRatio > imageAspectRatio) {
+            newHeight = containerHeight;
+            newWidth = newHeight * imageAspectRatio;
+          } else {
+            newWidth = containerWidth;
+            newHeight = newWidth / imageAspectRatio;
           }
         }
 
-        // Set canvas size to 2x for better quality on high DPI screens
-        canvas.width = newWidth * 2;
-        canvas.height = newHeight * 2;
-        canvas.style.width = `${newWidth}px`;
-        canvas.style.height = `${newHeight}px`;
-        ctx.scale(2, 2);
-
-        // Use better quality settings
+        canvas.width = newWidth;
+        canvas.height = newHeight;
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-
         ctx.drawImage(img, 0, 0, newWidth, newHeight);
         addWatermark(ctx, newWidth, newHeight);
+
+        console.log(
+          "Image drawn on canvas. Dimensions:",
+          newWidth,
+          "x",
+          newHeight
+        );
+        setImageDimensions({ width: newWidth, height: newHeight });
       }
     }
   };
-
   const addWatermark = (
     ctx: CanvasRenderingContext2D,
     width: number,
@@ -219,8 +224,10 @@ export default function ProtectedImage({
       <div
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
         style={{
-          width: imageDimensions.width,
-          height: imageDimensions.height,
+          width:
+            imageDimensions.width > 0 ? `${imageDimensions.width}px` : width,
+          height:
+            imageDimensions.height > 0 ? `${imageDimensions.height}px` : height,
           ...style,
         }}
         onClick={openModal}
@@ -230,6 +237,9 @@ export default function ProtectedImage({
         <canvas
           ref={canvasRef}
           className={`max-w-full h-auto block ${className}`}
+          style={{
+            visibility: imageDimensions.width > 0 ? "visible" : "hidden",
+          }}
         />
         <div className="image-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-start justify-end opacity-0 hover:opacity-100 transition-opacity duration-300">
           <div className="text-white m-2">
