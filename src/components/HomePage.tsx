@@ -59,10 +59,8 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                           width="auto"
                           height="350px"
                           style={{
-                            width: "auto",
                             height: "350px",
                             objectFit: "cover",
-                            maxWidth: "100%",
                           }}
                         />
                       </div>
