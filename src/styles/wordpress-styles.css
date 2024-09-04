@@ -8,7 +8,6 @@
   columns: 3;
   column-gap: var(--gallery-gap);
   margin: 0;
-  padding: var(--gallery-gap) 0 0 var(--gallery-gap); /* Padding arriba y a la izquierda */
 }
 
 .wp-block-gallery .wp-block-image {
