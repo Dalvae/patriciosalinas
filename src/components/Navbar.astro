@@ -70,7 +70,7 @@ const navStructure = createNavStructure(
       <a
         href={`/${lang}`}
         style="font-family: 'Abril Fatface', serif;"
-        class="font-bold text-xl text-black hover:text-gray-800 font-abril-fatface"
+        class="font-bold tracking-wide text-xl text-black hover:text-gray-800 font-abril-fatface"
       >
         PATRICIO SALINAS A
       </a>
@@ -85,7 +85,7 @@ const navStructure = createNavStructure(
             <li class="relative group py-2 md:py-0">
               {item.children && item.children.length > 0 ? (
                 <Dropdown class="group">
-                  <button class="flex items-center uppercase text-gray-600 hover:text-black">
+                  <button class="flex items-center uppercase text-neutral-800 hover:text-neutral-950">
                     {item.title}
                     <span class="chevron-icon ml-1 group-open:rotate-180">
                       <ChevronDown className="w-4 h-4" />
@@ -100,7 +100,7 @@ const navStructure = createNavStructure(
                             class={`block px-4 py-2 text-sm ${
                               isCurrentItem(child.uri)
                                 ? "text-black active-item"
-                                : "text-gray-600 hover:text-black"
+                                : "text-neutral-800 hover:text-neutral-950"
                             }`}
                           >
                             {child.title}
@@ -116,7 +116,7 @@ const navStructure = createNavStructure(
                   class={`block uppercase ${
                     isCurrentItem(item.uri)
                       ? "text-black active-item"
-                      : "text-gray-600 hover:text-black"
+                      : "text-neutral-800 hover:text-neutral-950"
                   }`}
                 >
                   {item.title}
@@ -128,7 +128,7 @@ const navStructure = createNavStructure(
       </ul>
       <Dropdown class="group ml-0 md:ml-6 mt-2 md:mt-0">
         <button
-          class="flex items-center text-gray-600 hover:text-black italic border border-dashed border-gray-700 px-2 py-1 rounded"
+          class="flex items-center text-neutral-800 hover:text-neutral-950 italic border border-dashed border-gray-700 px-2 py-1 rounded"
         >
           {lang.toUpperCase()}
           <span class="chevron-icon ml-1 group-open:rotate-180">

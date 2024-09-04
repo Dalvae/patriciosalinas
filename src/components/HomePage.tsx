@@ -39,7 +39,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
           <div className="space-y-8">
             {projectsToShow.map((project, projectIndex) => (
               <React.Fragment key={projectIndex}>
-                <h3 className="text-2xl font-semibold mb-2 px-6">
+                <h3 className="text-2xl font-semibold mb-2 ">
                   {project.title}
                 </h3>
                 <InfiniteLooper
