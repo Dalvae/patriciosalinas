@@ -7,16 +7,15 @@
 .wp-block-gallery {
   columns: 3;
   column-gap: var(--gallery-gap);
-  padding-top: var(--gallery-gap);
   margin: 0;
-  padding: var(--gallery-gap) 0 0 var(--gallery-gap); /* Añade padding arriba y a la izquierda */
+  padding: var(--gallery-gap) 0 0 var(--gallery-gap); /* Padding arriba y a la izquierda */
 }
 
 .wp-block-gallery .wp-block-image {
   break-inside: avoid;
-  margin: 0 var(--gallery-gap) var(--gallery-gap) 0; /* Margen derecho e inferior */
+  margin: 0 0 var(--gallery-gap) 0; /* Solo margen inferior */
   padding: 0;
-  width: calc(100% - var(--gallery-gap)) !important; /* Ajusta el ancho para considerar el margen */
+  width: 100% !important;
   display: inline-block;
 }
 
@@ -31,8 +30,8 @@
 /* Eliminar estilos que puedan causar conflictos */
 .wp-block-gallery.has-nested-images.columns-default figure.wp-block-image:not(#individual-image),
 .wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) {
-  width: calc(100% - var(--gallery-gap)) !important;
-  margin: 0 var(--gallery-gap) var(--gallery-gap) 0 !important;
+  width: 100% !important;
+  margin: 0 0 var(--gallery-gap) 0 !important;
 }
 
 /* Estilos para el componente ProtectedImage */
@@ -64,5 +63,5 @@
 /* Asegurar que las imágenes dentro de grupos y columnas mantengan el espaciado */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
-  margin: 0 var(--gallery-gap) var(--gallery-gap) 0 !important;
+  margin: 0 0 var(--gallery-gap) 0 !important;
 }
