@@ -30,7 +30,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Content Column */}
-      <div className="w-full md:w-1/3 p-12 mt-9">
+      <div className="w-full md:w-1/3 p-12 mt-9 text-justify">
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
       {/* Project Gallery */}
