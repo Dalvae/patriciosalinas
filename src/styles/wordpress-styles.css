@@ -1,68 +1,38 @@
-/* Importación de estilos de bloques de WordPress */
-@import "../../node_modules/@wordpress/block-library/build-style/common.css";
-@import "../../node_modules/@wordpress/block-library/build-style/style.css";
-@import "../../node_modules/@wordpress/block-library/build-style/theme.css";
-
 /* Estilos personalizados */
 :root {
   --wp--style--global--content-size: 1200px;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.is-cropped img {
-  object-fit: cover;
-  height: 100%;
+  --gallery-gap: 16px;
 }
 
 .wp-block-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  columns: 3;
+  column-gap: var(--gallery-gap);
+  padding-top: var(--gallery-gap);
   margin: 0;
+  padding: var(--gallery-gap) 0 0 var(--gallery-gap); /* Añade padding arriba y a la izquierda */
+}
+
+.wp-block-gallery .wp-block-image {
+  break-inside: avoid;
+  margin: 0 var(--gallery-gap) var(--gallery-gap) 0; /* Margen derecho e inferior */
   padding: 0;
+  width: calc(100% - var(--gallery-gap)) !important; /* Ajusta el ancho para considerar el margen */
+  display: inline-block;
 }
 
-.wp-block-gallery.columns-default,
-.columns-default {
-  gap: 1em;
-}
-
-.is-layout-flex,
-.wp-block-gallery.is-layout-flex {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.wp-block-gallery.has-nested-images figure.wp-block-image {
-  margin: 0;
-  width: calc(33.333% - 16px); /* Ajusta este valor según el número de columnas deseado */
-}
-
-.wp-block-gallery.is-cropped .wp-block-image a,
-.wp-block-gallery.is-cropped .wp-block-image img {
+.wp-block-gallery .wp-block-image img,
+.wp-block-gallery .wp-block-image .protectedImageContainer {
   width: 100%;
-  height: 100%;
-  flex: 1 0 0%;
-  object-fit: cover;
-}
-
-.wp-block-image {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.wp-block-image img,
-.wp-block-image .protectedImageContainer {
-  max-width: 100%;
   height: auto;
+  display: block;
   object-fit: cover;
+}
+
+/* Eliminar estilos que puedan causar conflictos */
+.wp-block-gallery.has-nested-images.columns-default figure.wp-block-image:not(#individual-image),
+.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) {
+  width: calc(100% - var(--gallery-gap)) !important;
+  margin: 0 var(--gallery-gap) var(--gallery-gap) 0 !important;
 }
 
 /* Estilos para el componente ProtectedImage */
@@ -74,71 +44,25 @@ img {
 
 .protected-image-container canvas {
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
   object-fit: cover;
 }
 
-/* Ajustes para diferentes números de columnas */
-@media (min-width: 600px) {
-  .columns-2 .wp-block-image,
-  .columns-3 .wp-block-image,
-  .columns-4 .wp-block-image,
-  .columns-5 .wp-block-image,
-  .columns-6 .wp-block-image,
-  .columns-7 .wp-block-image,
-  .columns-8 .wp-block-image {
-    width: calc(50% - 1em);
-  }
-
-  .wp-block-column {
-    flex-basis: 0;
-    flex-grow: 1;
-  }
-}
-
-@media (min-width: 768px) {
-  .wp-block-gallery .wp-block-image {
-    width: calc(50% - 16px);
+/* Ajustes responsivos */
+@media (max-width: 1024px) {
+  .wp-block-gallery {
+    columns: 2;
   }
 }
 
 @media (max-width: 600px) {
-  .wp-block-group.is-layout-flex {
-    flex-direction: column;
-  }
-
-  .wp-block-group.is-layout-flex > * {
-    width: 100%;
+  .wp-block-gallery {
+    columns: 1;
   }
 }
 
-@media (min-width: 782px) {
-  .columns-3 .wp-block-image,
-  .columns-4 .wp-block-image,
-  .columns-5 .wp-block-image,
-  .columns-6 .wp-block-image {
-    width: calc(33.33% - 1em);
-  }
-
-  .columns-4 .wp-block-image {
-    width: calc(25% - 1em);
-  }
-
-  .wp-block-column:not(:first-child) {
-    margin-left: 2em;
-  }
-}
-
-@media (max-width: 480px) {
-  .wp-block-gallery .wp-block-image {
-    width: 100%;
-  }
-}
-
+/* Asegurar que las imágenes dentro de grupos y columnas mantengan el espaciado */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 var(--gallery-gap) var(--gallery-gap) 0 !important;
 }
