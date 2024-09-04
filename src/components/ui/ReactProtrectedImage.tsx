@@ -206,6 +206,14 @@ export default function ProtectedImage({
     }
   }, [isModalOpen, dialogImageIndex, allImages]);
 
+  const preventContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
+  const preventDragStart = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <div
@@ -216,6 +224,8 @@ export default function ProtectedImage({
           ...style,
         }}
         onClick={openModal}
+        onContextMenu={preventContextMenu}
+        onDragStart={preventDragStart}
       >
         <canvas
           ref={canvasRef}
@@ -231,6 +241,8 @@ export default function ProtectedImage({
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"
           onClick={handleDialogClick}
+          onContextMenu={preventContextMenu}
+          onDragStart={preventDragStart}
         >
           <button
             onClick={closeModal}
@@ -250,6 +262,8 @@ export default function ProtectedImage({
           <canvas
             ref={modalCanvasRef}
             className="max-w-[90vw] max-h-[90vh] my-auto object-contain"
+            onContextMenu={preventContextMenu}
+            onDragStart={preventDragStart}
           />
           <button
             onClick={(e) => {
