@@ -95,26 +95,6 @@ export default function ProtectedImage({
     setDialogImageIndex(allImages.indexOf(src));
   }, [src, allImages]);
 
-  const loadImage = (
-    imageSrc: string,
-    canvas: HTMLCanvasElement | null,
-    isModal: boolean
-  ) => {
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.src = imageSrc;
-    img.onload = function () {
-      console.log("Image loaded successfully:", imageSrc);
-      drawImageOnCanvas(canvas, img, isModal);
-      if (!isModal) {
-        setImageDimensions({ width: img.width, height: img.height });
-      }
-    };
-    img.onerror = function () {
-      console.error("Error loading image:", imageSrc);
-    };
-  };
-
   const drawImageOnCanvas = (
     canvas: HTMLCanvasElement | null,
     img: HTMLImageElement,
@@ -146,22 +126,53 @@ export default function ProtectedImage({
           }
         }
 
+        // Set the canvas size to match the desired dimensions
         canvas.width = newWidth;
         canvas.height = newHeight;
+
+        console.log("Canvas dimensions:", newWidth, "x", newHeight);
+        console.log("Image dimensions:", img.width, "x", img.height);
+
+        // Simplified drawing approach
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-        ctx.drawImage(img, 0, 0, newWidth, newHeight);
-        addWatermark(ctx, newWidth, newHeight);
-
-        console.log(
-          "Image drawn on canvas. Dimensions:",
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          img.width,
+          img.height,
+          0,
+          0,
           newWidth,
-          "x",
           newHeight
         );
+
+        addWatermark(ctx, newWidth, newHeight);
+
+        console.log("Image drawn on canvas");
         setImageDimensions({ width: newWidth, height: newHeight });
       }
     }
+  };
+
+  const loadImage = (
+    imageSrc: string,
+    canvas: HTMLCanvasElement | null,
+    isModal: boolean
+  ) => {
+    console.log("Loading image:", imageSrc);
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = function () {
+      console.log("Image loaded successfully:", imageSrc);
+      console.log("Original image dimensions:", img.width, "x", img.height);
+      drawImageOnCanvas(canvas, img, isModal);
+    };
+    img.onerror = function (e) {
+      console.error("Error loading image:", imageSrc, e);
+    };
+    img.src = imageSrc;
   };
   const addWatermark = (
     ctx: CanvasRenderingContext2D,
@@ -239,6 +250,7 @@ export default function ProtectedImage({
           className={`max-w-full h-auto block ${className}`}
           style={{
             visibility: imageDimensions.width > 0 ? "visible" : "hidden",
+            // border: "1px solid red", // Temporary, for debugging
           }}
         />
         <div className="image-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-start justify-end opacity-0 hover:opacity-100 transition-opacity duration-300">
