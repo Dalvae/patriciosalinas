@@ -1,39 +1,59 @@
-/* Estilos personalizados */
 :root {
   --wp--style--global--content-size: 1200px;
   --gallery-gap: 16px;
 }
 
 .wp-block-gallery {
-  columns: 3;
   column-gap: var(--gallery-gap);
   margin: 0;
+  display: block;
+}
+
+.wp-block-gallery.columns-2 {
+  columns: 2;
+}
+
+.wp-block-gallery.columns-default,
+.columns-default {
+  columns: 3;
+  gap: var(--gallery-gap);
+}
+
+.is-cropped {
+  display: flex !important;
+  flex-wrap: wrap;
+}
+
+.wp-block-gallery.is-cropped .wp-block-image {
+  flex: 0 0 calc(33.333% - var(--gallery-gap));
+  margin: 0 0 var(--gallery-gap) 0;
+  display: flex;
+  width: 100% !important;
 }
 
 .wp-block-gallery .wp-block-image {
   break-inside: avoid;
-  margin: 0 0 var(--gallery-gap) 0; /* Solo margen inferior */
+  margin: 0 0 var(--gallery-gap) 0;
   padding: 0;
   width: 100% !important;
   display: inline-block;
 }
 
 .wp-block-gallery .wp-block-image img,
-.wp-block-gallery .wp-block-image .protectedImageContainer {
+.wp-block-gallery .wp-block-image .protected-image-container,
+.wp-block-gallery.is-cropped .wp-block-image img,
+.wp-block-gallery.is-cropped .wp-block-image a {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* Eliminar estilos que puedan causar conflictos */
-.wp-block-gallery.has-nested-images.columns-default figure.wp-block-image:not(#individual-image),
-.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) {
-  width: 100% !important;
-  margin: 0 0 var(--gallery-gap) 0 !important;
+.is-cropped .protected-image-container,
+.wp-block-gallery.is-cropped .wp-block-image .protected-image-container {
+  height: 100%;
 }
 
-/* Estilos para el componente ProtectedImage */
 .protected-image-container {
   width: 100% !important;
   height: auto !important;
@@ -42,25 +62,36 @@
 
 .protected-image-container canvas {
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   object-fit: cover;
 }
 
-/* Ajustes responsivos */
+.is-layout-flex {
+  display: flexbox;
+}
+
 @media (max-width: 1024px) {
-  .wp-block-gallery {
+  .wp-block-gallery,
+  .wp-block-gallery.is-cropped {
     columns: 2;
+  }
+  .wp-block-gallery.is-cropped .wp-block-image {
+    flex-basis: calc(50% - var(--gallery-gap) / 2);
   }
 }
 
 @media (max-width: 600px) {
-  .wp-block-gallery {
+  .wp-block-gallery,
+  .wp-block-gallery.is-cropped {
     columns: 1;
+  }
+  .wp-block-gallery.is-cropped .wp-block-image {
+    flex-basis: 100%;
   }
 }
 
-/* Asegurar que las imágenes dentro de grupos y columnas mantengan el espaciado */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
   margin: 0 0 var(--gallery-gap) 0 !important;
 }
+
