@@ -151,8 +151,8 @@
 
 /* Estilos para videos embebidos */
 .wp-block-embed.is-type-video {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 10rem;
+  margin-bottom: 10rem;
   width: 100%;
 }
 
