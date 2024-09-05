@@ -1,14 +1,21 @@
+/* Variables globales */
 :root {
   --wp--style--global--content-size: 1200px;
   --gallery-gap: 16px;
 }
 
+/* Estilos generales para galerías */
 .wp-block-gallery {
-  column-gap: var(--gallery-gap);
   margin: 0;
   display: block;
+  column-gap: var(--gallery-gap);
 }
 
+.wp-block-gallery .wp-block-image {
+  margin-top: 0 !important;
+}
+
+/* Estilos para galerías con columnas específicas */
 .wp-block-gallery.columns-2 {
   columns: 2;
 }
@@ -19,41 +26,74 @@
   gap: var(--gallery-gap);
 }
 
+/* Estilos específicos para custom-gallery */
+.custom-gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.custom-gallery .wp-block-columns {
+  flex: 1 1 calc(33.333% - var(--gallery-gap));
+  width: calc(33.333% - var(--gallery-gap));
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-gallery .wp-block-column {
+  flex: 1 1 calc(33.333% - var(--gallery-gap));
+  min-width: calc(33.333% - var(--gallery-gap));
+  flex-direction: column;
+  margin: 0;
+}
+
+.custom-gallery .wp-block-image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 var(--gallery-gap) 0;
+  overflow: hidden;
+  height: 300px; /* Altura fija, ajustable según necesidades */
+}
+
+.custom-gallery .wp-block-image figure,
+.custom-gallery .wp-block-image .protected-image-container {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.custom-gallery .wp-block-image img,
+.custom-gallery .wp-block-image canvas,
+.custom-gallery .protected-image-container,
+.custom-gallery .protected-image-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Estilos para galerías recortadas */
 .is-cropped {
   display: flex !important;
   flex-wrap: wrap;
 }
 
 .wp-block-gallery.is-cropped .wp-block-image {
-  flex: 0 0 calc(33.333% - var(--gallery-gap));
   margin: 0 0 var(--gallery-gap) 0;
+  flex: 1 1 30%;
   display: flex;
   width: 100% !important;
 }
 
-.wp-block-gallery .wp-block-image {
-  break-inside: avoid;
-  margin: 0 0 var(--gallery-gap) 0;
-  padding: 0;
-  width: 100% !important;
-  display: inline-block;
-}
-
-.wp-block-gallery .wp-block-image img,
-.wp-block-gallery .wp-block-image .protected-image-container,
-.wp-block-gallery.is-cropped .wp-block-image img,
-.wp-block-gallery.is-cropped .wp-block-image a {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.is-cropped .protected-image-container,
-.wp-block-gallery.is-cropped .wp-block-image .protected-image-container {
-  height: 100%;
-}
-
+/* Estilos para contenedores de imágenes protegidas */
 .protected-image-container {
   width: 100% !important;
   height: auto !important;
@@ -66,32 +106,45 @@
   object-fit: cover;
 }
 
-.is-layout-flex {
-  display: flexbox;
-}
+/* Ajustes de layout */
+/* .is-layout-flex {
+  display: flex;
+} */
 
+/* Media queries para responsividad */
 @media (max-width: 1024px) {
   .wp-block-gallery,
-  .wp-block-gallery.is-cropped {
-    columns: 2;
+  .wp-block-gallery.is-cropped,
+  .custom-gallery .wp-block-columns,
+  .custom-gallery .wp-block-column {
+    flex-basis: calc(50% - var(--gallery-gap));
+    min-width: calc(50% - var(--gallery-gap));
   }
-  .wp-block-gallery.is-cropped .wp-block-image {
-    flex-basis: calc(50% - var(--gallery-gap) / 2);
+  .wp-block-gallery {
+    columns: 2;
   }
 }
 
 @media (max-width: 600px) {
   .wp-block-gallery,
-  .wp-block-gallery.is-cropped {
-    columns: 1;
-  }
-  .wp-block-gallery.is-cropped .wp-block-image {
+  .wp-block-gallery.is-cropped,
+  .custom-gallery .wp-block-columns,
+  .custom-gallery .wp-block-column {
     flex-basis: 100%;
+    min-width: 100%;
+  }
+  .wp-block-gallery {
+    columns: 1;
   }
 }
 
+/* Ajustes adicionales */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
   margin: 0 0 var(--gallery-gap) 0 !important;
 }
 
+/* Estilos de texto */
+.has-text-align-center {
+  text-align: center;
+}
