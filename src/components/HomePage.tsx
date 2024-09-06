@@ -30,12 +30,12 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   return (
     <div className="flex flex-col md:flex-row ">
       {/* Content Column */}
-      <div className="w-full md:w-1/3 lg:p-12 p-3 mt-9 text-justify">
+      <div className="w-full md:w-1/3 lg:pl-12 lg:pr-12 p-3 mt-9 text-justify">
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
       {/* Project Gallery */}
       <div className="w-full md:w-2/3 overflow-hidden" ref={galleryRef}>
-        <div className="py-16">
+        <div className="py-10">
           <div className="space-y-8">
             {projectsToShow.map((project, projectIndex) => (
               <React.Fragment key={projectIndex}>
@@ -48,18 +48,15 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                 >
                   <div className="flex">
                     {project.images.map((image, imageIndex) => (
-                      <div
-                        key={imageIndex}
-                        className="flex-shrink-0 h-1/2 mx-2"
-                      >
+                      <div key={imageIndex} className="flex-shrink-0  mx-2">
                         <ProtectedImage
                           src={image}
                           alt={`${project.title} - Image ${imageIndex + 1}`}
                           allImages={project.images}
                           width="auto"
-                          height="350px"
+                          height="250px"
                           style={{
-                            height: "350px",
+                            height: "250px",
                             objectFit: "cover",
                           }}
                         />
