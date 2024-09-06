@@ -28,7 +28,7 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   );
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="flex flex-col md:flex-row ">
       {/* Content Column */}
       <div className="w-full md:w-1/3 lg:p-12 p-3 mt-9 text-justify">
         <div dangerouslySetInnerHTML={{ __html: content }} />
