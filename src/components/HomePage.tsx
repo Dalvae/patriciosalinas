@@ -44,21 +44,21 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   return (
     <div className="flex flex-col h-[85%] md:flex-row ">
       {/* Content Column */}
-      <div className="w-full md:w-1/3 lg:ml-9  p-3 my-9 text-justify bg-white shadow-md">
+      <div className="w-full md:w-1/3 lg:ml-9 lg:mr-3 p-3 my-9 text-justify bg-white">
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
       {/* Project Gallery */}
       <div className="w-full md:w-2/3 overflow-hidden" ref={galleryRef}>
-        <div className="py-10">
-          <div className="space-y-8">
+        <div className="pt-3">
+          <div className="">
             {projectsToShow.map((project, projectIndex) => (
               <React.Fragment key={projectIndex}>
                 <div className=" outline-primary-600 ">
-                  <h3 className="text-2xl font-semibold text-gray-900 tracking-tight drop-shadow-md   mb-2 md:mx-6">
+                  <h3 className="text-2xl font-semibold text-gray-900 tracking-tight drop-shadow-md   my-2 md:mx-6">
                     {project.title}
                   </h3>
                 </div>
-                <div className="bg-white shadow-md p-3 md:mx-6">
+                <div className="bg-white shadow-sm  md:mx-6">
                   <InfiniteLooper
                     speed={40}
                     direction={projectIndex % 2 === 0 ? "left" : "right"}
@@ -73,9 +73,9 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
                               createImageInfo(img, `${project.title} - Image`)
                             )}
                             width="auto"
-                            height="250px"
+                            height="300px"
                             style={{
-                              height: "250px",
+                              height: "300px",
                               objectFit: "contain",
                             }}
                           />
