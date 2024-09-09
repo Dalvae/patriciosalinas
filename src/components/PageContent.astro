@@ -42,7 +42,7 @@ function processNode(
           alt: img.getAttribute("alt") || "",
           width: img.getAttribute("width") || undefined,
           height: img.getAttribute("height") || undefined,
-          caption: caption ? caption.innerText : undefined,
+          caption: caption ? caption.innerHTML : undefined,
           className: element.getAttribute("class") || undefined,
         };
         allImages.push(imageInfo);

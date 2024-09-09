@@ -1,7 +1,10 @@
 //src/components/ui/ReactProtectedImage.tsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
+
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
+
+type HTMLString = string;
 
 interface ImageInfo {
   src: string;
@@ -251,7 +254,7 @@ export default function ProtectedImage({
           </div>
           {caption && (
             <div className="text-white ml-2 w-full font-bold bg-opacity-50 p-2">
-              {caption}
+              <div dangerouslySetInnerHTML={{ __html: caption }}></div>
             </div>
           )}
         </div>
@@ -288,8 +291,13 @@ export default function ProtectedImage({
               />
             </div>
             {allImages[dialogImageIndex].caption && (
-              <div className="ml-4 max-w-[20vw] text-white text-2xl font-bold">
-                {allImages[dialogImageIndex].caption}
+              <div className="ml-4 max-w-[20vw] text-white text-2xl  font-bold">
+                <div
+                  className="space-y-4 mb-10"
+                  dangerouslySetInnerHTML={{
+                    __html: allImages[dialogImageIndex].caption,
+                  }}
+                ></div>
               </div>
             )}
           </div>
