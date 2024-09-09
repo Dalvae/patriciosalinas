@@ -148,6 +148,9 @@
 .has-text-align-center {
   text-align: center;
 }
+.has-text-align-right {
+  text-align: right;
+}
 
 /* Estilos para videos embebidos */
 .wp-block-embed.is-type-video {

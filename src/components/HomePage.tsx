@@ -3,6 +3,15 @@ import ProtectedImage from "./ui/ReactProtrectedImage";
 import InfiniteLooper from "./ui/InfiniteLooper";
 import type { Lang } from "../types/types";
 
+interface ImageInfo {
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  caption?: string;
+  className?: string;
+}
+
 interface HomePageProps {
   content: string;
   projects: {
@@ -16,21 +25,26 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  // Function to determine if a project should be included
   const shouldIncludeProject = (title: string) => {
     return title === "Atacama" || title === "Walter Benjamin";
   };
 
-  // Filter projects to show only Atacama and Walter Benjamin
   const projectsToShow = projects.filter(
     (project) =>
       project.images.length > 0 && shouldIncludeProject(project.title)
   );
 
+  const createImageInfo = (src: string, alt: string): ImageInfo => ({
+    src,
+    alt,
+    width: "auto",
+    height: "250px",
+  });
+
   return (
-    <div className="flex flex-col md:flex-row ">
+    <div className="flex flex-col h-[85%] md:flex-row ">
       {/* Content Column */}
-      <div className="w-full md:w-1/3 lg:pl-12 lg:pr-12 p-3 mt-9 text-justify">
+      <div className="w-full md:w-1/3 lg:ml-9  p-3 my-9 text-justify bg-white shadow-md">
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </div>
       {/* Project Gallery */}
@@ -39,31 +53,37 @@ const HomePage: React.FC<HomePageProps> = ({ content, projects, lang }) => {
           <div className="space-y-8">
             {projectsToShow.map((project, projectIndex) => (
               <React.Fragment key={projectIndex}>
-                <h3 className="text-2xl font-semibold mb-2 ">
-                  {project.title}
-                </h3>
-                <InfiniteLooper
-                  speed={40}
-                  direction={projectIndex % 2 === 0 ? "left" : "right"}
-                >
-                  <div className="flex">
-                    {project.images.map((image, imageIndex) => (
-                      <div key={imageIndex} className="flex-shrink-0  mx-2">
-                        <ProtectedImage
-                          src={image}
-                          alt={`${project.title} - Image ${imageIndex + 1}`}
-                          allImages={project.images}
-                          width="auto"
-                          height="250px"
-                          style={{
-                            height: "250px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </InfiniteLooper>
+                <div className=" outline-primary-600 ">
+                  <h3 className="text-2xl font-semibold text-gray-900 tracking-tight drop-shadow-md   mb-2 md:mx-6">
+                    {project.title}
+                  </h3>
+                </div>
+                <div className="bg-white shadow-md p-3 md:mx-6">
+                  <InfiniteLooper
+                    speed={40}
+                    direction={projectIndex % 2 === 0 ? "left" : "right"}
+                  >
+                    <div className="flex ">
+                      {project.images.map((image, imageIndex) => (
+                        <div key={imageIndex} className="flex-shrink-0  mx-2">
+                          <ProtectedImage
+                            src={image}
+                            alt={`${project.title} - Image ${imageIndex + 1}`}
+                            allImages={project.images.map((img) =>
+                              createImageInfo(img, `${project.title} - Image`)
+                            )}
+                            width="auto"
+                            height="250px"
+                            style={{
+                              height: "250px",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </InfiniteLooper>
+                </div>
               </React.Fragment>
             ))}
           </div>

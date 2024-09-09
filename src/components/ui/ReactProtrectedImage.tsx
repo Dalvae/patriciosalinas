@@ -3,15 +3,25 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
 
+interface ImageInfo {
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  caption?: string;
+  className?: string;
+}
+
 interface ProtectedImageProps {
   src: string;
   alt: string;
   width?: string;
   height?: string;
-  allImages: string[];
+  allImages: ImageInfo[];
   style?: React.CSSProperties;
   className?: string;
   containerClassName?: string;
+  caption?: string;
 }
 
 interface DialogProps {
@@ -79,6 +89,7 @@ export default function ProtectedImage({
   style,
   className = "",
   containerClassName = "",
+  caption,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
@@ -90,9 +101,8 @@ export default function ProtectedImage({
   });
 
   useEffect(() => {
-    console.log("Loading image:", src);
     loadImage(src, canvasRef.current, false);
-    setDialogImageIndex(allImages.indexOf(src));
+    setDialogImageIndex(allImages.findIndex((img) => img.src === src));
   }, [src, allImages]);
 
   const drawImageOnCanvas = (
@@ -126,31 +136,15 @@ export default function ProtectedImage({
           }
         }
 
-        // Set the canvas size to match the desired dimensions
         canvas.width = newWidth;
         canvas.height = newHeight;
 
-        console.log("Canvas dimensions:", newWidth, "x", newHeight);
-        console.log("Image dimensions:", img.width, "x", img.height);
-
-        // Simplified drawing approach
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          img.width,
-          img.height,
-          0,
-          0,
-          newWidth,
-          newHeight
-        );
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
         addWatermark(ctx, newWidth, newHeight);
 
-        console.log("Image drawn on canvas");
         setImageDimensions({ width: newWidth, height: newHeight });
       }
     }
@@ -161,12 +155,9 @@ export default function ProtectedImage({
     canvas: HTMLCanvasElement | null,
     isModal: boolean
   ) => {
-    console.log("Loading image:", imageSrc);
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.onload = function () {
-      console.log("Image loaded successfully:", imageSrc);
-      console.log("Original image dimensions:", img.width, "x", img.height);
       drawImageOnCanvas(canvas, img, isModal);
     };
     img.onerror = function (e) {
@@ -174,6 +165,7 @@ export default function ProtectedImage({
     };
     img.src = imageSrc;
   };
+
   const addWatermark = (
     ctx: CanvasRenderingContext2D,
     width: number,
@@ -190,7 +182,7 @@ export default function ProtectedImage({
 
   const openModal = () => {
     setIsModalOpen(true);
-    loadImage(allImages[dialogImageIndex], modalCanvasRef.current, true);
+    loadImage(allImages[dialogImageIndex].src, modalCanvasRef.current, true);
   };
 
   const closeModal = (e: React.MouseEvent) => {
@@ -204,8 +196,14 @@ export default function ProtectedImage({
         ? (dialogImageIndex + 1) % allImages.length
         : (dialogImageIndex - 1 + allImages.length) % allImages.length;
     setDialogImageIndex(newIndex);
-    loadImage(allImages[newIndex], modalCanvasRef.current, true);
+    loadImage(allImages[newIndex].src, modalCanvasRef.current, true);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      loadImage(allImages[dialogImageIndex].src, modalCanvasRef.current, true);
+    }
+  }, [isModalOpen, dialogImageIndex, allImages]);
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -216,11 +214,6 @@ export default function ProtectedImage({
       changeImage("next");
     }
   };
-  useEffect(() => {
-    if (isModalOpen) {
-      loadImage(allImages[dialogImageIndex], modalCanvasRef.current, true);
-    }
-  }, [isModalOpen, dialogImageIndex, allImages]);
 
   const preventContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -250,13 +243,17 @@ export default function ProtectedImage({
           className={`max-w-full h-auto block ${className}`}
           style={{
             visibility: imageDimensions.width > 0 ? "visible" : "hidden",
-            // border: "1px solid red", // Temporary, for debugging
           }}
         />
-        <div className="image-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-start justify-end opacity-0 hover:opacity-100 transition-opacity duration-300">
-          <div className="text-white m-2">
+        <div className="image-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex flex-col items-start justify-between opacity-0 hover:opacity-100 transition-opacity duration-300">
+          <div className="text-white m-2 self-end">
             <Maximize2 className="h-6 w-6" />
           </div>
+          {caption && (
+            <div className="text-white ml-2 w-full font-bold bg-opacity-50 p-2">
+              {caption}
+            </div>
+          )}
         </div>
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -277,22 +274,31 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("prev");
             }}
-            className="absolute left-[1%] md:top-1/2 top-[85%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <canvas
-            ref={modalCanvasRef}
-            className="max-w-[90vw] max-h-[90vh] my-auto object-contain"
-            onContextMenu={preventContextMenu}
-            onDragStart={preventDragStart}
-          />
+          <div className="flex items-start max-w-[90vw] max-h-[90vh]">
+            <div className="relative">
+              <canvas
+                ref={modalCanvasRef}
+                className="max-w-[80vw] max-h-[90vh] object-contain"
+                onContextMenu={preventContextMenu}
+                onDragStart={preventDragStart}
+              />
+            </div>
+            {allImages[dialogImageIndex].caption && (
+              <div className="ml-4 max-w-[20vw] text-white text-2xl font-bold">
+                {allImages[dialogImageIndex].caption}
+              </div>
+            )}
+          </div>
           <button
             onClick={(e) => {
               e.stopPropagation();
               changeImage("next");
             }}
-            className="absolute right-[1%] md:top-1/2 top-[85%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronRight className="h-6 w-6" />
           </button>

@@ -9,44 +9,59 @@ interface Props {
   isHomePage: boolean;
 }
 
+interface ImageInfo {
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  caption?: string;
+  className?: string;
+}
+
 const { page, isHomePage } = Astro.props;
 const title = page.title;
 const content = page.content || "";
 const root = parse(content);
 
-// Extract all image sources from the content
-const allImages = root
-  .querySelectorAll("img")
-  .map((img) => img.getAttribute("src"))
-  .filter((src): src is string => src !== null);
+const allImages: ImageInfo[] = [];
 
 function processNode(
   node: Node
 ): Array<{ type: "html" | "image"; content: any }> {
   if (node.nodeType === NodeType.ELEMENT_NODE) {
     const element = node as HTMLElement;
-    if (element.tagName === "IMG") {
-      return [
-        {
-          type: "image",
-          content: {
-            src: element.getAttribute("src"),
-            alt: element.getAttribute("alt") || "",
-            width: element.getAttribute("width"),
-            height: element.getAttribute("height"),
+    if (
+      element.tagName === "FIGURE" &&
+      element.getAttribute("class")?.includes("wp-block-image")
+    ) {
+      const img = element.querySelector("img");
+      const caption = element.querySelector("figcaption");
+      if (img) {
+        const imageInfo: ImageInfo = {
+          src: img.getAttribute("src") || "",
+          alt: img.getAttribute("alt") || "",
+          width: img.getAttribute("width") || undefined,
+          height: img.getAttribute("height") || undefined,
+          caption: caption ? caption.innerText : undefined,
+          className: element.getAttribute("class") || undefined,
+        };
+        allImages.push(imageInfo);
+        return [
+          {
+            type: "image",
+            content: imageInfo,
           },
-        },
-      ];
-    } else {
-      const childResults = element.childNodes.flatMap(processNode);
-      const openTag = element.toString().split(">")[0] + ">";
-      const closeTag = `</${element.tagName.toLowerCase()}>`;
-      return [
-        { type: "html", content: openTag },
-        ...childResults,
-        { type: "html", content: closeTag },
-      ];
+        ];
+      }
     }
+    const childResults = element.childNodes.flatMap(processNode);
+    const openTag = element.toString().split(">")[0] + ">";
+    const closeTag = `</${element.tagName.toLowerCase()}>`;
+    return [
+      { type: "html", content: openTag },
+      ...childResults,
+      { type: "html", content: closeTag },
+    ];
   } else if (node.nodeType === NodeType.TEXT_NODE) {
     return [{ type: "html", content: node.text }];
   }
@@ -59,23 +74,28 @@ const processedContent = root.childNodes.flatMap(processNode);
 <div class="mx-auto max-w-4xl">
   <article class="wp-blocks prose max-w-none p-2">
     {!isHomePage && <h1 class="py-5 text-center text-7xl">{title}</h1>}
-    {
-      processedContent.map((item) => {
-        if (item.type === "html") {
-          return <Fragment set:html={item.content} />;
-        } else if (item.type === "image") {
-          return (
-            <ProtectedImage
-              client:load
-              src={item.content.src || ""}
-              alt={item.content.alt}
-              width={item.content.width}
-              height={item.content.height}
-              allImages={allImages}
-            />
-          );
-        }
-      })
-    }
+    <div class="bg-white px-10 pt-5 mb-10">
+      {
+        processedContent.map((item) => {
+          if (item.type === "html") {
+            return <Fragment set:html={item.content} />;
+          } else if (item.type === "image") {
+            return (
+              <figure class={item.content.className}>
+                <ProtectedImage
+                  client:load
+                  src={item.content.src}
+                  alt={item.content.alt}
+                  width={item.content.width}
+                  height={item.content.height}
+                  allImages={allImages}
+                  caption={item.content.caption}
+                />
+              </figure>
+            );
+          }
+        })
+      }
+    </div>
   </article>
 </div>
