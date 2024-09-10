@@ -74,7 +74,6 @@ const projectsForHomePage = projects.map((project) => {
   {
     isHomePage ? (
       <HomePage
-        client:load
         content={currentPage.content || ""}
         projects={projectsForHomePage}
         lang={lang as Lang}
