@@ -152,6 +152,14 @@
   text-align: right;
 }
 
+.prose ul, .prose ol {
+  list-style-type: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-inline-start: 0;
+}
+
+
 /* Estilos para videos embebidos */
 .wp-block-embed.is-type-video {
   margin-top: 10rem;
