@@ -1,0 +1,96 @@
+---
+import ProtectedImage from "./ui/ReactProtrectedImage.tsx";
+import InfiniteLooper from "./ui/InfiniteLooper.tsx";
+import type { Lang } from "../types/types";
+
+interface ImageInfo {
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  caption?: string;
+  className?: string;
+}
+
+interface Project {
+  title: string;
+  images: string[];
+  link: string;
+}
+
+interface Props {
+  content: string;
+  projects: Project[];
+  lang: Lang;
+}
+
+const { content, projects, lang } = Astro.props;
+
+const shouldIncludeProject = (title: string) => {
+  return title === "Atacama" || title === "Walter Benjamin";
+};
+
+const projectsToShow = projects.filter(
+  (project) => project.images.length > 0 && shouldIncludeProject(project.title)
+);
+
+const createImageInfo = (src: string, alt: string): ImageInfo => ({
+  src,
+  alt,
+  width: "auto",
+  height: "250px",
+});
+---
+
+<div class="flex flex-col h-[85%] md:flex-row">
+  <!-- Content Column -->
+  <div class="w-full md:w-1/3 lg:ml-9 lg:mr-3 p-3 my-9 text-justify bg-white">
+    <div set:html={content} />
+  </div>
+  <!-- Project Gallery -->
+  <div class="w-full md:w-2/3 overflow-hidden">
+    <div class="pt-3">
+      <div>
+        {
+          projectsToShow.map((project, projectIndex) => (
+            <Fragment>
+              <div class="outline-primary-600">
+                <h3 class="text-2xl font-semibold text-gray-900 tracking-tight drop-shadow-md my-2 md:mx-6">
+                  {project.title}
+                </h3>
+              </div>
+              <div class="bg-white shadow-sm md:mx-6">
+                <InfiniteLooper
+                  client:load
+                  speed={40}
+                  direction={projectIndex % 2 === 0 ? "left" : "right"}
+                >
+                  <div class="flex">
+                    {project.images.map((image, imageIndex) => (
+                      <div class="flex-shrink-0 mx-2">
+                        <ProtectedImage
+                          client:load
+                          src={image}
+                          alt={`${project.title} - Image ${imageIndex + 1}`}
+                          allImages={project.images.map((img) =>
+                            createImageInfo(img, `${project.title} - Image`)
+                          )}
+                          width="auto"
+                          height="300px"
+                          style={{
+                            height: "300px",
+                            objectFit: "contain",
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </InfiniteLooper>
+              </div>
+            </Fragment>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>
