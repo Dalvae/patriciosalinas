@@ -261,7 +261,7 @@ export default function ProtectedImage({
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex flex-col md:flex-row items-center justify-center"
           onClick={handleDialogClick}
           onContextMenu={preventContextMenu}
           onDragStart={preventDragStart}
@@ -277,36 +277,36 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("prev");
             }}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute left-[5%] md:left-4 md:top-1/2 top-[90%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-          <div className="flex items-start max-w-[90vw] max-h-[90vh]">
-            <div className="relative">
-              <canvas
-                ref={modalCanvasRef}
-                className="max-w-[80vw] max-h-[90vh] object-contain"
-                onContextMenu={preventContextMenu}
-                onDragStart={preventDragStart}
-              />
-            </div>
+          <div className="flex flex-col md:flex-row items-center md:items-start max-w-[90vw] max-h-[90vh]">
             {allImages[dialogImageIndex].caption && (
-              <div className="ml-4 max-w-[20vw] text-white text-2xl  font-bold">
+              <div className="mb-4 md:ml-4 md:mb-0 max-w-full md:max-w-[20vw] text-white text-lg md:text-2xl font-bold text-center md:text-left">
                 <div
-                  className="space-y-4 mb-10"
+                  className="space-y-4 md:mb-10"
                   dangerouslySetInnerHTML={{
                     __html: allImages[dialogImageIndex].caption,
                   }}
                 ></div>
               </div>
             )}
+            <div className="relative">
+              <canvas
+                ref={modalCanvasRef}
+                className="max-w-[90vw] md:max-w-[70vw] max-h-[70vh] md:max-h-[90vh] object-contain"
+                onContextMenu={preventContextMenu}
+                onDragStart={preventDragStart}
+              />
+            </div>
           </div>
           <button
             onClick={(e) => {
               e.stopPropagation();
               changeImage("next");
             }}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+            className="absolute right-[5%] md:right-4 md:top-1/2 top-[90%] transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronRight className="h-6 w-6" />
           </button>

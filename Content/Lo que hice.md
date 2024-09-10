@@ -1,2 +1,0 @@
-- Puse las letras del logo con mas espaciado, Mañana podemos probar otra tipografia
-- Hice la publicacion El ultim Baile

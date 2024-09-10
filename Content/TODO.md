@@ -1,57 +1,31 @@
 - Hacer un opcion para las protected Images las propias y las que son agenas sacarles el Water Mark
-- TODO segurizar mas las imagenes
+- segurizar mas las imagenes
+- La paloma necesita su imagen Freature del salon grande.
+- En Galeria Patricio ve dos veces el estanque de agua. Investigar
+  -En latino america tiene ese problema de que sale la paz, bolivia dos veces en el lugar de panamá
 
-- Hacer una forma de en un solo archivo manejar el tema, sobretodo. Colores fondo, letra Ascent. y Revisar margenes en ambas versiones.
-- Agregar otro componente Visual que le de mas estetica a la pagina
-- Hacer Code Cleanup.
+- Faltan alguas fotos para el beso en el bar la concha
 
-- Paginas parecidas
+Quiero recuperar al fotografo como un hombre que piensa, se ilustra,
+yo lo hice porque tenia ganas, no por intenteno de ocumular puntos academicos
 
-- https://manololaguillo.com/?portfolios=1977-1986-3
-  Buen sitio, El home es una imagen
-- http://www.xavierribas.com/
-  Navbar a la izquierda,letra pequeña, Buen ascent, Mucho texto. Blanco
-- https://www.alexeytitarenko.com/ - - Letra mas rusa, un sitio menos destacable. font-family: "franklin-gothic-urw";
-  -Es single page aplication - Aspecto mas wide - Version Mobil Titulo arriba El navbar no se comprime - About Tiene Dos columnas, Biografia Y selected Exibitions.
-- https://www.susanmeiselas.com/
-  - El mejor sitio segun yo, es muy buena esa galeria donde hay columnas
-    - font-family: "Playfair Display", serif; Bue
+El nombre arriba a la izquierda le gustaria cambiarlo.
+Un fondo gris muy syave
+hacer la de los titulos un poco mas pequeña
 
-Agregar dos proyectos
-La noche y
-Latinoamerica
+En latino america tiene ese problema de que sale la paz, bolivia dos veces en el lugar de panamá
 
-Las que se repitan, hay que borrarlas
+Falta una imagen en los otros
 
-Comentarios:
-Un poquito Mas grande, Pero que se vea mas claro se ven muy juntaslas letras.
+Clinia el borda en radio la colifata
 
-Buscar otra tipografia
+Los otros, cambiar
 
-Despues en proyectos.
+Mover la muralla y copiar las partes a WB
 
-No se entiende donde es, hay que agregar Un captio overmouse.
+Agregar Encuentros
 
-En la latinoamerica hay una imagen repetida de un hombre y un caballo eliminar
-la mas blanca
-En los otros sacar la foto de el hombre en la nieve solo
-La foto en sepia hay que cambiarla blanco negro
+en Exposiciones poner las ultimas huellas de un flaneur y una imagen de la serie Walter benjamin, La muralla.
+Y el otro Es transitos de Barcelona mayo del 2024.
 
-Agregar fotos de anders peterse
-Agregar texto del ultimo Baile y su traducciń
-
-La ultima huellas de un Flaneur cambiarlo a Exposicion
-Transito de no se que la otra exposicon
-
-Faltan alguas fotos para el beso en el bar la concha
-
-- Prensa hay que ordenarlo por fecha.
-  hay que divirlo en dos, lo queha escrito y lo que la
-- borrar om Walter Benjain
-  2012 es la primera entrevistas en la revista escaner, son dos
-  2018 the clinic
-  Cultura 2020
-  Atacama el mostrador 2021
-  2023 Foto espacio
-  Diario Ara de cataluña 2024
-  Buscar el del cultura del mercurio.
+Faltan fotos de Anders Petersen
