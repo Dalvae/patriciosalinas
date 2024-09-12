@@ -282,6 +282,14 @@ export default function ProtectedImage({
             <ChevronLeft className="h-6 w-6" />
           </button>
           <div className="flex flex-col md:flex-row items-center md:items-start max-w-[90vw] max-h-[90vh]">
+            <div className="relative">
+              <canvas
+                ref={modalCanvasRef}
+                className="max-w-[90vw] md:max-w-[70vw] max-h-[70vh] md:max-h-[90vh] object-contain"
+                onContextMenu={preventContextMenu}
+                onDragStart={preventDragStart}
+              />
+            </div>
             {allImages[dialogImageIndex].caption && (
               <div className="mb-4 md:ml-4 md:mb-0 max-w-full md:max-w-[20vw] text-white text-lg md:text-2xl font-bold text-center md:text-left">
                 <div
@@ -292,14 +300,6 @@ export default function ProtectedImage({
                 ></div>
               </div>
             )}
-            <div className="relative">
-              <canvas
-                ref={modalCanvasRef}
-                className="max-w-[90vw] md:max-w-[70vw] max-h-[70vh] md:max-h-[90vh] object-contain"
-                onContextMenu={preventContextMenu}
-                onDragStart={preventDragStart}
-              />
-            </div>
           </div>
           <button
             onClick={(e) => {
