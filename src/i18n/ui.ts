@@ -17,7 +17,7 @@ export const ui = {
     "nav.projects": "Projects",
     "nav.blog": "Blog",
     "footer.copyright": "Patricio Salinas A All rights reserved.",
-    "footer.createdBy": "Develop by",
+    "footer.createdBy": "Dev by",
   },
   es: {
     "error.loading":
