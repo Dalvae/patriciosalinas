@@ -1,6 +1,6 @@
 ---
 import ProtectedImage from "./ui/ReactProtrectedImage.tsx";
-import InfiniteLooper from "./ui/InfiniteLooper.tsx";
+import InfiniteLooper from "./ui/InfiniteLooper.astro";
 import type { Lang } from "../types/types";
 
 interface ImageInfo {
@@ -63,7 +63,6 @@ const createImageInfo = (src: string, alt: string): ImageInfo => ({
               </div>
               <div class="bg-white shadow-sm md:mx-6">
                 <InfiniteLooper
-                  client:load
                   speed={40}
                   direction={projectIndex % 2 === 0 ? "left" : "right"}
                 >

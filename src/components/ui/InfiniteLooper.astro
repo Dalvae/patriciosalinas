@@ -1,0 +1,118 @@
+---
+interface Props {
+  speed: number;
+  direction: "right" | "left";
+  class?: string;
+}
+const { speed, direction, class: className = "" } = Astro.props;
+---
+
+<div
+  class={`looper ${className}`}
+  data-speed={speed}
+  data-direction={direction}
+>
+  <div class="looper__innerList" data-animate="true">
+    <div class="looper__listInstance">
+      <slot />
+    </div>
+  </div>
+</div>
+<script>
+  class InfiniteLooper {
+    looper: HTMLElement;
+    innerList: HTMLElement;
+    listInstance: HTMLElement;
+    speed: number;
+    direction: string;
+
+    constructor(looper: HTMLElement) {
+      this.looper = looper;
+      this.innerList = this.looper.querySelector(".looper__innerList")!;
+      this.listInstance = this.looper.querySelector(".looper__listInstance")!;
+      this.speed = parseInt(this.looper.dataset.speed || "0", 10);
+      this.direction = this.looper.dataset.direction || "left";
+
+      this.init();
+    }
+
+    init() {
+      this.setupInstances();
+      window.addEventListener("resize", () => this.setupInstances());
+    }
+
+    setupInstances() {
+      const parentWidth = this.looper.clientWidth;
+      const contentWidth = this.listInstance.scrollWidth;
+
+      if (contentWidth < parentWidth) {
+        const instancesRequired = Math.ceil(parentWidth / contentWidth) + 1;
+
+        // Remove existing clones
+        this.innerList
+          .querySelectorAll(".looper__listInstance:not(:first-child)")
+          .forEach((el) => el.remove());
+
+        // Add new clones
+        for (let i = 1; i < instancesRequired; i++) {
+          const clone = this.listInstance.cloneNode(true) as HTMLElement;
+          this.innerList.appendChild(clone);
+        }
+      }
+
+      const totalWidth = contentWidth * this.innerList.children.length;
+      const animationDuration = totalWidth / this.speed;
+
+      this.innerList.style.setProperty(
+        "--animation-duration",
+        `${animationDuration}s`
+      );
+      this.innerList.style.setProperty(
+        "--animation-direction",
+        this.direction === "right" ? "reverse" : "normal"
+      );
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".looper").forEach((looperElement) => {
+      new InfiniteLooper(looperElement as HTMLElement);
+    });
+  });
+</script>
+<style>
+  .looper__innerList[data-animate="true"] .looper__listInstance {
+    animation: slideAnimation linear infinite;
+  }
+
+  .looper__listInstance {
+    display: flex;
+    width: max-content;
+    animation: none;
+  }
+
+  .looper {
+    width: 100%;
+    overflow: hidden;
+  }
+  .looper__innerList {
+    display: flex;
+    justify-content: flex-start;
+    width: fit-content;
+    height: 100%;
+    animation: scroll var(--animation-duration) linear infinite;
+    animation-direction: var(--animation-direction);
+  }
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .looper__listInstance {
+    display: flex;
+    height: 100%;
+  }
+</style>
