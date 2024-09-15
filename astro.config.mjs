@@ -16,6 +16,10 @@ export default defineConfig({
       ],
     },
   }),
+  image: {
+    domains: ["res.cloudinary.com"],
+    remotePatterns: [{ protocol: "https" }],
+  },
   i18n: {
     defaultLocale: "en",
     locales: ["es", "en", "sv"],

@@ -128,16 +128,34 @@
 @media (max-width: 600px) {
   .wp-block-gallery,
   .wp-block-gallery.is-cropped,
+  .custom-gallery,
   .custom-gallery .wp-block-columns,
   .custom-gallery .wp-block-column {
     flex-basis: 100%;
     min-width: 100%;
+    columns: 1;
   }
   .wp-block-gallery {
     columns: 1;
   }
+  
+  .custom-gallery {
+    display: block;
+  }
+  
+  .custom-gallery .wp-block-image {
+    height: auto; /* Permitir que la altura se ajuste automáticamente */
+    margin-bottom: 1rem; /* Espacio entre imágenes */
+  }
+  
+  .custom-gallery .wp-block-image img,
+  .custom-gallery .wp-block-image canvas,
+  .custom-gallery .protected-image-container,
+  .custom-gallery .protected-image-container canvas {
+    height: auto !important; /* Permitir que la altura se ajuste manteniendo la proporción */
+    max-height: 70vh; /* Limitar la altura máxima al 70% de la altura de la ventana */
+  }
 }
-
 /* Ajustes adicionales */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
