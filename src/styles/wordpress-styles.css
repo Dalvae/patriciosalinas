@@ -111,17 +111,17 @@
   display: flex;
 } */
 
-/* Media queries para responsividad */
+/* Media queries para dispositivos con pantallas más pequeñas */
 @media (max-width: 1024px) {
   .wp-block-gallery,
   .wp-block-gallery.is-cropped,
   .custom-gallery .wp-block-columns,
   .custom-gallery .wp-block-column {
-    flex-basis: calc(50% - var(--gallery-gap));
-    min-width: calc(50% - var(--gallery-gap));
+    flex-basis: calc(50% - var(--gallery-gap)) !important;
+    min-width: calc(50% - var(--gallery-gap)) !important;
   }
   .wp-block-gallery {
-    columns: 2;
+    columns: 2 !important; /* Aseguramos 2 columnas en pantallas medianas */
   }
 }
 
@@ -131,31 +131,33 @@
   .custom-gallery,
   .custom-gallery .wp-block-columns,
   .custom-gallery .wp-block-column {
-    flex-basis: 100%;
-    min-width: 100%;
-    columns: 1;
+    flex-basis: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
   }
+
   .wp-block-gallery {
-    columns: 1;
+    columns: 1 !important; /* Forzamos 1 columna en pantallas pequeñas */
   }
-  
+
   .custom-gallery {
-    display: block;
+    display: block !important;
   }
   
   .custom-gallery .wp-block-image {
-    height: auto; /* Permitir que la altura se ajuste automáticamente */
-    margin-bottom: 1rem; /* Espacio entre imágenes */
+    height: auto !important;
+    margin-bottom: 1rem !important;
   }
   
   .custom-gallery .wp-block-image img,
   .custom-gallery .wp-block-image canvas,
   .custom-gallery .protected-image-container,
   .custom-gallery .protected-image-container canvas {
-    height: auto !important; /* Permitir que la altura se ajuste manteniendo la proporción */
-    max-height: 70vh; /* Limitar la altura máxima al 70% de la altura de la ventana */
+    height: auto !important;
+    max-height: 70vh !important;
   }
 }
+
 /* Ajustes adicionales */
 .wp-block-group .wp-block-image,
 .wp-block-columns .wp-block-image {
