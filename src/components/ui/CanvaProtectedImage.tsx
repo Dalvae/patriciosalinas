@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X, Info } from "lucide-react";
 
+type HTMLString = string;
+
 interface ImageInfo {
   src: string;
   alt: string;
@@ -23,7 +25,6 @@ interface ProtectedImageProps {
   className?: string;
   containerClassName?: string;
   caption?: string;
-  disableOverlay?: boolean;
 }
 
 interface DialogProps {
@@ -73,6 +74,15 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
   );
 }
 
+interface DialogContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+function DialogContent({ children, className = "" }: DialogContentProps) {
+  return <div className={`${className}`}>{children}</div>;
+}
+
 function debounce(func: Function, wait: number) {
   let timeout: NodeJS.Timeout;
   return function executedFunction(...args: any[]) {
@@ -95,13 +105,18 @@ export default function ProtectedImage({
   className = "",
   containerClassName = "",
   caption,
-  disableOverlay = false,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
   const [showOverlay, setShowOverlay] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const modalCanvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -113,25 +128,26 @@ export default function ProtectedImage({
   }, []);
 
   useEffect(() => {
+    loadImage(src, canvasRef.current, false);
     setDialogImageIndex(allImages.findIndex((img) => img.src === src));
   }, [src, allImages]);
 
   const handleScroll = useCallback(() => {
-    if (containerRef.current && isMobile && !disableOverlay) {
+    if (containerRef.current && isMobile) {
       const rect = containerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const shouldShowOverlay =
         rect.top <= viewportHeight * 0.2 || rect.bottom >= viewportHeight * 0.8;
       setShowOverlay(shouldShowOverlay);
     }
-  }, [isMobile, disableOverlay]);
+  }, [isMobile]);
 
   const debouncedHandleScroll = useCallback(debounce(handleScroll, 100), [
     handleScroll,
   ]);
 
   useEffect(() => {
-    if (isMobile && !disableOverlay) {
+    if (isMobile) {
       window.addEventListener("scroll", debouncedHandleScroll);
       debouncedHandleScroll(); // Check initial state
     } else {
@@ -141,10 +157,85 @@ export default function ProtectedImage({
     return () => {
       window.removeEventListener("scroll", debouncedHandleScroll);
     };
-  }, [isMobile, debouncedHandleScroll, disableOverlay]);
+  }, [isMobile, debouncedHandleScroll]);
+  const drawImageOnCanvas = (
+    canvas: HTMLCanvasElement | null,
+    img: HTMLImageElement,
+    isModal: boolean
+  ) => {
+    if (canvas) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        let newWidth, newHeight;
+
+        if (isModal) {
+          const maxWidth = window.innerWidth * 0.9;
+          const maxHeight = window.innerHeight * 0.9;
+          const scale = Math.min(maxWidth / img.width, maxHeight / img.height);
+          newWidth = img.width * scale;
+          newHeight = img.height * scale;
+        } else {
+          const containerWidth = parseInt(width, 10) || img.width;
+          const containerHeight = parseInt(height, 10) || img.height;
+          const containerAspectRatio = containerWidth / containerHeight;
+          const imageAspectRatio = img.width / img.height;
+
+          if (containerAspectRatio > imageAspectRatio) {
+            newHeight = containerHeight;
+            newWidth = newHeight * imageAspectRatio;
+          } else {
+            newWidth = containerWidth;
+            newHeight = newWidth / imageAspectRatio;
+          }
+        }
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+        addWatermark(ctx, newWidth, newHeight);
+
+        setImageDimensions({ width: newWidth, height: newHeight });
+      }
+    }
+  };
+
+  const loadImage = (
+    imageSrc: string,
+    canvas: HTMLCanvasElement | null,
+    isModal: boolean
+  ) => {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = function () {
+      drawImageOnCanvas(canvas, img, isModal);
+    };
+    img.onerror = function (e) {
+      console.error("Error loading image:", imageSrc, e);
+    };
+    img.src = imageSrc;
+  };
+
+  const addWatermark = (
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+  ) => {
+    const text = "© Patricio Salinas";
+    const fontSize = Math.max(12, width * 0.02);
+    const margin = fontSize;
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    const textWidth = ctx.measureText(text).width;
+    ctx.fillText(text, width - textWidth - margin, height - margin);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
+    loadImage(allImages[dialogImageIndex].src, modalCanvasRef.current, true);
   };
 
   const closeModal = (e: React.MouseEvent) => {
@@ -158,7 +249,14 @@ export default function ProtectedImage({
         ? (dialogImageIndex + 1) % allImages.length
         : (dialogImageIndex - 1 + allImages.length) % allImages.length;
     setDialogImageIndex(newIndex);
+    loadImage(allImages[newIndex].src, modalCanvasRef.current, true);
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      loadImage(allImages[dialogImageIndex].src, modalCanvasRef.current, true);
+    }
+  }, [isModalOpen, dialogImageIndex, allImages]);
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -183,42 +281,48 @@ export default function ProtectedImage({
       <div
         ref={containerRef}
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
-        style={{ width, height, ...style }}
+        style={{
+          width:
+            imageDimensions.width > 0 ? `${imageDimensions.width}px` : width,
+          height:
+            imageDimensions.height > 0 ? `${imageDimensions.height}px` : height,
+          ...style,
+        }}
         onClick={openModal}
         onContextMenu={preventContextMenu}
         onDragStart={preventDragStart}
       >
-        <img
-          src={src}
-          alt={alt}
-          className={`w-full  object-contain not-prose ${className}`}
+        <canvas
+          ref={canvasRef}
+          className={`max-w-full h-auto block ${className}`}
+          style={{
+            visibility: imageDimensions.width > 0 ? "visible" : "hidden",
+          }}
         />
-        {!disableOverlay && (
-          <div
-            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-start justify-between transition-opacity duration-300 ${
-              isMobile
-                ? showOverlay
-                  ? "opacity-100"
-                  : "opacity-0"
-                : "opacity-0 hover:opacity-100"
-            }`}
-          >
-            <div className="flex justify-end w-full p-2">
-              <div className="text-white">
-                <Maximize2 className="h-6 w-6" />
-              </div>
+        <div
+          className={`absolute top-0 left-0 w-full h-full bg-black bg-opacity-70 flex flex-col items-start justify-between transition-opacity duration-300 ${
+            isMobile
+              ? showOverlay
+                ? "opacity-100"
+                : "opacity-0"
+              : "opacity-0 hover:opacity-100"
+          }`}
+        >
+          <div className="flex justify-end w-full p-2">
+            <div className="text-white">
+              <Maximize2 className="h-6 w-6" />
             </div>
-            {caption && (
-              <div className="text-white w-full font-bold p-2">
-                <div dangerouslySetInnerHTML={{ __html: caption }}></div>
-              </div>
-            )}
           </div>
-        )}
+          {caption && (
+            <div className="text-white w-full font-bold p-2">
+              <div dangerouslySetInnerHTML={{ __html: caption }}></div>
+            </div>
+          )}
+        </div>
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center "
           onClick={handleDialogClick}
           onContextMenu={preventContextMenu}
           onDragStart={preventDragStart}
@@ -240,22 +344,18 @@ export default function ProtectedImage({
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-
-          {/* Contenedor de la imagen y el texto */}
-          <div className="flex md:flex-row flex-col items-start max-w-[90vw] max-h-[90vh]">
-            {/* Imagen */}
-            <div className="relative">
-              <img
-                src={allImages[dialogImageIndex].src}
-                alt={allImages[dialogImageIndex].alt}
-                className="max-w-[70vw] max-h-[70vh] object-contain"
+          <div className="flex flex-col items-center max-w-[90vw] max-h-[90vh]">
+            {/* Contenedor de la imagen y el texto */}
+            <div className="relative flex flex-row max-w-full">
+              <canvas
+                ref={modalCanvasRef}
+                className="max-w-[90vw] max-h-[70vh] object-contain"
                 onContextMenu={preventContextMenu}
                 onDragStart={preventDragStart}
               />
             </div>
-
             {allImages[dialogImageIndex].caption && (
-              <div className="m-4 text-white text-2xl font-bold self-start">
+              <div className=" m-4 text-white text-lg font-bold">
                 <div
                   className="space-y-4"
                   dangerouslySetInnerHTML={{
@@ -265,7 +365,6 @@ export default function ProtectedImage({
               </div>
             )}
           </div>
-
           <button
             onClick={(e) => {
               e.stopPropagation();

@@ -61,7 +61,7 @@ const createImageInfo = (src: string, alt: string): ImageInfo => ({
                   direction={projectIndex % 2 === 0 ? "left" : "right"}
                 >
                   {project.images.map((image, imageIndex) => (
-                    <div class="flex-shrink-0 mx-2 looper-content">
+                    <div class="flex-shrink-0 mx-2 looper-content h-[300]">
                       <ProtectedImage
                         client:load
                         src={image}
@@ -69,12 +69,15 @@ const createImageInfo = (src: string, alt: string): ImageInfo => ({
                         allImages={project.images.map((img) =>
                           createImageInfo(img, `${project.title} - Image`)
                         )}
-                        width="auto"
-                        height="300px"
                         style={{
-                          height: "300px",
+                          height: "100%",
+                          width: "auto",
+                          maxWidth: "none",
                           objectFit: "contain",
                         }}
+                        className="h-[300px]"
+                        containerClassName="h-[300px]"
+                        disableOverlay={true}
                       />
                     </div>
                   ))}
