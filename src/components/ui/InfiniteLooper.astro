@@ -12,99 +12,171 @@ const { speed, direction, class: className = "" } = Astro.props;
   data-speed={speed}
   data-direction={direction}
 >
-  <div class="looper__innerList" data-animate="true">
+  <div class="looper__innerList" aria-hidden="true">
+    <div class="looper__listInstance">
+      <slot />
+    </div>
     <div class="looper__listInstance">
       <slot />
     </div>
   </div>
 </div>
+
 <script>
   class InfiniteLooper {
     looper: HTMLElement;
     innerList: HTMLElement;
-    listInstance: HTMLElement;
-    speed: number;
+    listInstances: NodeListOf<HTMLElement>;
+    baseSpeed: number;
+    currentSpeed: number;
+    targetSpeed: number;
     direction: string;
+    isMouseOver: boolean;
+    animationId: number | null;
+    lastScrollTime: number;
+    position: number;
 
     constructor(looper: HTMLElement) {
       this.looper = looper;
       this.innerList = this.looper.querySelector(".looper__innerList")!;
-      this.listInstance = this.looper.querySelector(".looper__listInstance")!;
-      this.speed = parseInt(this.looper.dataset.speed || "0", 10);
+      this.listInstances = this.innerList.querySelectorAll(
+        ".looper__listInstance"
+      )!;
+      this.baseSpeed = parseFloat(this.looper.dataset.speed || "0") * 0.05;
       this.direction = this.looper.dataset.direction || "left";
+      this.currentSpeed = this.baseSpeed * (this.direction === "left" ? 1 : -1);
+      this.targetSpeed = this.currentSpeed;
+      this.isMouseOver = false;
+      this.animationId = null;
+      this.lastScrollTime = 0;
+      this.position =
+        this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
 
       this.init();
     }
 
     init() {
-      this.setupInstances();
-      window.addEventListener("resize", () => this.setupInstances());
+      this.addEventListeners();
+      this.startAnimation();
     }
 
-    setupInstances() {
-      const parentWidth = this.looper.clientWidth;
-      const contentWidth = this.listInstance.scrollWidth;
+    addEventListeners() {
+      this.looper.addEventListener("mouseenter", () => {
+        this.isMouseOver = true;
+        this.targetSpeed = 0;
+      });
 
-      if (contentWidth < parentWidth) {
-        const instancesRequired = Math.ceil(parentWidth / contentWidth) + 1;
+      this.looper.addEventListener("mouseleave", () => {
+        this.isMouseOver = false;
+        this.targetSpeed =
+          this.baseSpeed * (this.direction === "left" ? 1 : -1);
+      });
 
-        // Remove existing clones
-        this.innerList
-          .querySelectorAll(".looper__listInstance:not(:first-child)")
-          .forEach((el) => el.remove());
+      this.looper.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const now = performance.now();
+        if (now - this.lastScrollTime > 50) {
+          this.lastScrollTime = now;
+          this.isMouseOver = false;
+          const scrollDirection = e.deltaY > 0 ? 1 : -1;
+          const speedChange = scrollDirection * this.baseSpeed * 3;
+          this.targetSpeed = Math.max(
+            -this.baseSpeed * 8,
+            Math.min(this.targetSpeed + speedChange, this.baseSpeed * 8)
+          );
+        }
+      });
 
-        // Add new clones
-        for (let i = 1; i < instancesRequired; i++) {
-          const clone = this.listInstance.cloneNode(true) as HTMLElement;
-          this.innerList.appendChild(clone);
+      window.addEventListener("resize", () => {
+        this.position =
+          this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
+        this.startAnimation();
+      });
+    }
+
+    startAnimation() {
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+      }
+      this.animate();
+    }
+
+    animate() {
+      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
+      this.position -= this.currentSpeed;
+
+      const instanceWidth = this.listInstances[0].offsetWidth;
+
+      if (this.direction === "left") {
+        if (this.position <= -instanceWidth) {
+          this.position += instanceWidth;
+          this.innerList.appendChild(this.listInstances[0]);
+          this.listInstances = this.innerList.querySelectorAll(
+            ".looper__listInstance"
+          )!;
+        }
+      } else if (this.direction === "right") {
+        if (this.position >= 0) {
+          this.position -= instanceWidth;
+          this.innerList.prepend(
+            this.listInstances[this.listInstances.length - 1]
+          );
+          this.listInstances = this.innerList.querySelectorAll(
+            ".looper__listInstance"
+          )!;
         }
       }
 
-      const totalWidth = contentWidth * this.innerList.children.length;
-      const animationDuration = totalWidth / this.speed;
+      this.innerList.style.transform = `translateX(${this.position}px)`;
+      this.animationId = requestAnimationFrame(() => this.animate());
+    }
 
-      this.innerList.style.setProperty(
-        "--animation-duration",
-        `${animationDuration}s`
-      );
-      this.innerList.style.setProperty(
-        "--animation-direction",
-        this.direction === "right" ? "reverse" : "normal"
-      );
+    cleanup() {
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+      }
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function setupLoopers() {
     document.querySelectorAll(".looper").forEach((looperElement) => {
-      new InfiniteLooper(looperElement as HTMLElement);
+      const looper = new InfiniteLooper(looperElement as HTMLElement);
+      (looperElement as any).__infiniteLooper = looper;
     });
-  });
-</script>
-<style>
-  .looper__listInstance {
-    display: flex;
-    width: max-content;
-    animation: none;
   }
 
+  document.addEventListener("astro:page-load", setupLoopers);
+
+  document.addEventListener("astro:before-swap", () => {
+    document.querySelectorAll(".looper").forEach((looperElement) => {
+      const instance = (looperElement as any).__infiniteLooper;
+      if (instance) {
+        instance.cleanup();
+      }
+    });
+  });
+
+  if (document.readyState === "complete") {
+    setupLoopers();
+  } else {
+    window.addEventListener("load", setupLoopers);
+  }
+</script>
+
+<style>
   .looper {
     width: 100%;
     overflow: hidden;
   }
+
   .looper__innerList {
     display: flex;
-    justify-content: flex-start;
     width: fit-content;
-    height: 100%;
-    animation: scroll var(--animation-duration) linear infinite;
-    animation-direction: var(--animation-direction);
   }
-  @keyframes scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+
+  .looper__listInstance {
+    display: flex;
+    width: auto;
+    flex-shrink: 0;
   }
 </style>
