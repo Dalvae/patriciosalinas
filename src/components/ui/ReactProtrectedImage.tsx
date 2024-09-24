@@ -218,7 +218,7 @@ export default function ProtectedImage({
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center"
           onClick={handleDialogClick}
           onContextMenu={preventContextMenu}
           onDragStart={preventDragStart}
@@ -234,36 +234,30 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("prev");
             }}
-            className={`absolute ${
-              isMobile ? "left-4 bottom-20" : "left-4 top-1/2 -translate-y-1/2"
-            } text-white bg-black bg-opacity-50 p-2 rounded-full z-10`}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
 
-          {/* Contenedor de la imagen y el texto */}
-          <div className="flex md:flex-row flex-col items-start max-w-[90vw] max-h-[90vh]">
-            {/* Imagen */}
-            <div className="relative">
+          <div className="flex items-center justify-center w-full h-full">
+            <div className="relative flex items-center">
               <img
                 src={allImages[dialogImageIndex].src}
                 alt={allImages[dialogImageIndex].alt}
-                className="max-w-[70vw] max-h-[70vh] object-contain"
+                className="max-w-[70vw] max-h-[80vh] object-contain"
                 onContextMenu={preventContextMenu}
                 onDragStart={preventDragStart}
               />
+              {allImages[dialogImageIndex].caption && (
+                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg font-bold">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: allImages[dialogImageIndex].caption,
+                    }}
+                  />
+                </div>
+              )}
             </div>
-
-            {allImages[dialogImageIndex].caption && (
-              <div className="m-4 text-white text-2xl font-bold self-start">
-                <div
-                  className="space-y-4"
-                  dangerouslySetInnerHTML={{
-                    __html: allImages[dialogImageIndex].caption,
-                  }}
-                ></div>
-              </div>
-            )}
           </div>
 
           <button
@@ -271,11 +265,7 @@ export default function ProtectedImage({
               e.stopPropagation();
               changeImage("next");
             }}
-            className={`absolute ${
-              isMobile
-                ? "right-4 bottom-20"
-                : "right-4 top-1/2 -translate-y-1/2"
-            } text-white bg-black bg-opacity-50 p-2 rounded-full z-10`}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
