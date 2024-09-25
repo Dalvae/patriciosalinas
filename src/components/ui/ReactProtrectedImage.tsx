@@ -18,7 +18,7 @@ interface ProtectedImageProps {
   alt: string;
   width?: string;
   height?: string;
-  allImages: ImageInfo[];
+  allImages?: ImageInfo[];
   style?: React.CSSProperties;
   className?: string;
   containerClassName?: string;
@@ -102,6 +102,7 @@ export default function ProtectedImage({
   const [showOverlay, setShowOverlay] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageArray = allImages || [{ src, alt, caption }];
 
   useEffect(() => {
     const checkMobile = () => {
@@ -113,8 +114,8 @@ export default function ProtectedImage({
   }, []);
 
   useEffect(() => {
-    setDialogImageIndex(allImages.findIndex((img) => img.src === src));
-  }, [src, allImages]);
+    setDialogImageIndex(imageArray.findIndex((img) => img.src === src));
+  }, [src, imageArray]);
 
   const handleScroll = useCallback(() => {
     if (containerRef.current && isMobile && !disableOverlay) {
@@ -153,20 +154,24 @@ export default function ProtectedImage({
   };
 
   const changeImage = (direction: "next" | "prev") => {
-    const newIndex =
-      direction === "next"
-        ? (dialogImageIndex + 1) % allImages.length
-        : (dialogImageIndex - 1 + allImages.length) % allImages.length;
-    setDialogImageIndex(newIndex);
+    if (imageArray.length > 1) {
+      const newIndex =
+        direction === "next"
+          ? (dialogImageIndex + 1) % imageArray.length
+          : (dialogImageIndex - 1 + imageArray.length) % imageArray.length;
+      setDialogImageIndex(newIndex);
+    }
   };
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    if (x < rect.width * 0.3) {
-      changeImage("prev");
-    } else if (x > rect.width * 0.7) {
-      changeImage("next");
+    if (imageArray.length > 1) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x < rect.width * 0.3) {
+        changeImage("prev");
+      } else if (x > rect.width * 0.7) {
+        changeImage("next");
+      }
     }
   };
 
@@ -191,7 +196,7 @@ export default function ProtectedImage({
         <img
           src={src}
           alt={alt}
-          className={`w-full  object-contain not-prose ${className}`}
+          className={`w-full h-full object-cover not-prose ${className}`}
         />
         {!disableOverlay && (
           <div
@@ -229,46 +234,48 @@ export default function ProtectedImage({
           >
             <X className="h-6 w-6" />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              changeImage("prev");
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-
+          {imageArray.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeImage("prev");
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeImage("next");
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </>
+          )}
           <div className="flex items-center justify-center w-full h-full">
             <div className="relative flex items-center">
               <img
-                src={allImages[dialogImageIndex].src}
-                alt={allImages[dialogImageIndex].alt}
+                src={imageArray[dialogImageIndex].src}
+                alt={imageArray[dialogImageIndex].alt}
                 className="max-w-[70vw] max-h-[80vh] object-contain"
                 onContextMenu={preventContextMenu}
                 onDragStart={preventDragStart}
               />
-              {allImages[dialogImageIndex].caption && (
+              {imageArray[dialogImageIndex].caption && (
                 <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg font-bold">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: allImages[dialogImageIndex].caption,
+                      __html: imageArray[dialogImageIndex].caption,
                     }}
                   />
                 </div>
               )}
             </div>
           </div>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              changeImage("next");
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
         </div>
       </Dialog>
     </>
