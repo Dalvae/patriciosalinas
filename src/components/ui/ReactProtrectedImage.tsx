@@ -214,7 +214,7 @@ export default function ProtectedImage({
               </div>
             </div>
             {caption && (
-              <div className="text-white w-full font-bold p-2">
+              <div className="text-white w-full  p-2">
                 <div dangerouslySetInnerHTML={{ __html: caption }}></div>
               </div>
             )}
@@ -266,7 +266,7 @@ export default function ProtectedImage({
                 onDragStart={preventDragStart}
               />
               {imageArray[dialogImageIndex].caption && (
-                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg font-bold">
+                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg ">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: imageArray[dialogImageIndex].caption,
