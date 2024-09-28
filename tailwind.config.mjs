@@ -13,13 +13,28 @@ export default {
       },
       colors: {
         primary: {
-          600: "#111111", // Cambiado a un string hexadecimal
+          600: "#111111",
         },
+        gold: "#d4af37",
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            "--tw-prose-body": theme("colors.black"),
+            "--tw-prose-headings": theme("colors.black"),
+            "--tw-prose-links": theme("colors.gray.900"),
+            "& *::selection": {
+              backgroundColor: theme("colors.gold"),
+              color: theme("colors.white"),
+            },
+            "& *::-moz-selection": {
+              backgroundColor: theme("colors.gold"),
+              color: theme("colors.white"),
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [
-    require("@tailwindcss/typography"),
-    // require("./plugins/wordpress-styles"),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };
