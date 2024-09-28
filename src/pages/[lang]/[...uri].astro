@@ -4,7 +4,7 @@ import { getPages } from "../../lib/graphql-queries";
 import type { Page, Lang } from "../../types/types";
 import { useTranslations } from "../../i18n/utils";
 import PageContent from "../../components/PageContent.astro";
-import HomePage2 from "../../components/HomePage2.astro";
+import HomePage from "../../components/HomePage.astro";
 import { getProjectPageSlug } from "../../lib/project-utils";
 
 export async function getStaticPaths() {
@@ -73,7 +73,7 @@ const projectsForHomePage = projects.map((project) => {
 <Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
   {
     isHomePage ? (
-      <HomePage2
+      <HomePage
         content={currentPage.content || ""}
         projects={projectsForHomePage}
         lang={lang as Lang}

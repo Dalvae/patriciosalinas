@@ -196,7 +196,7 @@ export default function ProtectedImage({
         <img
           src={src}
           alt={alt}
-          className={`w-full h-full object-cover not-prose ${className}`}
+          className={`w-full ${className} object-cover not-prose `}
         />
         {!disableOverlay && (
           <div
