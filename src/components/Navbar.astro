@@ -9,7 +9,7 @@ import {
 import type { Page, Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export interface Props {
   currentPath: string;
@@ -20,10 +20,6 @@ export interface Props {
 const { currentPath, lang, pages } = Astro.props;
 const t = useTranslations(lang);
 
-function capitalizeFirstLetter(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function isCurrentItem(itemUri: string): boolean {
   return (
     currentPath === itemUri ||
@@ -31,7 +27,7 @@ function isCurrentItem(itemUri: string): boolean {
   );
 }
 
-function createNavStructure(pages: Page[]): any[] {
+function createNavStructure(pages: Page[], lang: Lang): any[] {
   const structure: any[] = [];
   pages.forEach((page) => {
     const parts = page.uri.split("/").filter(Boolean);
@@ -54,11 +50,36 @@ function createNavStructure(pages: Page[]): any[] {
       }
     });
   });
+
+  const projectSlugs = { es: "proyectos", en: "projects", sv: "projekt" };
+  const projectSlug = projectSlugs[lang] || "proyectos";
+  const projectsItem = structure.find((item) => item.slug === projectSlug);
+
+  if (projectsItem && projectsItem.children) {
+    const atacamaIndex = projectsItem.children.findIndex(
+      (child: any) => child.slug === "atacama" || child.slug === "atacama-2"
+    );
+    const walterBenjaminIndex = projectsItem.children.findIndex(
+      (child: any) => child.slug === "walter-benjamin"
+    );
+
+    if (atacamaIndex !== -1 && walterBenjaminIndex !== -1) {
+      const atacama = projectsItem.children.splice(atacamaIndex, 1)[0];
+      const walterBenjamin = projectsItem.children.splice(
+        walterBenjaminIndex - (atacamaIndex < walterBenjaminIndex ? 1 : 0),
+        1
+      )[0];
+      projectsItem.children.unshift(walterBenjamin);
+      projectsItem.children.unshift(atacama);
+    }
+  }
+
   return structure;
 }
 
 const navStructure = createNavStructure(
-  pages.filter((page) => !page.isFrontPage)
+  pages.filter((page) => !page.isFrontPage),
+  lang
 );
 ---
 
