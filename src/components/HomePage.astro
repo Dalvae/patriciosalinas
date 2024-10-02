@@ -57,7 +57,7 @@ const createImageInfo = (src: string, alt: string): ImageInfo => ({
               </div>
               <div class="bg-white md:mx-6">
                 <InfiniteLooper
-                  speed={20}
+                  speed={10}
                   direction={projectIndex % 2 === 0 ? "left" : "right"}
                 >
                   {project.images.map((image, imageIndex) => (
