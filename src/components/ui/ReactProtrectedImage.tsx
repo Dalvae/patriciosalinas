@@ -158,9 +158,11 @@ export default function ProtectedImage({
     if (imageArray.length > 1) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      changeImage(
-        x < rect.width * 0.3 ? "prev" : x > rect.width * 0.7 ? "next" : null
-      );
+      if (x < rect.width * 0.3) {
+        changeImage("prev");
+      } else if (x > rect.width * 0.7) {
+        changeImage("next");
+      }
     }
   };
 
@@ -224,7 +226,7 @@ export default function ProtectedImage({
                   e.stopPropagation();
                   changeImage("prev");
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+                className="absolute left-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -233,31 +235,32 @@ export default function ProtectedImage({
                   e.stopPropagation();
                   changeImage("next");
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+                className="absolute right-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
             </>
           )}
-          <div className="flex items-center justify-center w-full h-full">
-            <div className="relative flex items-center">
+          <div className="relative flex flex-col xl:flex-row items-center justify-center w-full h-full px-4">
+            <div className="flex items-center justify-center w-full max-w-[1024px]">
               <img
                 src={imageArray[dialogImageIndex].src}
                 alt={imageArray[dialogImageIndex].alt}
-                className="max-w-[70vw] max-h-[80vh] object-contain"
+                className="max-w-full max-h-[80vh] object-contain"
                 onContextMenu={preventDefaultActions}
                 onDragStart={preventDefaultActions}
               />
-              {imageArray[dialogImageIndex].caption && (
-                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: imageArray[dialogImageIndex].caption,
-                    }}
-                  />
-                </div>
-              )}
             </div>
+            {imageArray[dialogImageIndex].caption && (
+              <div className="w-full text-center mt-4 mb-4 xl:text-left xl:mt-0 xl:mb-0 xl:ml-4 xl:w-1/4 max-w-[200px]">
+                <div
+                  className="text-white text-lg "
+                  dangerouslySetInnerHTML={{
+                    __html: imageArray[dialogImageIndex].caption,
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </Dialog>
