@@ -100,7 +100,7 @@
   overflow: hidden;
 }
 
-.protected-image-container canvas {
+.is-cropped  .protected-image-container img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
