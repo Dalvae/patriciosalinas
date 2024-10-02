@@ -1,8 +1,7 @@
 //src/components/ui/ReactProtectedImage.tsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
-
 import { createPortal } from "react-dom";
-import { Maximize2, ChevronLeft, ChevronRight, X, Info } from "lucide-react";
+import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ImageInfo {
   src: string;
@@ -105,9 +104,7 @@ export default function ProtectedImage({
   const imageArray = allImages || [{ src, alt, caption }];
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -121,9 +118,9 @@ export default function ProtectedImage({
     if (containerRef.current && isMobile && !disableOverlay) {
       const rect = containerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const shouldShowOverlay =
-        rect.top <= viewportHeight * 0.2 || rect.bottom >= viewportHeight * 0.8;
-      setShowOverlay(shouldShowOverlay);
+      setShowOverlay(
+        rect.top <= viewportHeight * 0.2 || rect.bottom >= viewportHeight * 0.8
+      );
     }
   }, [isMobile, disableOverlay]);
 
@@ -134,20 +131,14 @@ export default function ProtectedImage({
   useEffect(() => {
     if (isMobile && !disableOverlay) {
       window.addEventListener("scroll", debouncedHandleScroll);
-      debouncedHandleScroll(); // Check initial state
+      debouncedHandleScroll();
     } else {
       setShowOverlay(false);
     }
-
-    return () => {
-      window.removeEventListener("scroll", debouncedHandleScroll);
-    };
+    return () => window.removeEventListener("scroll", debouncedHandleScroll);
   }, [isMobile, debouncedHandleScroll, disableOverlay]);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
+  const openModal = () => setIsModalOpen(true);
   const closeModal = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsModalOpen(false);
@@ -155,11 +146,11 @@ export default function ProtectedImage({
 
   const changeImage = (direction: "next" | "prev") => {
     if (imageArray.length > 1) {
-      const newIndex =
+      setDialogImageIndex((prevIndex) =>
         direction === "next"
-          ? (dialogImageIndex + 1) % imageArray.length
-          : (dialogImageIndex - 1 + imageArray.length) % imageArray.length;
-      setDialogImageIndex(newIndex);
+          ? (prevIndex + 1) % imageArray.length
+          : (prevIndex - 1 + imageArray.length) % imageArray.length
+      );
     }
   };
 
@@ -167,21 +158,14 @@ export default function ProtectedImage({
     if (imageArray.length > 1) {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      if (x < rect.width * 0.3) {
-        changeImage("prev");
-      } else if (x > rect.width * 0.7) {
-        changeImage("next");
-      }
+      changeImage(
+        x < rect.width * 0.3 ? "prev" : x > rect.width * 0.7 ? "next" : null
+      );
     }
   };
 
-  const preventContextMenu = (e: React.MouseEvent) => {
+  const preventDefaultActions = (e: React.MouseEvent | React.DragEvent) =>
     e.preventDefault();
-  };
-
-  const preventDragStart = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
 
   return (
     <>
@@ -190,13 +174,13 @@ export default function ProtectedImage({
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
         style={{ width, height, ...style }}
         onClick={openModal}
-        onContextMenu={preventContextMenu}
-        onDragStart={preventDragStart}
+        onContextMenu={preventDefaultActions}
+        onDragStart={preventDefaultActions}
       >
         <img
           src={src}
           alt={alt}
-          className={`w-full ${className} object-cover not-prose `}
+          className={`w-full ${className} object-cover not-prose`}
         />
         {!disableOverlay && (
           <div
@@ -209,14 +193,13 @@ export default function ProtectedImage({
             }`}
           >
             <div className="flex justify-end w-full p-2">
-              <div className="text-white">
-                <Maximize2 className="h-6 w-6" />
-              </div>
+              <Maximize2 className="h-6 w-6 text-white" />
             </div>
             {caption && (
-              <div className="text-white w-full  p-2">
-                <div dangerouslySetInnerHTML={{ __html: caption }}></div>
-              </div>
+              <div
+                className="text-white w-full p-2"
+                dangerouslySetInnerHTML={{ __html: caption }}
+              />
             )}
           </div>
         )}
@@ -225,8 +208,8 @@ export default function ProtectedImage({
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"
           onClick={handleDialogClick}
-          onContextMenu={preventContextMenu}
-          onDragStart={preventDragStart}
+          onContextMenu={preventDefaultActions}
+          onDragStart={preventDefaultActions}
         >
           <button
             onClick={closeModal}
@@ -262,11 +245,11 @@ export default function ProtectedImage({
                 src={imageArray[dialogImageIndex].src}
                 alt={imageArray[dialogImageIndex].alt}
                 className="max-w-[70vw] max-h-[80vh] object-contain"
-                onContextMenu={preventContextMenu}
-                onDragStart={preventDragStart}
+                onContextMenu={preventDefaultActions}
+                onDragStart={preventDefaultActions}
               />
               {imageArray[dialogImageIndex].caption && (
-                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg ">
+                <div className="absolute left-full top-0 ml-4 max-w-[20vw] text-white text-lg">
                   <div
                     dangerouslySetInnerHTML={{
                       __html: imageArray[dialogImageIndex].caption,
