@@ -31,10 +31,23 @@ function createNavStructure(pages: Page[], lang: Lang): any[] {
   const structure: any[] = [];
   let bioItem: any = null;
 
+  const bioSlugs = {
+    es: "bio",
+    en: "bio-2",
+    sv: "bio-3",
+  };
+
   pages.forEach((page) => {
     const parts = page.uri.split("/").filter(Boolean);
-    if (parts[parts.length - 1].toLowerCase() === "bio") {
-      bioItem = { slug: "bio", title: page.title, uri: page.uri, children: [] };
+    const lastPart = parts[parts.length - 1].toLowerCase();
+
+    if (lastPart === bioSlugs[lang as keyof typeof bioSlugs]) {
+      bioItem = {
+        slug: lastPart,
+        title: page.title,
+        uri: page.uri,
+        children: [],
+      };
     } else {
       let current = structure;
       parts.forEach((part, index) => {
@@ -80,19 +93,13 @@ function createNavStructure(pages: Page[], lang: Lang): any[] {
     }
   }
 
-  if (bioItem) {
-    structure.push(bioItem);
-  }
-
-  return structure;
+  return { structure, bioItem };
 }
 
-const navStructure = createNavStructure(
+const { structure: navStructure, bioItem } = createNavStructure(
   pages.filter((page) => !page.isFrontPage),
   lang
 );
-
-const bioItem = navStructure.pop();
 ---
 
 <Astronav>
