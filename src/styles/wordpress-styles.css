@@ -171,6 +171,10 @@
 .has-text-align-right {
   text-align: right;
 }
+.has-large-font-size{
+  font-size: 1.25rem; 
+  line-height: 1.75rem; 
+}
 
 .prose ul, .prose ol {
   list-style-type: none;
