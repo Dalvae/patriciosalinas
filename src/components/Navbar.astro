@@ -29,26 +29,32 @@ function isCurrentItem(itemUri: string): boolean {
 
 function createNavStructure(pages: Page[], lang: Lang): any[] {
   const structure: any[] = [];
+  let bioItem: any = null;
+
   pages.forEach((page) => {
     const parts = page.uri.split("/").filter(Boolean);
-    let current = structure;
-    parts.forEach((part, index) => {
-      if (index !== 0) {
-        const existing = current.find((item) => item.slug === part);
-        if (existing) {
-          current = existing.children;
-        } else {
-          const newItem = {
-            slug: part,
-            title: index === parts.length - 1 ? page.title : part,
-            uri: page.uri,
-            children: [],
-          };
-          current.push(newItem);
-          current = newItem.children;
+    if (parts[parts.length - 1].toLowerCase() === "bio") {
+      bioItem = { slug: "bio", title: page.title, uri: page.uri, children: [] };
+    } else {
+      let current = structure;
+      parts.forEach((part, index) => {
+        if (index !== 0) {
+          const existing = current.find((item) => item.slug === part);
+          if (existing) {
+            current = existing.children;
+          } else {
+            const newItem = {
+              slug: part,
+              title: index === parts.length - 1 ? page.title : part,
+              uri: page.uri,
+              children: [],
+            };
+            current.push(newItem);
+            current = newItem.children;
+          }
         }
-      }
-    });
+      });
+    }
   });
 
   const projectSlugs = { es: "proyectos", en: "projects", sv: "projekt" };
@@ -74,6 +80,10 @@ function createNavStructure(pages: Page[], lang: Lang): any[] {
     }
   }
 
+  if (bioItem) {
+    structure.push(bioItem);
+  }
+
   return structure;
 }
 
@@ -81,6 +91,8 @@ const navStructure = createNavStructure(
   pages.filter((page) => !page.isFrontPage),
   lang
 );
+
+const bioItem = navStructure.pop();
 ---
 
 <Astronav>
@@ -149,6 +161,22 @@ const navStructure = createNavStructure(
               )}
             </li>
           ))
+        }
+        {
+          bioItem && (
+            <li class="relative group py-2 md:py-0">
+              <a
+                href={bioItem.uri}
+                class={`block uppercase ${
+                  isCurrentItem(bioItem.uri)
+                    ? "text-black active-item"
+                    : "text-neutral-800 hover:text-neutral-950"
+                }`}
+              >
+                {bioItem.title}
+              </a>
+            </li>
+          )
         }
       </ul>
       <Dropdown class="group ml-0 md:ml-6 mt-2 md:mt-0">
