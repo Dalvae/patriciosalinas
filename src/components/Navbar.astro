@@ -27,9 +27,21 @@ function isCurrentItem(itemUri: string): boolean {
   );
 }
 
-function createNavStructure(pages: Page[], lang: Lang): any[] {
-  const structure: any[] = [];
-  let bioItem: any = null;
+interface NavItem {
+  slug: string;
+  title: string;
+  uri: string;
+  children: NavItem[];
+}
+
+interface NavStructure {
+  structure: NavItem[];
+  bioItem: NavItem | null;
+}
+
+function createNavStructure(pages: Page[], lang: Lang): NavStructure {
+  const structure: NavItem[] = [];
+  let bioItem: NavItem | null = null;
 
   const bioSlugs = {
     es: "bio",
@@ -56,7 +68,7 @@ function createNavStructure(pages: Page[], lang: Lang): any[] {
           if (existing) {
             current = existing.children;
           } else {
-            const newItem = {
+            const newItem: NavItem = {
               slug: part,
               title: index === parts.length - 1 ? page.title : part,
               uri: page.uri,
@@ -76,10 +88,10 @@ function createNavStructure(pages: Page[], lang: Lang): any[] {
 
   if (projectsItem && projectsItem.children) {
     const atacamaIndex = projectsItem.children.findIndex(
-      (child: any) => child.slug === "atacama" || child.slug === "atacama-2"
+      (child) => child.slug === "atacama" || child.slug === "atacama-2"
     );
     const walterBenjaminIndex = projectsItem.children.findIndex(
-      (child: any) => child.slug === "walter-benjamin"
+      (child) => child.slug === "walter-benjamin"
     );
 
     if (atacamaIndex !== -1 && walterBenjaminIndex !== -1) {
@@ -125,7 +137,7 @@ const { structure: navStructure, bioItem } = createNavStructure(
     <MenuItems class="hidden md:flex md:items-center mt-4 md:mt-0">
       <ul class="flex flex-col md:flex-row md:space-x-3">
         {
-          navStructure.map((item) => (
+          navStructure.map((item: NavItem) => (
             <li class="relative group py-2 md:py-0">
               {item.children && item.children.length > 0 ? (
                 <Dropdown class="group">
@@ -137,7 +149,7 @@ const { structure: navStructure, bioItem } = createNavStructure(
                   </button>
                   <DropdownItems>
                     <ul class="bg-white md:border md:border-gray-200 md:shadow-lg md:absolute left-0 mt-2 w-48 z-50">
-                      {item.children.map((child: any) => (
+                      {item.children.map((child: NavItem) => (
                         <li>
                           <a
                             href={child.uri}
