@@ -35,6 +35,13 @@ const { speed, direction, class: className = "" } = Astro.props;
     animationId: number | null;
     lastScrollTime: number;
     position: number;
+    isDragging: boolean;
+    startX: number;
+    currentX: number;
+    lastX: number;
+    startPosition: number;
+    lastDragTime: number;
+    dragVelocity: number;
 
     constructor(looper: HTMLElement) {
       this.looper = looper;
@@ -51,6 +58,13 @@ const { speed, direction, class: className = "" } = Astro.props;
       this.lastScrollTime = 0;
       this.position =
         this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
+      this.isDragging = false;
+      this.startX = 0;
+      this.currentX = 0;
+      this.lastX = 0;
+      this.startPosition = 0;
+      this.lastDragTime = 0;
+      this.dragVelocity = 0;
 
       this.init();
     }
@@ -68,8 +82,7 @@ const { speed, direction, class: className = "" } = Astro.props;
 
       this.looper.addEventListener("mouseleave", () => {
         this.isMouseOver = false;
-        this.targetSpeed =
-          this.baseSpeed * (this.direction === "left" ? 1 : -1);
+        this.resetTargetSpeed();
       });
 
       this.looper.addEventListener("wheel", (e) => {
@@ -87,11 +100,75 @@ const { speed, direction, class: className = "" } = Astro.props;
         }
       });
 
+      // Touch events for mobile drag
+      this.looper.addEventListener("touchstart", (e) =>
+        this.handleDragStart(e)
+      );
+      this.looper.addEventListener("touchmove", (e) => this.handleDragMove(e));
+      this.looper.addEventListener("touchend", () => this.handleDragEnd());
+
+      // Mouse events for desktop drag
+      this.looper.addEventListener("mousedown", (e) => this.handleDragStart(e));
+      window.addEventListener("mousemove", (e) => this.handleDragMove(e));
+      window.addEventListener("mouseup", () => this.handleDragEnd());
+
       window.addEventListener("resize", () => {
         this.position =
           this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
         this.startAnimation();
       });
+    }
+
+    resetTargetSpeed() {
+      this.targetSpeed = this.baseSpeed * (this.direction === "left" ? 1 : -1);
+    }
+
+    handleDragStart(e: MouseEvent | TouchEvent) {
+      this.isDragging = true;
+      this.startX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      this.lastX = this.startX;
+      this.startPosition = this.position;
+      this.targetSpeed = 0;
+      this.lastDragTime = performance.now();
+      this.looper.style.cursor = "grabbing";
+    }
+
+    handleDragMove(e: MouseEvent | TouchEvent) {
+      if (!this.isDragging) return;
+      const currentTime = performance.now();
+      const deltaTime = currentTime - this.lastDragTime;
+      this.lastDragTime = currentTime;
+
+      this.currentX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const diff = this.currentX - this.lastX;
+      this.position += diff;
+
+      if (deltaTime > 0) {
+        this.dragVelocity = diff / deltaTime;
+      }
+
+      this.lastX = this.currentX;
+      this.innerList.style.transform = `translateX(${this.position}px)`;
+    }
+
+    handleDragEnd() {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+
+      // Apply drag velocity to target speed
+      this.targetSpeed = -this.dragVelocity * 16; // Adjust multiplier as needed
+
+      // Limit the target speed
+      const maxSpeed = this.baseSpeed * 8;
+      this.targetSpeed = Math.max(
+        -maxSpeed,
+        Math.min(this.targetSpeed, maxSpeed)
+      );
+
+      this.looper.style.cursor = "grab";
+
+      // Reset target speed after a short delay
+      setTimeout(() => this.resetTargetSpeed(), 1000);
     }
 
     startAnimation() {
@@ -102,32 +179,34 @@ const { speed, direction, class: className = "" } = Astro.props;
     }
 
     animate() {
-      this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
-      this.position -= this.currentSpeed;
+      if (!this.isDragging) {
+        this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
+        this.position -= this.currentSpeed;
 
-      const instanceWidth = this.listInstances[0].offsetWidth;
+        const instanceWidth = this.listInstances[0].offsetWidth;
 
-      if (this.direction === "left") {
-        if (this.position <= -instanceWidth) {
-          this.position += instanceWidth;
-          this.innerList.appendChild(this.listInstances[0]);
-          this.listInstances = this.innerList.querySelectorAll(
-            ".looper__listInstance"
-          )!;
+        if (this.direction === "left") {
+          if (this.position <= -instanceWidth) {
+            this.position += instanceWidth;
+            this.innerList.appendChild(this.listInstances[0]);
+            this.listInstances = this.innerList.querySelectorAll(
+              ".looper__listInstance"
+            )!;
+          }
+        } else if (this.direction === "right") {
+          if (this.position >= 0) {
+            this.position -= instanceWidth;
+            this.innerList.prepend(
+              this.listInstances[this.listInstances.length - 1]
+            );
+            this.listInstances = this.innerList.querySelectorAll(
+              ".looper__listInstance"
+            )!;
+          }
         }
-      } else if (this.direction === "right") {
-        if (this.position >= 0) {
-          this.position -= instanceWidth;
-          this.innerList.prepend(
-            this.listInstances[this.listInstances.length - 1]
-          );
-          this.listInstances = this.innerList.querySelectorAll(
-            ".looper__listInstance"
-          )!;
-        }
+
+        this.innerList.style.transform = `translateX(${this.position}px)`;
       }
-
-      this.innerList.style.transform = `translateX(${this.position}px)`;
       this.animationId = requestAnimationFrame(() => this.animate());
     }
 
@@ -135,6 +214,9 @@ const { speed, direction, class: className = "" } = Astro.props;
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
       }
+      // Remove event listeners
+      window.removeEventListener("mousemove", (e) => this.handleDragMove(e));
+      window.removeEventListener("mouseup", () => this.handleDragEnd());
     }
   }
 
@@ -167,11 +249,13 @@ const { speed, direction, class: className = "" } = Astro.props;
   .looper {
     width: 100%;
     overflow: hidden;
+    cursor: grab;
   }
 
   .looper__innerList {
     display: flex;
     width: fit-content;
+    user-select: none;
   }
 
   .looper__listInstance {
