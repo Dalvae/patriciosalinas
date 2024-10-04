@@ -118,9 +118,13 @@ export default function ProtectedImage({
     if (containerRef.current && isMobile && !disableOverlay) {
       const rect = containerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      setShowOverlay(
-        rect.top <= viewportHeight * 0.2 || rect.bottom >= viewportHeight * 0.8
-      );
+
+      // Check if the image is mostly in view
+      const isInView =
+        rect.top >= -rect.height * 0.1 && // Top 10% or more is in view
+        rect.bottom <= viewportHeight + rect.height * 0.1; // Bottom 10% or more is in view
+
+      setShowOverlay(!isInView);
     }
   }, [isMobile, disableOverlay]);
 
@@ -186,7 +190,7 @@ export default function ProtectedImage({
         />
         {!disableOverlay && (
           <div
-            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-start justify-between transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-start justify-between transition-opacity duration-150 ${
               isMobile
                 ? showOverlay
                   ? "opacity-100"
