@@ -76,46 +76,45 @@ function createNavStructure(pages: Page[], lang: Lang): NavStructure {
 
   pages.forEach((page) => {
     const parts = page.uri.split("/").filter(Boolean);
-    let current = slugMap;
-    parts.forEach((part, index) => {
-      if (index !== 0) {
-        // Skip the language part
-        if (!current[part]) {
-          current[part] = {
-            slug: part,
-            title: index === parts.length - 1 ? page.title : part,
-            uri: `/${parts.slice(0, index + 1).join("/")}`,
-            children: [],
-          };
-        }
-        if (index < parts.length - 1) {
-          if (!current[part].children) {
-            current[part].children = [];
-          }
-          current = current[part].children.reduce(
-            (acc, child) => {
-              acc[child.slug] = child;
-              return acc;
-            },
-            {} as { [key: string]: NavItem }
-          );
-        }
-      }
-    });
-  });
+    if (parts.length > 1) {
+      // Skip the language part
+      const topLevelSlug = parts[1];
+      const isSubPage = parts.length > 2;
 
-  // Convert the nested structure to array
-  function convertToArray(item: any): NavItem {
-    return {
-      ...item,
-      children: Object.values(item.children).map(convertToArray),
-    };
-  }
+      if (!slugMap[topLevelSlug]) {
+        // Find the correct title for top-level items
+        const topLevelTitle = orderMap[lang as keyof typeof orderMap].includes(
+          topLevelSlug
+        )
+          ? page.title
+          : topLevelSlug.charAt(0).toUpperCase() + topLevelSlug.slice(1);
+
+        slugMap[topLevelSlug] = {
+          slug: topLevelSlug,
+          title: topLevelTitle,
+          uri: `/${parts.slice(0, 2).join("/")}`,
+          children: [],
+        };
+      }
+
+      if (isSubPage) {
+        slugMap[topLevelSlug].children.push({
+          slug: parts[parts.length - 1],
+          title: page.title,
+          uri: page.uri,
+          children: [],
+        });
+      } else if (page.title !== slugMap[topLevelSlug].title) {
+        // Update the title of the top-level item if it's a direct page (not a parent of subpages)
+        slugMap[topLevelSlug].title = page.title;
+      }
+    }
+  });
 
   // Order the items according to the orderMap
   orderMap[lang as keyof typeof orderMap].forEach((slug) => {
     if (slugMap[slug]) {
-      structure.push(convertToArray(slugMap[slug]));
+      structure.push(slugMap[slug]);
     }
   });
 
@@ -137,7 +136,6 @@ function createNavStructure(pages: Page[], lang: Lang): NavStructure {
 
   return { structure, bioItem: null };
 }
-1;
 
 const { structure: navStructure, bioItem } = createNavStructure(
   pages.filter((page) => !page.isFrontPage),
