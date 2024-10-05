@@ -41,72 +41,103 @@ interface NavStructure {
 
 function createNavStructure(pages: Page[], lang: Lang): NavStructure {
   const structure: NavItem[] = [];
-  let bioItem: NavItem | null = null;
-
-  const bioSlugs = {
-    es: "bio",
-    en: "bio-2",
-    sv: "bio-3",
+  const orderMap = {
+    es: [
+      "proyectos",
+      "galeria",
+      "exposiciones",
+      "publicaciones",
+      "videos",
+      "prensa",
+      "bio",
+    ],
+    en: [
+      "projects",
+      "gallery",
+      "exhibitions",
+      "publications",
+      "videos-2",
+      "press",
+      "bio-2",
+    ],
+    sv: [
+      "projekt",
+      "galleri",
+      "utstallningar",
+      "publikationer",
+      "videor",
+      "pressbevakning",
+      "bio-3",
+    ],
   };
+
+  // Create a map of slugs to NavItems
+  const slugMap: { [key: string]: NavItem } = {};
 
   pages.forEach((page) => {
     const parts = page.uri.split("/").filter(Boolean);
-    const lastPart = parts[parts.length - 1].toLowerCase();
-
-    if (lastPart === bioSlugs[lang as keyof typeof bioSlugs]) {
-      bioItem = {
-        slug: lastPart,
-        title: page.title,
-        uri: page.uri,
-        children: [],
-      };
-    } else {
-      let current = structure;
-      parts.forEach((part, index) => {
-        if (index !== 0) {
-          const existing = current.find((item) => item.slug === part);
-          if (existing) {
-            current = existing.children;
-          } else {
-            const newItem: NavItem = {
-              slug: part,
-              title: index === parts.length - 1 ? page.title : part,
-              uri: page.uri,
-              children: [],
-            };
-            current.push(newItem);
-            current = newItem.children;
-          }
+    let current = slugMap;
+    parts.forEach((part, index) => {
+      if (index !== 0) {
+        // Skip the language part
+        if (!current[part]) {
+          current[part] = {
+            slug: part,
+            title: index === parts.length - 1 ? page.title : part,
+            uri: `/${parts.slice(0, index + 1).join("/")}`,
+            children: [],
+          };
         }
-      });
+        if (index < parts.length - 1) {
+          if (!current[part].children) {
+            current[part].children = [];
+          }
+          current = current[part].children.reduce(
+            (acc, child) => {
+              acc[child.slug] = child;
+              return acc;
+            },
+            {} as { [key: string]: NavItem }
+          );
+        }
+      }
+    });
+  });
+
+  // Convert the nested structure to array
+  function convertToArray(item: any): NavItem {
+    return {
+      ...item,
+      children: Object.values(item.children).map(convertToArray),
+    };
+  }
+
+  // Order the items according to the orderMap
+  orderMap[lang as keyof typeof orderMap].forEach((slug) => {
+    if (slugMap[slug]) {
+      structure.push(convertToArray(slugMap[slug]));
     }
   });
 
+  // Handle projects/proyectos/projekt separately
   const projectSlugs = { es: "proyectos", en: "projects", sv: "projekt" };
-  const projectSlug = projectSlugs[lang] || "proyectos";
+  const projectSlug = projectSlugs[lang as keyof typeof projectSlugs];
   const projectsItem = structure.find((item) => item.slug === projectSlug);
 
   if (projectsItem && projectsItem.children) {
-    const atacamaIndex = projectsItem.children.findIndex(
-      (child) => child.slug === "atacama" || child.slug === "atacama-2"
-    );
-    const walterBenjaminIndex = projectsItem.children.findIndex(
-      (child) => child.slug === "walter-benjamin"
-    );
-
-    if (atacamaIndex !== -1 && walterBenjaminIndex !== -1) {
-      const atacama = projectsItem.children.splice(atacamaIndex, 1)[0];
-      const walterBenjamin = projectsItem.children.splice(
-        walterBenjaminIndex - (atacamaIndex < walterBenjaminIndex ? 1 : 0),
-        1
-      )[0];
-      projectsItem.children.unshift(walterBenjamin);
-      projectsItem.children.unshift(atacama);
-    }
+    // Sort children of projects
+    projectsItem.children.sort((a, b) => {
+      if (a.slug === "atacama" || a.slug === "atacama-2") return -1;
+      if (b.slug === "atacama" || b.slug === "atacama-2") return 1;
+      if (a.slug === "walter-benjamin") return -1;
+      if (b.slug === "walter-benjamin") return 1;
+      return 0;
+    });
   }
 
-  return { structure, bioItem };
+  return { structure, bioItem: null };
 }
+1;
 
 const { structure: navStructure, bioItem } = createNavStructure(
   pages.filter((page) => !page.isFrontPage),
