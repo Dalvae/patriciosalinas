@@ -92,10 +92,10 @@ const { speed, direction, class: className = "" } = Astro.props;
           this.lastScrollTime = now;
           this.isMouseOver = false;
           const scrollDirection = e.deltaY > 0 ? 1 : -1;
-          const speedChange = scrollDirection * this.baseSpeed * 3;
+          const speedChange = scrollDirection * this.baseSpeed * 10;
           this.targetSpeed = Math.max(
-            -this.baseSpeed * 8,
-            Math.min(this.targetSpeed + speedChange, this.baseSpeed * 8)
+            -this.baseSpeed * 20,
+            Math.min(this.targetSpeed + speedChange, this.baseSpeed * 20)
           );
         }
       });
