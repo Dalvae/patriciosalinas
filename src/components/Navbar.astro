@@ -134,6 +134,29 @@ function createNavStructure(pages: Page[], lang: Lang): NavStructure {
     });
   }
 
+  // Handle publications/publicaciones/publikationer separately
+  const publicationSlugs = {
+    es: "publicaciones",
+    en: "publications",
+    sv: "publikationer",
+  };
+  const publicationSlug =
+    publicationSlugs[lang as keyof typeof publicationSlugs];
+  const publicationsItem = structure.find(
+    (item) => item.slug === publicationSlug
+  );
+
+  if (publicationsItem && publicationsItem.children) {
+    // Sort children of publications
+    publicationsItem.children.sort((a, b) => {
+      const bookSlugs = { es: "libros", en: "books", sv: "bocker" };
+      const bookSlug = bookSlugs[lang as keyof typeof bookSlugs];
+      if (a.slug === bookSlug) return -1;
+      if (b.slug === bookSlug) return 1;
+      return 0;
+    });
+  }
+
   return { structure, bioItem: null };
 }
 
