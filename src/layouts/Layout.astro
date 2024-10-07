@@ -10,21 +10,84 @@ export interface Props {
   title: string;
   lang: Lang;
   pages: Page[];
+  image?: string;
+  canonicalURL?: string;
 }
 
-const { title, lang, pages } = Astro.props;
+const { 
+  title, 
+  lang, 
+  pages, 
+  image = "/og-image.jpg",
+  canonicalURL,
+} = Astro.props;
+
+
+const siteURL = Astro.site ? Astro.site.href : 'https://www.patriciosalinas.com/';
+const fullCanonicalURL = canonicalURL || new URL(Astro.url.pathname, siteURL).href;
+
 const t = useTranslations(lang);
 const currentPath = Astro.url.pathname;
+
+type MetaTag = { name: string; content: string };
+type MetaTags = Record<Lang, { keywords: string; description: string }>;
+
+const metaTags: MetaTags = {
+  es: {
+    keywords: "fotografía, pensamiento y fotografía, Pensamiento Visual, filosofía e imagen",
+    description: "Fotografía, ensayos y pensamiento visual"
+  },
+  en: {
+    keywords: "photography, thought and photography, Visual Thinking, philosophy and image",
+    description: "Photography, essays and visual thinking"
+  },
+  sv: {
+    keywords: "fotografi, tanke och fotografi, Visuellt tänkande, filosofi och bild",
+    description: "Fotografi, uppsatser och visuellt tänkande"
+  }
+};
+
+const currentMetaTag = metaTags[lang] || metaTags.en;
+
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
+    
     <title>{title}</title>
+    <meta name="description" content={currentMetaTag.description} />
+    <meta name="keywords" content={currentMetaTag.keywords} />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={fullCanonicalURL} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={currentMetaTag.description} />
+    <meta property="og:image" content={new URL(image, siteURL)} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={currentMetaTag.description} />
+    <meta property="twitter:image" content={new URL(image, siteURL)} />
+    
+    <!-- Language alternates -->
+    <link rel="alternate" hreflang="es" href={`${siteURL}es${currentPath}`} />
+    <link rel="alternate" hreflang="en" href={`${siteURL}en${currentPath}`} />
+    <link rel="alternate" hreflang="sv" href={`${siteURL}sv${currentPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteURL}${currentPath}`} />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/fonts/PlayfairDisplay-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
   </head>
   <body class="font-playfair">
     <Navbar currentPath={currentPath} lang={lang} pages={pages} />
@@ -32,15 +95,29 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
     <Footer lang={lang} />
+    
+    <!-- Structured Data for a website -->
+    <script type="application/ld+json">
+      {
+        JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Patricio Salinas",
+          "url": siteURL,
+          "description": currentMetaTag.description,
+          "inLanguage": lang,
+          "author": {
+            "@type": "Person",
+            "name": "Patricio Salinas"
+          }
+        })
+      }
+    </script>
   </body>
 </html>
+
 <style>
   main {
-    /* Asegúrate de que el contenido principal ocupe todo el espacio disponible */
-    min-height: calc(
-      100vh - 60px - 100px
-    ); /* Resta la altura del navbar y el footer */
-  }
-  body {
+    min-height: calc(100vh - 60px - 100px);
   }
 </style>
