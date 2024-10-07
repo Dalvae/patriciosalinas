@@ -42,14 +42,20 @@ return Astro.redirect(`/${detectedLanguage}`);
     <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${siteURL}${image}`} />
+    <meta
+      property="og:image"
+      content="https://www.patriciosalinas.com/og-image.png"
+    />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={siteURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={`${siteURL}${image}`} />
+    <meta
+      property="twitter:image"
+      content="https://www.patriciosalinas.com/og-image.png"
+    />
 
     <meta http-equiv="refresh" content={`0;url=/${detectedLanguage}`} />
   </head>
