@@ -19,6 +19,9 @@ const { speed, direction, class: className = "" } = Astro.props;
     <div class="looper__listInstance">
       <slot />
     </div>
+    <div class="looper__listInstance">
+      <slot />
+    </div>
   </div>
 </div>
 
@@ -56,8 +59,7 @@ const { speed, direction, class: className = "" } = Astro.props;
       this.isMouseOver = false;
       this.animationId = null;
       this.lastScrollTime = 0;
-      this.position =
-        this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
+      this.position = -this.listInstances[0].offsetWidth; // Iniciar con la segunda instancia centrada
       this.isDragging = false;
       this.startX = 0;
       this.currentX = 0;
@@ -100,21 +102,18 @@ const { speed, direction, class: className = "" } = Astro.props;
         }
       });
 
-      // Touch events for mobile drag
       this.looper.addEventListener("touchstart", (e) =>
         this.handleDragStart(e)
       );
       this.looper.addEventListener("touchmove", (e) => this.handleDragMove(e));
       this.looper.addEventListener("touchend", () => this.handleDragEnd());
 
-      // Mouse events for desktop drag
       this.looper.addEventListener("mousedown", (e) => this.handleDragStart(e));
       window.addEventListener("mousemove", (e) => this.handleDragMove(e));
       window.addEventListener("mouseup", () => this.handleDragEnd());
 
       window.addEventListener("resize", () => {
-        this.position =
-          this.direction === "right" ? -this.listInstances[0].offsetWidth : 0;
+        this.position = -this.listInstances[0].offsetWidth;
         this.startAnimation();
       });
     }
@@ -155,10 +154,8 @@ const { speed, direction, class: className = "" } = Astro.props;
       if (!this.isDragging) return;
       this.isDragging = false;
 
-      // Apply drag velocity to target speed
-      this.targetSpeed = -this.dragVelocity * 16; // Adjust multiplier as needed
+      this.targetSpeed = -this.dragVelocity * 16;
 
-      // Limit the target speed
       const maxSpeed = this.baseSpeed * 8;
       this.targetSpeed = Math.max(
         -maxSpeed,
@@ -167,7 +164,6 @@ const { speed, direction, class: className = "" } = Astro.props;
 
       this.looper.style.cursor = "grab";
 
-      // Reset target speed after a short delay
       setTimeout(() => this.resetTargetSpeed(), 1000);
     }
 
@@ -183,26 +179,12 @@ const { speed, direction, class: className = "" } = Astro.props;
         this.currentSpeed += (this.targetSpeed - this.currentSpeed) * 0.1;
         this.position -= this.currentSpeed;
 
-        const instanceWidth = this.listInstances[0].offsetWidth;
+        const totalWidth = this.listInstances[0].offsetWidth * 3;
 
-        if (this.direction === "left") {
-          if (this.position <= -instanceWidth) {
-            this.position += instanceWidth;
-            this.innerList.appendChild(this.listInstances[0]);
-            this.listInstances = this.innerList.querySelectorAll(
-              ".looper__listInstance"
-            )!;
-          }
-        } else if (this.direction === "right") {
-          if (this.position >= 0) {
-            this.position -= instanceWidth;
-            this.innerList.prepend(
-              this.listInstances[this.listInstances.length - 1]
-            );
-            this.listInstances = this.innerList.querySelectorAll(
-              ".looper__listInstance"
-            )!;
-          }
+        if (this.position <= -totalWidth) {
+          this.position += totalWidth;
+        } else if (this.position > 0) {
+          this.position -= totalWidth;
         }
 
         this.innerList.style.transform = `translateX(${this.position}px)`;
@@ -214,7 +196,6 @@ const { speed, direction, class: className = "" } = Astro.props;
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
       }
-      // Remove event listeners
       window.removeEventListener("mousemove", (e) => this.handleDragMove(e));
       window.removeEventListener("mouseup", () => this.handleDragEnd());
     }
