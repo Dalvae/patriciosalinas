@@ -22,7 +22,6 @@ const { page, isHomePage } = Astro.props;
 const title = page.title;
 const content = page.content || "";
 const root = parse(content);
-
 const allImages: ImageInfo[] = [];
 
 function processNode(
@@ -69,6 +68,18 @@ function processNode(
 }
 
 const processedContent = root.childNodes.flatMap(processNode);
+
+// Function to determine additional classes based on image class
+function getAdditionalClasses(className: string | undefined) {
+  if (className?.includes("size-medium")) {
+    return "max-w-md mx-auto"; // max-width for medium images
+  } else if (className?.includes("size-large")) {
+    return "max-w-lg mx-auto"; // max-width for large images
+  } else if (className?.includes("size-full")) {
+    return "w-full"; // full width for full-size images
+  }
+  return ""; // default: no additional class
+}
 ---
 
 <div class="mx-auto max-w-6xl">
@@ -80,8 +91,11 @@ const processedContent = root.childNodes.flatMap(processNode);
           if (item.type === "html") {
             return <Fragment set:html={item.content} />;
           } else if (item.type === "image") {
+            const additionalClasses = getAdditionalClasses(
+              item.content.className
+            );
             return (
-              <figure class={item.content.className}>
+              <figure class={`${item.content.className} ${additionalClasses}`}>
                 <ProtectedImage
                   client:load
                   src={item.content.src}
