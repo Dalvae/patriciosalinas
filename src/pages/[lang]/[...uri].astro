@@ -5,6 +5,8 @@ import type { Page, Lang } from "../../types/types";
 import { useTranslations } from "../../i18n/utils";
 import PageContent from "../../components/PageContent.astro";
 import HomePage from "../../components/HomePage.astro";
+import GalleryPage from "../../components/GalleryPage.astro"; // Componente de la galería
+import PressPage from "../../components/PressPage.astro"; // Componente de prensa
 import { getProjectPageSlug } from "../../lib/project-utils";
 
 export async function getStaticPaths() {
@@ -68,6 +70,10 @@ const projectsForHomePage = projects.map((project) => {
     link: project.uri,
   };
 });
+
+// --- Verificar si la página es galería o prensa ---
+const isGallery = uri === "gallery" || uri === "galeria" || uri === "galleri";
+const isPress = uri === "press" || uri === "prensa" || uri === "pressbevakning";
 ---
 
 <Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
@@ -78,6 +84,10 @@ const projectsForHomePage = projects.map((project) => {
         projects={projectsForHomePage}
         lang={lang as Lang}
       />
+    ) : isGallery ? (
+      <GalleryPage page={currentPage || ""} />
+    ) : isPress ? (
+      <PressPage page={currentPage || ""} />
     ) : (
       <PageContent page={currentPage} isHomePage={isHomePage} />
     )

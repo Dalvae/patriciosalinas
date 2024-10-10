@@ -1,0 +1,100 @@
+---
+import type { Page } from "../types/types";
+import ProtectedImage from "./ui/ReactProtrectedImage";
+import { parse, HTMLElement, Node, NodeType } from "node-html-parser";
+import "../styles/wordpress-styles.css";
+
+interface Props {
+  page: Page;
+}
+
+interface ImageInfo {
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  caption?: string;
+  className?: string;
+}
+
+const { page } = Astro.props;
+const title = page.title;
+const content = page.content || "";
+const root = parse(content);
+
+const allImages: ImageInfo[] = [];
+
+function processNode(
+  node: Node
+): Array<{ type: "html" | "image"; content: any }> {
+  if (node.nodeType === NodeType.ELEMENT_NODE) {
+    const element = node as HTMLElement;
+    if (
+      element.tagName === "FIGURE" &&
+      element.getAttribute("class")?.includes("wp-block-image")
+    ) {
+      const img = element.querySelector("img");
+      const caption = element.querySelector("figcaption");
+      if (img) {
+        const imageInfo: ImageInfo = {
+          src: img.getAttribute("src") || "",
+          alt: img.getAttribute("alt") || "",
+          width: img.getAttribute("width") || undefined,
+          height: img.getAttribute("height") || undefined,
+          caption: caption ? caption.innerHTML : undefined,
+          className: element.getAttribute("class") || undefined,
+        };
+        allImages.push(imageInfo);
+        return [
+          {
+            type: "image",
+            content: imageInfo,
+          },
+        ];
+      }
+    }
+    const childResults = element.childNodes.flatMap(processNode);
+    const openTag = element.toString().split(">")[0] + ">";
+    const closeTag = `</${element.tagName.toLowerCase()}>`;
+    return [
+      { type: "html", content: openTag },
+      ...childResults,
+      { type: "html", content: closeTag },
+    ];
+  } else if (node.nodeType === NodeType.TEXT_NODE) {
+    return [{ type: "html", content: node.text }];
+  }
+  return [];
+}
+
+const processedContent = root.childNodes.flatMap(processNode);
+---
+
+<div class="mx-auto max-w-6xl">
+  <article class="wp-blocks prose max-w-none p-2">
+    <h1 class="py-5 text-center font-semibold">{title}</h1>
+    <div class="bg-white md:px-10 pt-5 mb-10 text-justify">
+      {
+        processedContent.map((item) => {
+          if (item.type === "html") {
+            return <Fragment set:html={item.content} />;
+          } else if (item.type === "image") {
+            return (
+              <figure class={item.content.className}>
+                <ProtectedImage
+                  client:load
+                  src={item.content.src}
+                  alt={item.content.alt}
+                  width={item.content.width}
+                  height={item.content.height}
+                  allImages={allImages}
+                  caption={item.content.caption}
+                />
+              </figure>
+            );
+          }
+        })
+      }
+    </div>
+  </article>
+</div>
