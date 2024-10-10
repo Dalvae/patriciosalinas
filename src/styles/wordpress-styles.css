@@ -172,12 +172,12 @@
   text-align: right;
 }
 .has-large-font-size{
-  font-size: 0.7rem; /* 24px */
-  line-height: 1rem; /* 32px */
+  font-size: 1.5rem; 
+  line-height: 2rem; 
 }
 .has-small-font-size{
-  font-size: 1.5rem; /* 24px */
-  line-height: 2rem; /* 32px */
+  font-size: 0.7rem; 
+  line-height: 1rem; 
 }
 .prose ul, .prose ol {
   list-style-type: none;
