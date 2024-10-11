@@ -32,7 +32,7 @@ export const ui = {
     "nav.blog": "Blog",
     "nav.subtitle": "Fotografía, ensayos y pensamiento visual",
     "footer.copyright": "Patricio Salinas A Todos los derechos reservados.",
-    "footer.createdBy": "Desarollado por",
+    "footer.createdBy": "Desarrollado por",
   },
   sv: {
     "error.loading":
