@@ -1,6 +1,6 @@
 ---
 import type { Page } from "../types/types";
-import ProtectedImage from "./ui/ReactProtrectedImage";
+import ProtectedImage from "./ui/ReactProtectedImage";
 import { parse, HTMLElement, Node, NodeType } from "node-html-parser";
 import "../styles/wordpress-styles.css";
 
@@ -165,17 +165,11 @@ const processedContent = root.childNodes.flatMap(processNode);
 </div>
 
 <style>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-
-  @layer utilities {
-    .line-clamp-3 {
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* Remove underline from all links within the article */

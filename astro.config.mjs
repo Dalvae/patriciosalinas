@@ -1,21 +1,15 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless";
+import tailwindcss from "@tailwindcss/vite";
+import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react()],
-  output: "hybrid",
-  adapter: vercel({
-    isr: {
-      routes: [
-        { route: "/es/blog/*", revalidate: 120 },
-        { route: "/en/blog/*", revalidate: 120 },
-        { route: "/sv/blog/*", revalidate: 120 },
-      ],
-    },
-  }),
+  integrations: [react()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  adapter: vercel(),
   image: {
     domains: ["res.cloudinary.com"],
     remotePatterns: [{ protocol: "https" }],

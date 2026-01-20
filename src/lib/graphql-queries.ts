@@ -1,6 +1,11 @@
-import type { Page, Post, Lang, ProcessedPage } from "../types/types";
-import { JSDOM } from "jsdom";
+import type { Page, Post, Lang } from "../types/types";
+import { getProjectPageSlug } from "./project-utils";
+import svContentJson from "../data/sv-content.json";
+import esContentJson from "../data/es-content.json";
+import enContentJson from "../data/en-content.json";
 
+// Usar datos locales por defecto, pero permitir override via env
+const USE_LOCAL_DATA = import.meta.env.USE_LOCAL_DATA !== "false";
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
 const DEFAULT_TIMEOUT = 120000; // 120 seconds
 const MAX_RETRIES = 20;
@@ -12,7 +17,6 @@ interface GraphQLResponse<T> {
 }
 
 // Main function to execute GraphQL queries
-// Main function to execute GraphQL queries
 async function executeQuery<T>(
   query: string,
   variables: Record<string, any> = {},
@@ -23,10 +27,8 @@ async function executeQuery<T>(
     ...variables,
     lang: variables.lang?.toUpperCase(),
   };
-  console.log("Processed variables:", processedVariables); // Añadir este log
   for (let i = 0; i < retries; i++) {
     try {
-      console.log(`Attempt ${i + 1}: Starting fetch to ${GRAPHQL_ENDPOINT}`);
 
       const fetchPromise = fetch(GRAPHQL_ENDPOINT, {
         method: "POST",
@@ -55,7 +57,11 @@ async function executeQuery<T>(
 
       return result.data;
     } catch (error) {
-      // ... (el resto del manejo de errores permanece igual)
+      if (i === retries - 1) {
+        throw error;
+      }
+      // Wait before retrying
+      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
   throw new Error(`Failed after ${retries} attempts`);
@@ -63,6 +69,26 @@ async function executeQuery<T>(
 
 // Function to get pages
 export async function getPages(lang: Lang): Promise<Page[]> {
+  if (USE_LOCAL_DATA) {
+    // Usar datos locales
+    let localData;
+    switch (lang) {
+      case "sv":
+        localData = svContentJson;
+        break;
+      case "es":
+        localData = esContentJson;
+        break;
+      case "en":
+        localData = enContentJson;
+        break;
+      default:
+        throw new Error(`Unsupported language: ${lang}`);
+    }
+    return localData.data.pages.nodes;
+  }
+
+  // Si no usamos datos locales, continuamos con la lógica existente
   const query = `
     query GetPages($lang: LanguageCodeFilterEnum!) {
       pages(first: 100, where: { language: $lang }) {
@@ -71,7 +97,6 @@ export async function getPages(lang: Lang): Promise<Page[]> {
           uri
           title
           slug
-          uri
           isFrontPage
           content
         }
@@ -159,7 +184,6 @@ export async function getAllPagesLang(lang: Lang): Promise<Page[]> {
           uri
           title
           slug
-          uri
           isFrontPage
         }
       }
@@ -171,4 +195,52 @@ export async function getAllPagesLang(lang: Lang): Promise<Page[]> {
   });
 
   return pages.nodes;
+}
+
+export async function getProjects(lang: Lang): Promise<Page[]> {
+  const projectSlug = getProjectPageSlug(lang);
+
+  const query = `
+    query GetProjects($lang: LanguageCodeEnum!, $parentSlug: String!) {
+      pages(
+        where: {
+          language: $lang,
+          parent: $parentSlug
+        }
+      ) {
+        nodes {
+          id
+          uri
+          title
+          slug
+          isFrontPage
+          content
+          language {
+            slug
+          }
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const { pages } = await executeQuery<{ pages: { nodes: Page[] } }>(query, {
+    lang: lang.toUpperCase(),
+    parentSlug: projectSlug,
+  });
+
+  return pages.nodes.map((node: any) => ({
+    id: node.id,
+    uri: node.uri,
+    title: node.title,
+    slug: node.slug,
+    isFrontPage: node.isFrontPage,
+    content: node.content,
+    language: node.language.slug,
+    featuredImage: node.featuredImage?.node?.sourceUrl || null,
+  }));
 }

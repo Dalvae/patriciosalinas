@@ -1,32 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+@theme {
+  --font-playfair: "Playfair Display", serif;
+  --font-playfair-italic: "Playfair Display Italic", serif;
+  --font-abril-fatface: "Abril Fatface", serif;
+
+  --color-primary-600: #111111;
+  --color-gold: #d4af37;
+}
 
 @layer base {
-    @font-face {
-      font-family: 'Playfair Display';
-      src: url('/fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype-variations');
-      font-weight: 100 900;
-      font-style: normal;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Playfair Display Italic';
-      src: url('/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype-variations');
-      font-weight: 100 900;
-      font-style: italic;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Abril Fatface';
-      src: url('/fonts/AbrilFatface-Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
+  @font-face {
+    font-family: 'Playfair Display';
+    src: url('/fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
   }
-
-@layer components {
-  /* Aquí puedes agregar tus estilos personalizados para componentes */
+  @font-face {
+    font-family: 'Playfair Display Italic';
+    src: url('/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Abril Fatface';
+    src: url('/fonts/AbrilFatface-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
 }

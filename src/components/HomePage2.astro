@@ -1,5 +1,5 @@
 ---
-import ProtectedImage from "./ui/ReactProtrectedImage";
+import ProtectedImage from "./ui/ReactProtectedImage";
 import type { Lang } from "../types/types";
 
 interface Project {
@@ -70,7 +70,7 @@ const paragraphs = splitIntoParagraphs(content).slice(0, 4); // Limitar a 4 pár
   }
 </div>
 
-<script define:vars={{ orderedProjects }}>
+<script is:inline define:vars={{ orderedProjects }}>
   function adjustMainContainerHeight() {
     const navbar = document.querySelector("nav");
     const footer = document.querySelector("footer");

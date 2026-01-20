@@ -29,3 +29,39 @@ en Exposiciones poner las ultimas huellas de un flaneur y una imagen de la serie
 Y el otro Es transitos de Barcelona mayo del 2024.
 
 Faltan fotos de Anders Petersen
+
+Publicacion dividirlo en dos grupos
+1 los libros.
+2 Periodismo Cultural
+
+3- Cambiar forfatare
+
+Agregar obersvaciones.
+
+Publicaciones dos capitulos
+1 Agegar Books, Libros,
+
+Justificar los p
+
+Texto : Pilar parseriso
+
+Apretar un poquito Y poner Bio
+En bio Poner Instagram, Facebook Y email.
+
+Bio a la derecha de press.
+
+Mobil Tiene que verse bie
+
+
+Cambiar la pagina libros ponerlos mas chicos. Hacer tarjetas.
+- En prensa hacer tarjetas  para las publicaciones
+- Hacer la imagen más pequeña sino sacarla.
+
+
+
+
+
+
+
+
+

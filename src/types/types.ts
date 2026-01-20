@@ -7,7 +7,7 @@ export interface Page {
   content: string | null;
   isFrontPage: boolean;
   slug: string;
-  language: Lang;
+  language?: Lang;
   featuredImage?: {
     node: {
       sourceUrl: string;

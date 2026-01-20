@@ -1,7 +1,6 @@
 ---
 //src/components/layouts/Layout.astro
 import Navbar from "../components/Navbar.astro";
-import { useTranslations } from "../i18n/utils";
 import type { Page, Lang } from "../types/types";
 import Footer from "@components/Footer.astro";
 import "../styles/app.css";
@@ -26,10 +25,10 @@ const {
 const siteURL = Astro.site ? Astro.site.href : 'https://www.patriciosalinas.com/';
 const fullCanonicalURL = canonicalURL || new URL(Astro.url.pathname, siteURL).href;
 
-const t = useTranslations(lang);
 const currentPath = Astro.url.pathname;
+// Remove language prefix from path for hreflang URLs
+const pathWithoutLang = currentPath.replace(/^\/(es|en|sv)/, '') || '/';
 
-type MetaTag = { name: string; content: string };
 type MetaTags = Record<Lang, { keywords: string; description: string }>;
 
 const metaTags: MetaTags = {
@@ -81,10 +80,10 @@ const currentMetaTag = metaTags[lang] || metaTags.en;
     <meta property="twitter:image" content={new URL(image, siteURL)} />
     
     <!-- Language alternates -->
-    <link rel="alternate" hreflang="es" href={`${siteURL}es${currentPath}`} />
-    <link rel="alternate" hreflang="en" href={`${siteURL}en${currentPath}`} />
-    <link rel="alternate" hreflang="sv" href={`${siteURL}sv${currentPath}`} />
-    <link rel="alternate" hreflang="x-default" href={`${siteURL}${currentPath}`} />
+    <link rel="alternate" hreflang="es" href={`${siteURL}es${pathWithoutLang}`} />
+    <link rel="alternate" hreflang="en" href={`${siteURL}en${pathWithoutLang}`} />
+    <link rel="alternate" hreflang="sv" href={`${siteURL}sv${pathWithoutLang}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteURL}en${pathWithoutLang}`} />
     
     <!-- Preload critical assets -->
     <link rel="preload" href="/fonts/PlayfairDisplay-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
@@ -97,7 +96,7 @@ const currentMetaTag = metaTags[lang] || metaTags.en;
     <Footer lang={lang} />
     
     <!-- Structured Data for a website -->
-    <script type="application/ld+json">
+    <script is:inline type="application/ld+json">
       {
         JSON.stringify({
           "@context": "https://schema.org",

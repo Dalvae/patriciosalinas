@@ -62,9 +62,7 @@ const combinedStyle = {
     class={`max-w-full h-auto block ${className}`}
     style={combinedStyle}
   />
-  <div
-    class="absolute bottom-0 right-0 p-2 text-white text-sm bg-black bg-opacity-50"
-  >
+  <div class="absolute bottom-0 right-0 p-2 text-white text-sm">
     © Patricio Salinas A
   </div>
   <div
@@ -83,13 +81,8 @@ const combinedStyle = {
   </div>
 </div>
 
-<div
-  id="imageModal"
-  class="image-modal fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-90"
->
-  <div
-    class="modal-content relative w-full h-full flex items-center justify-center"
-  >
+<dialog id="imageModal" class="modal" is="modal-dialog">
+  <div class="modal-content">
     <button
       id="closeModal"
       class="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
@@ -122,9 +115,21 @@ const combinedStyle = {
       <ChevronRight className="h-6 w-6" />
     </button>
   </div>
-</div>
+</dialog>
 
 <script>
+  class ModalDialog extends HTMLDialogElement {
+    constructor() {
+      super();
+      this.addEventListener("click", (e) => {
+        if (e.target === this) {
+          this.close();
+        }
+      });
+    }
+  }
+  customElements.define("modal-dialog", ModalDialog, { extends: "dialog" });
+
   interface ImageInfo {
     src: string;
     alt: string;
@@ -137,7 +142,7 @@ const combinedStyle = {
     const containers = document.querySelectorAll<HTMLElement>(
       ".protected-image-container"
     );
-    const modal = document.getElementById("imageModal") as HTMLDivElement;
+    const modal = document.getElementById("imageModal") as HTMLDialogElement;
     const modalImage = document.getElementById(
       "modalImage"
     ) as HTMLImageElement;
@@ -163,14 +168,12 @@ const combinedStyle = {
     });
 
     function openModal() {
-      if (modal) {
-        modal.style.display = "flex";
-        updateModalContent();
-      }
+      updateModalContent();
+      modal.showModal();
     }
 
     function closeModal() {
-      if (modal) modal.style.display = "none";
+      modal.close();
     }
 
     function updateModalContent() {
@@ -193,10 +196,6 @@ const combinedStyle = {
     closeButton?.addEventListener("click", closeModal);
     prevButton?.addEventListener("click", () => changeImage(-1));
     nextButton?.addEventListener("click", () => changeImage(1));
-
-    modal?.addEventListener("click", (e) => {
-      if (e.target === modal) closeModal();
-    });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeModal();
@@ -231,7 +230,21 @@ const combinedStyle = {
   .protected-image-container:hover .image-overlay {
     opacity: 1;
   }
-  .image-modal {
-    transition: opacity 0.3s ease-in-out;
+  .modal {
+    position: fixed;
+    border: none;
+    padding: 0;
+    width: auto;
+    height: 90vh;
+    background: transparent;
+  }
+  .modal::backdrop {
+    background: rgba(0, 0, 0, 0.808);
+  }
+  .modal-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
