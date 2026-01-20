@@ -1,5 +1,5 @@
 ---
-import ProtectedImage from "./ui/ReactProtectedImage";
+// NOTE: This is an alternative homepage design kept for reference
 import type { Lang } from "../types/types";
 
 interface Project {
@@ -14,7 +14,7 @@ interface Props {
   lang: Lang;
 }
 
-const { content, projects, lang } = Astro.props;
+const { content, projects, lang: _lang } = Astro.props;
 
 function cleanContent(html: string): string {
   // Eliminar la estructura de columnas y grupos
@@ -42,7 +42,7 @@ const filteredProjects = projects.filter(
     project.title === "Walter Benjamin" || project.title === "Atacama"
 );
 
-const orderedProjects = filteredProjects.sort((a, b) =>
+const orderedProjects = filteredProjects.sort((a, _b) =>
   a.title === "Walter Benjamin" ? -1 : 1
 );
 

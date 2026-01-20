@@ -24,7 +24,7 @@ interface Props {
   lang: Lang;
 }
 
-const { content, projects, lang } = Astro.props;
+const { content, projects, lang: _lang } = Astro.props;
 
 const shouldIncludeProject = (title: string) => {
   return title === "Atacama" || title === "Walter Benjamin";

@@ -45,6 +45,10 @@ const { speed, direction, class: className = "" } = Astro.props;
     startPosition: number;
     lastDragTime: number;
     dragVelocity: number;
+    // Bound event handlers for proper cleanup
+    boundHandleDragMove: (e: MouseEvent | TouchEvent) => void;
+    boundHandleDragEnd: () => void;
+    boundHandleResize: () => void;
 
     constructor(looper: HTMLElement) {
       this.looper = looper;
@@ -59,7 +63,7 @@ const { speed, direction, class: className = "" } = Astro.props;
       this.isMouseOver = false;
       this.animationId = null;
       this.lastScrollTime = 0;
-      this.position = -this.listInstances[0].offsetWidth; // Iniciar con la segunda instancia centrada
+      this.position = -this.listInstances[0].offsetWidth;
       this.isDragging = false;
       this.startX = 0;
       this.currentX = 0;
@@ -67,6 +71,14 @@ const { speed, direction, class: className = "" } = Astro.props;
       this.startPosition = 0;
       this.lastDragTime = 0;
       this.dragVelocity = 0;
+
+      // Bind event handlers
+      this.boundHandleDragMove = (e) => this.handleDragMove(e);
+      this.boundHandleDragEnd = () => this.handleDragEnd();
+      this.boundHandleResize = () => {
+        this.position = -this.listInstances[0].offsetWidth;
+        this.startAnimation();
+      };
 
       this.init();
     }
@@ -109,13 +121,9 @@ const { speed, direction, class: className = "" } = Astro.props;
       this.looper.addEventListener("touchend", () => this.handleDragEnd());
 
       this.looper.addEventListener("mousedown", (e) => this.handleDragStart(e));
-      window.addEventListener("mousemove", (e) => this.handleDragMove(e));
-      window.addEventListener("mouseup", () => this.handleDragEnd());
-
-      window.addEventListener("resize", () => {
-        this.position = -this.listInstances[0].offsetWidth;
-        this.startAnimation();
-      });
+      window.addEventListener("mousemove", this.boundHandleDragMove);
+      window.addEventListener("mouseup", this.boundHandleDragEnd);
+      window.addEventListener("resize", this.boundHandleResize);
     }
 
     resetTargetSpeed() {
@@ -196,8 +204,9 @@ const { speed, direction, class: className = "" } = Astro.props;
       if (this.animationId) {
         cancelAnimationFrame(this.animationId);
       }
-      window.removeEventListener("mousemove", (e) => this.handleDragMove(e));
-      window.removeEventListener("mouseup", () => this.handleDragEnd());
+      window.removeEventListener("mousemove", this.boundHandleDragMove);
+      window.removeEventListener("mouseup", this.boundHandleDragEnd);
+      window.removeEventListener("resize", this.boundHandleResize);
     }
   }
 

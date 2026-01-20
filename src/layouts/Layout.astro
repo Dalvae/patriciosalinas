@@ -17,7 +17,7 @@ const {
   title, 
   lang, 
   pages, 
-  image = "/og-image.png",
+  image = "/og-image.jpg",
   canonicalURL,
 } = Astro.props;
 
@@ -48,6 +48,19 @@ const metaTags: MetaTags = {
 
 const currentMetaTag = metaTags[lang] || metaTags.en;
 
+// Structured data for SEO
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Patricio Salinas",
+  "url": siteURL,
+  "description": currentMetaTag.description,
+  "inLanguage": lang,
+  "author": {
+    "@type": "Person",
+    "name": "Patricio Salinas"
+  }
+});
 ---
 
 <!doctype html>
@@ -96,22 +109,7 @@ const currentMetaTag = metaTags[lang] || metaTags.en;
     <Footer lang={lang} />
     
     <!-- Structured Data for a website -->
-    <script is:inline type="application/ld+json">
-      {
-        JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "Patricio Salinas",
-          "url": siteURL,
-          "description": currentMetaTag.description,
-          "inLanguage": lang,
-          "author": {
-            "@type": "Person",
-            "name": "Patricio Salinas"
-          }
-        })
-      }
-    </script>
+    <script is:inline type="application/ld+json" set:html={structuredData} />
   </body>
 </html>
 

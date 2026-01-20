@@ -190,7 +190,7 @@ export default function ProtectedImage({
         />
         {!disableOverlay && (
           <div
-            className={`absolute inset-0 bg-black bg-opacity-70 flex flex-col items-start justify-between transition-opacity duration-150 ${
+            className={`absolute inset-0 bg-black/60 flex flex-col items-start justify-between transition-opacity duration-150 ${
               isMobile
                 ? showOverlay
                   ? "opacity-100"
@@ -219,6 +219,7 @@ export default function ProtectedImage({
         >
           <button
             onClick={closeModal}
+            aria-label="Close modal"
             className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
           >
             <X className="h-6 w-6" />
@@ -230,6 +231,7 @@ export default function ProtectedImage({
                   e.stopPropagation();
                   changeImage("prev");
                 }}
+                aria-label="Previous image"
                 className="absolute left-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
               >
                 <ChevronLeft className="h-6 w-6" />
@@ -239,6 +241,7 @@ export default function ProtectedImage({
                   e.stopPropagation();
                   changeImage("next");
                 }}
+                aria-label="Next image"
                 className="absolute right-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
               >
                 <ChevronRight className="h-6 w-6" />
