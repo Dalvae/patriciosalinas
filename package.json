@@ -16,7 +16,6 @@
     "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
-    "@wordpress/block-library": "^9.6.1",
     "astro": "^5.16.11",
     "astro-navbar": "^2.3.3",
     "html-react-parser": "^5.1.13",
