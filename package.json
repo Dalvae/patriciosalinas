@@ -18,8 +18,6 @@
     "@types/react-dom": "^18.3.0",
     "astro": "^5.16.11",
     "astro-navbar": "^2.3.3",
-    "html-react-parser": "^5.1.13",
-    "jsdom": "^24.1.1",
     "lucide-react": "^0.436.0",
     "node-html-parser": "^6.1.13",
     "react": "^18.3.1",
@@ -28,7 +26,6 @@
     "typescript": "^5.5.4"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "@types/jsdom": "^21.1.7"
+    "@tailwindcss/typography": "^0.5.19"
   }
 }
