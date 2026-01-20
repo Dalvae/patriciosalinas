@@ -19,8 +19,6 @@ export interface Props {
 
 const { currentPath, lang, pages } = Astro.props;
 const t = useTranslations(lang);
-// Remove language prefix to preserve current page when switching languages
-const pathWithoutLang = currentPath.replace(/^\/(es|en|sv)/, '') || '/';
 
 function isCurrentItem(itemUri: string): boolean {
   return (
@@ -269,7 +267,7 @@ const { structure: navStructure, bioItem } = createNavStructure(
               Object.entries(languages).map(([code, _label]) => (
                 <li>
                   <a
-                    href={`/${code}${pathWithoutLang}`}
+                    href={`/${code}`}
                     class={`block px-4 py-2 text-sm italic tracking-tight ${
                       lang === code
                         ? "text-black active-item"
