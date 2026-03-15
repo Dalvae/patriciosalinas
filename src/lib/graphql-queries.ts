@@ -1,8 +1,8 @@
 import type { Page, Post, Lang } from "../types/types";
 import { getProjectPageSlug } from "./project-utils";
 
-// Usar datos locales por defecto, pero permitir override via env
-const USE_LOCAL_DATA = import.meta.env.USE_LOCAL_DATA !== "false";
+// Usar GraphQL por defecto, datos locales solo si se indica explícitamente
+const USE_LOCAL_DATA = import.meta.env.USE_LOCAL_DATA === "true";
 
 async function getLocalData(lang: Lang) {
   const { readFileSync } = await import("node:fs");
