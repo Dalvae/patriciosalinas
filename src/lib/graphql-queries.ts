@@ -5,16 +5,10 @@ import { getProjectPageSlug } from "./project-utils";
 const USE_LOCAL_DATA = import.meta.env.USE_LOCAL_DATA !== "false";
 
 async function getLocalData(lang: Lang) {
-  switch (lang) {
-    case "sv":
-      return (await import("../data/sv-content.json")).default;
-    case "es":
-      return (await import("../data/es-content.json")).default;
-    case "en":
-      return (await import("../data/en-content.json")).default;
-    default:
-      throw new Error(`Unsupported language: ${lang}`);
-  }
+  const { readFileSync } = await import("node:fs");
+  const { join } = await import("node:path");
+  const file = join(process.cwd(), "src", "data", `${lang}-content.json`);
+  return JSON.parse(readFileSync(file, "utf-8"));
 }
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
 const DEFAULT_TIMEOUT = 120000; // 120 seconds
