@@ -1,11 +1,21 @@
 import type { Page, Post, Lang } from "../types/types";
 import { getProjectPageSlug } from "./project-utils";
-import svContentJson from "../data/sv-content.json";
-import esContentJson from "../data/es-content.json";
-import enContentJson from "../data/en-content.json";
 
 // Usar datos locales por defecto, pero permitir override via env
 const USE_LOCAL_DATA = import.meta.env.USE_LOCAL_DATA !== "false";
+
+async function getLocalData(lang: Lang) {
+  switch (lang) {
+    case "sv":
+      return (await import("../data/sv-content.json")).default;
+    case "es":
+      return (await import("../data/es-content.json")).default;
+    case "en":
+      return (await import("../data/en-content.json")).default;
+    default:
+      throw new Error(`Unsupported language: ${lang}`);
+  }
+}
 const GRAPHQL_ENDPOINT = "https://www.apuntesdispersos.com/graphql";
 const DEFAULT_TIMEOUT = 120000; // 120 seconds
 const MAX_RETRIES = 20;
@@ -70,21 +80,7 @@ async function executeQuery<T>(
 // Function to get pages
 export async function getPages(lang: Lang): Promise<Page[]> {
   if (USE_LOCAL_DATA) {
-    // Usar datos locales
-    let localData;
-    switch (lang) {
-      case "sv":
-        localData = svContentJson;
-        break;
-      case "es":
-        localData = esContentJson;
-        break;
-      case "en":
-        localData = enContentJson;
-        break;
-      default:
-        throw new Error(`Unsupported language: ${lang}`);
-    }
+    const localData = await getLocalData(lang);
     return localData.data.pages.nodes;
   }
 
