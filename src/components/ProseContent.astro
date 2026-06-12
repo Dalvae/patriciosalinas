@@ -1,7 +1,7 @@
 ---
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import ProtectedImage from "./ui/ReactProtectedImage";
+import ProjectGallery from "./ProjectGallery.astro";
 
 interface ImageData {
   src: string;
@@ -17,7 +17,6 @@ interface Props {
 
 const { entry, title, images = [] } = Astro.props;
 const { Content } = entry ? await render(entry) : { Content: null };
-const allImageUrls = images.map((img) => img.src);
 ---
 
 {Content && (
@@ -27,23 +26,7 @@ const allImageUrls = images.map((img) => img.src);
   </article>
 )}
 
-{images.length > 0 && (
-  <div class="project-gallery">
-    <div class="gallery-masonry">
-      {images.map((image) => (
-        <figure>
-          <ProtectedImage
-            client:load
-            src={image.src}
-            alt={image.alt}
-            allImages={allImageUrls}
-            caption={image.caption || undefined}
-          />
-        </figure>
-      ))}
-    </div>
-  </div>
-)}
+<ProjectGallery images={images} />
 
 <style>
   /* Force full black on all prose text */
@@ -61,29 +44,6 @@ const allImageUrls = images.map((img) => img.src);
   .prose img {
     max-width: 100%;
     height: auto;
-  }
-
-  .project-gallery {
-    width: min(100%, 72ch);
-    margin-inline: auto;
-    padding-inline: 1rem;
-    padding-block: clamp(2rem, 5vw, 4rem);
-  }
-
-  .gallery-masonry {
-    columns: 3;
-    column-gap: clamp(0.85rem, 2vw, 1.5rem);
-  }
-
-  .gallery-masonry figure {
-    break-inside: avoid;
-    margin: 0 0 clamp(0.85rem, 2vw, 1.5rem);
-    background: #f5f5f5;
-  }
-
-  .gallery-masonry :global(.protected-image-container) {
-    width: 100% !important;
-    height: auto !important;
   }
 
   .markdown-gallery {
@@ -105,18 +65,6 @@ const allImageUrls = images.map((img) => img.src);
     width: 100%;
     aspect-ratio: 16 / 9;
     border: 0;
-  }
-
-  @media (max-width: 900px) {
-    .gallery-masonry {
-      columns: 2;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .gallery-masonry {
-      columns: 1;
-    }
   }
 
   @media (max-width: 760px) {
