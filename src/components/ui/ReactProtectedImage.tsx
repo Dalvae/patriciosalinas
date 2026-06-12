@@ -1,5 +1,5 @@
 //src/components/ui/ReactProtectedImage.tsx
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -101,8 +101,12 @@ export default function ProtectedImage({
   const [showOverlay, setShowOverlay] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageArray: ImageInfo[] = (allImages || [{ src, alt, caption }]).map((img) =>
-    typeof img === "string" ? { src: img, alt: "" } : img
+  const imageArray: ImageInfo[] = useMemo(
+    () =>
+      (allImages || [{ src, alt, caption }]).map((img) =>
+        typeof img === "string" ? { src: img, alt: "" } : img
+      ),
+    [allImages, src, alt, caption]
   );
   // Use object-contain unless caller overrides (object-cover requires fixed height)
   const objectFitClass = className?.includes("object-") ? "" : "object-contain";
