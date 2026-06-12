@@ -74,7 +74,7 @@ const videos = type === "videos" ? await getEntry("videos", "videos") : null;
     ) : type === "videos" && videos ? (
       <VideosPage videos={videos} lang={lang} pageTitle={page.data.title} />
     ) : (
-      <ProseContent entry={page} title={page.data.title} />
+      <ProseContent entry={page} title={page.data.title} images={page.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
     )
   }
 </Layout>

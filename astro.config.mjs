@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
 import directive from "remark-directive";
+import rehypeStripImages from "./src/lib/rehype-strip-images.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +19,7 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [directive],
+    rehypePlugins: [rehypeStripImages],
   },
   adapter: vercel(),
   image: {
