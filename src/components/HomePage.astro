@@ -1,7 +1,8 @@
 ---
+import { parse } from "node-html-parser";
 import ProtectedImage from "./ui/ReactProtectedImage.tsx";
-import InfiniteLooper from "./ui/InfiniteLooper.astro";
 import type { Lang } from "../types/types";
+import { useTranslations } from "../i18n/utils";
 
 interface ImageInfo {
   src: string;
@@ -24,17 +25,74 @@ interface Props {
   lang: Lang;
 }
 
-const { content, projects, lang: _lang } = Astro.props;
+const { content, projects, lang } = Astro.props;
+const t = useTranslations(lang);
 
-const shouldIncludeProject = (title: string) => {
-  return title === "Atacama" || title === "Walter Benjamin";
-};
+/* --- Parse the front-page essay into paragraphs --- */
+const root = parse(content);
+const paragraphs = root
+  .querySelectorAll("p")
+  .map((p) => ({ html: p.innerHTML.trim(), text: p.text.trim() }))
+  .filter((p) => p.text.length > 0);
 
-const projectsToShow = projects.filter(
-  (project) => project.images.length > 0 && shouldIncludeProject(project.title)
-);
+/* Split the opening paragraph like the book spread: the first two
+   sentences become the sans statement block, the rest the drop-cap
+   reflection. Falls back to the whole paragraph if it can't split. */
+function splitStatement(html: string): { statement: string; reflection: string } {
+  const sentences = html.split(/(?<=\.)\s+(?=[A-ZÅÄÖÉÍ])/);
+  if (sentences.length < 3) return { statement: html, reflection: "" };
+  return {
+    statement: sentences.slice(0, 2).join(" "),
+    reflection: sentences.slice(2).join(" "),
+  };
+}
 
-const createImageInfo = (src: string, alt: string): ImageInfo => ({
+const intro = paragraphs[0] ? splitStatement(paragraphs[0].html) : { statement: "", reflection: "" };
+
+/* --- Featured projects, ordered to follow the essay --- */
+const featuredTitles = ["Walter Benjamin", "Atacama"];
+const featured = featuredTitles
+  .map((title) => projects.find((p) => p.title === title && p.images.length > 0))
+  .filter((p): p is Project => Boolean(p));
+
+/* Match each project with its own paragraph from the essay */
+const usedParagraphs = new Set<number>([0]);
+function paragraphFor(project: Project): string {
+  const keyword = project.title.split(" ").pop() || project.title;
+  const idx = paragraphs.findIndex(
+    (p, i) => !usedParagraphs.has(i) && p.text.toLowerCase().includes(keyword.toLowerCase())
+  );
+  if (idx === -1) return "";
+  usedParagraphs.add(idx);
+  return paragraphs[idx].html;
+}
+
+const spreads = featured.map((project, i) => {
+  const words = project.title.split(" ");
+  return {
+    project,
+    paragraph: paragraphFor(project),
+    bigWord: words[words.length - 1],
+    smallWords: words.slice(0, -1).join(" "),
+    flipped: i % 2 === 1,
+    // the intro photo borrows the first featured project's lead image
+    images: (i === 0 ? project.images.slice(1, 5) : project.images.slice(0, 4)),
+  };
+});
+
+const leftovers = paragraphs
+  .map((p, i) => ({ ...p, i }))
+  .filter((p) => !usedParagraphs.has(p.i));
+
+const introPhoto = featured[0]?.images[0];
+
+/* Aspect ratio from Cloudinary URL (…/w_1024,h_577,…) keeps layout stable */
+function aspectOf(src: string): string {
+  const m = src.match(/w_(\d+),h_(\d+)/);
+  return m ? `${m[1]} / ${m[2]}` : "4 / 3";
+}
+
+const imageInfo = (src: string, alt: string): ImageInfo => ({
   src,
   alt,
   width: "auto",
@@ -42,57 +100,589 @@ const createImageInfo = (src: string, alt: string): ImageInfo => ({
 });
 ---
 
-<div class="flex flex-col h-full md:flex-row">
-  <!-- Project Gallery - Now first on mobile -->
-  <div class="w-full md:w-1/2 lg:w-2/3 md:order-2">
-    <div class="pt-3">
-      <div>
-        {
-          projectsToShow.map((project, projectIndex) => (
-            <Fragment>
-              <div class="outline-primary-600">
-                <h3 class="text-2xl font-semibold text-gray-900 tracking-tight drop-shadow-md my-2 mx-6">
-                  {project.title}
-                </h3>
-              </div>
-              <div class="bg-white md:mx-6">
-                <InfiniteLooper
-                  speed={10}
-                  direction={projectIndex % 2 === 0 ? "left" : "right"}
-                >
-                  {project.images.map((image, imageIndex) => (
-                    <div class="flex-shrink-0 mx-2 looper-content h-auto">
-                      <ProtectedImage
-                        client:load
-                        src={image}
-                        alt={`${project.title} - Image ${imageIndex + 1}`}
-                        allImages={project.images.map((img) =>
-                          createImageInfo(img, `${project.title} - Image`)
-                        )}
-                        style={{
-                          height: "100%",
-                          width: "auto",
-                          maxWidth: "none",
-                          objectFit: "contain",
-                        }}
-                        className="max-h-[35vh] w-auto"
-                        containerClassName="h-full"
-                        disableOverlay={true}
-                      />
-                    </div>
-                  ))}
-                </InfiniteLooper>
-              </div>
-            </Fragment>
-          ))
-        }
-      </div>
+<div class="editorial font-playfair text-primary-600">
+  <!-- ——— Spread one: the statement ——— -->
+  <section class="intro" data-reveal>
+    <div class="intro-statement font-fira">
+      <span class="rule intro-rule-v" aria-hidden="true"></span>
+      <p set:html={intro.statement} />
     </div>
-  </div>
-  <!-- Content Column - Now second on mobile -->
-  <div
-    class="w-full lg:w-1/3 md:w-1/2 lg:ml-9 lg:mr-3 md:p-3 p-6 my-9 md:text-sm 2xl:text-base text-justify bg-white md:order-1"
-  >
-    <div set:html={content} />
-  </div>
+
+    {introPhoto && featured[0] && (
+      <figure class="intro-photo" style={`aspect-ratio: ${aspectOf(introPhoto)};`}>
+        <ProtectedImage
+          client:load
+          src={introPhoto}
+          alt={`${featured[0].title} — ${t("nav.subtitle")}`}
+          allImages={[imageInfo(introPhoto, featured[0].title)]}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          className="h-full object-cover"
+          containerClassName="h-full w-full"
+          disableOverlay={true}
+        />
+        <span class="intro-side font-fira" aria-hidden="true">{t("nav.subtitle")}</span>
+      </figure>
+    )}
+
+    {intro.reflection && (
+      <div class="intro-reflection">
+        <span class="rule intro-rule-h" aria-hidden="true"></span>
+        <p class="drop-cap" set:html={intro.reflection} />
+      </div>
+    )}
+  </section>
+
+  <!-- ——— Project spreads ——— -->
+  {
+    spreads.map(({ project, paragraph, bigWord, smallWords, flipped, images }) => (
+      <article class:list={["spread", { flipped }]} data-reveal>
+        <header class="spread-title font-fira">
+          <p class="spread-kicker">
+            <span class="sq" aria-hidden="true" />
+            {smallWords || t("nav.projects")}
+          </p>
+          <a href={project.link} class="spread-name">
+            {bigWord}
+          </a>
+        </header>
+
+        <div class="spread-images">
+          <span class="rule img-rule-v" aria-hidden="true" />
+          <span class="rule img-rule-h" aria-hidden="true" />
+          {images.map((image, i) => (
+            <figure class={`ph ph-${i}`} style={`aspect-ratio: ${aspectOf(image)};`}>
+              <ProtectedImage
+                client:load
+                src={image}
+                alt={`${project.title} — ${i + 1}`}
+                allImages={images.map((img) => imageInfo(img, project.title))}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                className="h-full object-cover"
+                containerClassName="h-full w-full"
+                disableOverlay={true}
+              />
+            </figure>
+          ))}
+        </div>
+
+        {paragraph && (
+          <div class="spread-text">
+            <p set:html={paragraph} />
+            <a href={project.link} class="spread-link font-fira">
+              {t("home.viewProject")}
+            </a>
+          </div>
+        )}
+      </article>
+    ))
+  }
+
+  <!-- ——— Closing paragraphs, if the essay has more to say ——— -->
+  {
+    leftovers.length > 0 && (
+      <section class="closing" data-reveal>
+        <span class="rule rule-h closing-rule" aria-hidden="true" />
+        {leftovers.map((p) => (
+          <p set:html={p.html} />
+        ))}
+      </section>
+    )
+  }
 </div>
+
+<style>
+  .editorial {
+    position: relative;
+    overflow-x: clip;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 5vw, 5rem);
+    padding-block: clamp(2.5rem, 6vw, 6rem) clamp(3rem, 8vw, 7rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5rem, 12vw, 11rem);
+  }
+
+  /* —— shared editorial furniture —— */
+  .sq {
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    background: #111111;
+    flex-shrink: 0;
+    margin-top: 0.45em;
+  }
+
+  .rule {
+    position: absolute;
+    background: #d4d4d4;
+    z-index: 0;
+  }
+  .rule-v {
+    width: 1px;
+  }
+  .rule-h {
+    height: 1px;
+  }
+
+  /* —— intro spread —— */
+  .intro {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(1.5rem, 4vw, 4rem);
+    padding-right: clamp(2.75rem, 5vw, 4.75rem);
+  }
+
+  /* statement sits inside a hairline box with air below, like the book */
+  .intro-statement {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    gap: 1rem;
+    align-self: start;
+    margin-top: clamp(1rem, 6vw, 5rem);
+    margin-left: clamp(1rem, 4vw, 3.5rem);
+    padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1.25rem, 2.5vw, 2.25rem)
+      clamp(3.5rem, 7vw, 6.5rem);
+    border: 1px solid #d4d4d4;
+    position: relative;
+    z-index: 1;
+  }
+  /* the page's vertical line runs just outside the box, threading past it */
+  .intro-rule-v {
+    width: 1px;
+    left: calc(-1 * clamp(1rem, 2.5vw, 2rem));
+    top: calc(-1 * clamp(2.5rem, 6vw, 6rem));
+    bottom: calc(-1 * clamp(3rem, 7vw, 6rem));
+  }
+  .intro-statement p {
+    max-width: 30ch;
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.7;
+    color: #374151;
+  }
+
+  .intro-photo {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    background: #f5f5f5;
+    align-self: start;
+  }
+  /* darker gray band behind the photo, reaching toward the page edge */
+  .intro-photo::before {
+    content: "";
+    position: absolute;
+    top: calc(-1 * clamp(1.375rem, 2.75vw, 2.375rem));
+    left: 18%;
+    right: calc(-1 * clamp(2.5rem, 5vw, 4.5rem));
+    bottom: 18%;
+    background: #8f8f8f;
+  }
+  .intro-photo :global(.protected-image-container) {
+    position: relative;
+    z-index: 1;
+    /* white mat between the photograph and the gray band — thin on the
+       band sides (top/right), matching */
+    border: clamp(0.875rem, 1.8vw, 1.5rem) solid #ffffff;
+    border-top-width: clamp(0.375rem, 0.8vw, 0.625rem);
+    border-right-width: clamp(0.375rem, 0.8vw, 0.625rem);
+    box-sizing: border-box;
+  }
+  /* crop the white scanner sliver baked into the files; keep the film border */
+  .intro-photo :global(img) {
+    transform: scale(1.02);
+  }
+
+  /* lighter tab, anchored to the photo so it ends exactly with the image */
+  .intro-side {
+    position: absolute;
+    right: calc(-1 * clamp(2.2rem, 3vw, 2.8rem));
+    /* flush with the photograph itself, not the white mat below it */
+    bottom: clamp(0.875rem, 1.8vw, 1.5rem);
+    writing-mode: vertical-rl;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    background: #adadad;
+    padding: clamp(2rem, 4vw, 3.5rem) 0.55rem;
+    z-index: 1;
+  }
+
+  .intro-reflection {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: clamp(3rem, 8vw, 7rem);
+    position: relative;
+    z-index: 1;
+  }
+  /* marks the reflection's top edge: page edge → under the photo */
+  .intro-rule-h {
+    height: 1px;
+    top: calc(-1 * clamp(1.5rem, 4vw, 3.25rem));
+    left: calc(-1 * clamp(1.5rem, 5vw, 5rem));
+    width: calc(100% + clamp(12rem, 35vw, 28rem));
+  }
+  .intro-reflection p {
+    max-width: 52ch;
+    font-size: 1rem;
+    line-height: 1.75;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .drop-cap::first-letter {
+    float: left;
+    font-size: 4.6em;
+    line-height: 0.82;
+    padding-right: 0.1em;
+    font-weight: 500;
+  }
+
+  /* —— project spreads —— */
+  .spread {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 17fr) minmax(0, 7fr);
+    column-gap: clamp(1.5rem, 3.5vw, 4rem);
+    align-items: start;
+  }
+  .spread.flipped {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 17fr) auto;
+  }
+
+  .spread-title {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: clamp(1rem, 4vw, 3.5rem);
+  }
+  .spread.flipped .spread-title {
+    grid-column: 3;
+    align-items: flex-end;
+  }
+
+  .spread-kicker {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    color: #111111;
+  }
+
+  .spread-name {
+    writing-mode: vertical-rl;
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #111111;
+    text-decoration: none;
+    margin-left: 0.2rem;
+  }
+  .spread-name:hover,
+  .spread-name:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+  }
+
+  .spread-images {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: clamp(0.75rem, 1.8vw, 1.5rem);
+    align-items: start;
+  }
+  .spread-images figure {
+    margin: 0;
+    background: #f5f5f5;
+    position: relative;
+    z-index: 1;
+  }
+  /* the lines grow out of the cluster's own grid: the horizontal one lives
+     in the seam under the dominant photo (the lower photos hang from it),
+     the vertical one in the joint between the lower photos, crossing
+     behind the big image and bleeding into the white between sections */
+  .img-rule-v {
+    position: static;
+    grid-row: 1 / 4;
+    grid-column: 10 / 11;
+    justify-self: start;
+    width: 1px;
+    margin-left: calc(-0.5 * clamp(0.75rem, 1.8vw, 1.5rem));
+    margin-top: calc(-1 * clamp(2.5rem, 6vw, 5.5rem));
+    margin-bottom: calc(-1 * clamp(2.5rem, 6vw, 5.5rem));
+  }
+  .spread.flipped .img-rule-v {
+    grid-column: 9 / 10;
+  }
+  .img-rule-h {
+    position: static;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    align-self: center;
+    height: 1px;
+    margin-left: calc(-1 * clamp(6rem, 18vw, 14rem));
+  }
+  .spread.flipped .img-rule-h {
+    margin-left: 0;
+    margin-right: calc(-1 * clamp(6rem, 18vw, 14rem));
+  }
+  /* book-spread cluster: one dominant photo, then an offset row of three */
+  .ph-0 {
+    grid-column: 1 / 11;
+    grid-row: 1;
+  }
+  .ph-1 {
+    grid-column: 1 / 5;
+    grid-row: 3;
+    margin-top: 8%;
+  }
+  .ph-2 {
+    grid-column: 5 / 10;
+    grid-row: 3;
+  }
+  .ph-3 {
+    grid-column: 10 / 13;
+    grid-row: 3;
+    margin-top: 14%;
+  }
+  .spread.flipped .ph-0 {
+    grid-column: 3 / 13;
+  }
+  .spread.flipped .ph-1 {
+    grid-column: 9 / 13;
+    margin-top: 6%;
+  }
+  .spread.flipped .ph-2 {
+    grid-column: 4 / 9;
+  }
+  .spread.flipped .ph-3 {
+    grid-column: 1 / 4;
+    margin-top: 10%;
+  }
+
+  .spread-text {
+    grid-column: 3;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+    margin-top: clamp(2rem, 10vw, 9rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .spread.flipped .spread-text {
+    grid-column: 1;
+    margin-top: clamp(1rem, 5vw, 4rem);
+  }
+  .spread-text p {
+    max-width: 44ch;
+    font-size: 1rem;
+    line-height: 1.75;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .spread-link {
+    align-self: flex-start;
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #111111;
+    text-decoration: none;
+    border-bottom: 1px solid #111111;
+    padding-bottom: 0.2rem;
+  }
+  .spread-link:hover,
+  .spread-link:focus-visible {
+    border-bottom-width: 2px;
+  }
+
+  /* —— closing —— */
+  .closing {
+    position: relative;
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  /* aligned with the indented paragraph start, bleeding off the page edge */
+  .closing-rule {
+    top: 0;
+    left: clamp(0rem, 12vw, 10rem);
+    right: calc(-1 * clamp(1.5rem, 5vw, 5rem));
+  }
+  .closing p {
+    max-width: 58ch;
+    font-size: 1rem;
+    line-height: 1.75;
+    text-align: justify;
+    hyphens: auto;
+    margin-left: clamp(0rem, 12vw, 10rem);
+  }
+
+  /* —— reveal motion (enhances an always-visible default) —— */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js-reveal) [data-reveal] {
+      transition:
+        opacity 0.7s cubic-bezier(0.165, 0.84, 0.44, 1),
+        transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    :global(.js-reveal) [data-reveal]:not(.is-in) {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+
+  /* —— tablet & mobile: recompose, don't shrink —— */
+  @media (max-width: 1023px) {
+    .intro {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      row-gap: 2.75rem;
+    }
+    /* mobile opens with the photograph, then the words */
+    .intro-photo {
+      grid-column: 1;
+      grid-row: 1;
+      width: 100%;
+      margin-top: clamp(1rem, 4vw, 2rem);
+    }
+    .intro-statement {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: 0;
+      margin-left: 0;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+    .intro-side {
+      display: none;
+    }
+    .intro-reflection {
+      grid-column: 1;
+      grid-row: 3;
+      margin-top: 0;
+    }
+    .intro-rule-v {
+      top: -1.75rem;
+      bottom: -2.5rem;
+    }
+    .intro-rule-h {
+      width: calc(100% + 2rem);
+    }
+
+    .spread,
+    .spread.flipped {
+      grid-template-columns: 1fr;
+      row-gap: 2.25rem;
+    }
+    .spread-title,
+    .spread.flipped .spread-title {
+      grid-column: 1;
+      grid-row: auto;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 0;
+      gap: 0.5rem;
+    }
+    .spread-name {
+      writing-mode: horizontal-tb;
+      margin-left: 0;
+      font-size: clamp(2.25rem, 9vw, 3.5rem);
+    }
+    .spread-images,
+    .spread-text,
+    .spread.flipped .spread-text {
+      grid-column: 1;
+      grid-row: auto;
+      margin-top: 0;
+    }
+    .ph-1,
+    .spread.flipped .ph-1 {
+      margin-top: 30%;
+    }
+    .img-rule-v,
+    .spread.flipped .img-rule-v {
+      margin-top: -1.25rem;
+      margin-bottom: -1.25rem;
+    }
+    .img-rule-h,
+    .spread.flipped .img-rule-h {
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+    }
+    .closing p {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .editorial {
+      gap: 4.5rem;
+    }
+    .ph-0,
+    .spread.flipped .ph-0 {
+      grid-column: 1 / 13;
+    }
+    .ph-1,
+    .spread.flipped .ph-1 {
+      grid-column: 3 / 13;
+      grid-row: auto;
+      margin-top: 0;
+    }
+    .ph-2,
+    .spread.flipped .ph-2 {
+      grid-column: 1 / 10;
+      grid-row: auto;
+    }
+    .ph-3,
+    .spread.flipped .ph-3 {
+      grid-column: 4 / 13;
+      grid-row: auto;
+      margin-top: 0;
+    }
+  }
+</style>
+
+<script>
+  // Reveal on scroll. The default (no .js-reveal on <html>) is fully
+  // visible, so content never ships hidden without JS.
+  document.documentElement.classList.add("js-reveal");
+  const targets = document.querySelectorAll("[data-reveal]");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" }
+    );
+    targets.forEach((el) => io.observe(el));
+    // Safety net: never leave content hidden (paused tabs, headless
+    // renderers, missed intersections). After 2.5s everything is visible.
+    setTimeout(() => targets.forEach((el) => el.classList.add("is-in")), 2500);
+  } else {
+    targets.forEach((el) => el.classList.add("is-in"));
+  }
+</script>

@@ -9,6 +9,11 @@ export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: ["**/.omc/**", "**/.playwright-cli/**", "**/.impeccable/**"],
+      },
+    },
   },
   adapter: vercel(),
   image: {

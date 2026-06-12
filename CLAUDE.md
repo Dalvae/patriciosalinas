@@ -93,3 +93,9 @@ Defined in `tsconfig.json`:
 - `@lib/*` → `src/lib/*`
 - `@i18n/*` → `src/i18n/*`
 - `@types/*` → `src/types/*`
+
+## Design Context
+
+- **PRODUCT.md** (project root) — strategic design context: register (brand), audiences, brand personality, anti-references, design principles. Read it before any design work.
+- **DESIGN.md** (project root) — the visual system: monochrome ink-on-paper palette, Playfair Display-only typography, named rules (e.g. The Monochrome Rule, The One Family Rule), component specs. Tokens in its YAML frontmatter are normative.
+- Note: `--color-gold` and Abril Fatface in `app.css` are dead tokens — defined but unused; not part of the identity.

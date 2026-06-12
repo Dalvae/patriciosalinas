@@ -1,10 +1,14 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/600.css";
+@import "@fontsource/fira-sans/700.css";
 
 @theme {
   --font-playfair: "Playfair Display", serif;
   --font-playfair-italic: "Playfair Display Italic", serif;
   --font-abril-fatface: "Abril Fatface", serif;
+  --font-fira: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
 
   --color-primary-600: #111111;
   --color-gold: #d4af37;

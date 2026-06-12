@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-12T00:00:00Z",
+  "title": "Design System: Patricio Salinas",
+  "extensions": {
+    "colorMeta": {
+      "ink-black": { "role": "primary", "displayName": "Ink Black", "canonical": "#111111", "tonalRamp": ["#0a0a0a", "#111111", "#262626", "#404040", "#5c5c5c", "#8a8a8a", "#c2c2c2", "#f0f0f0"] },
+      "page-white": { "role": "neutral", "displayName": "Page White", "canonical": "#ffffff", "tonalRamp": ["#262626", "#404040", "#5c5c5c", "#8a8a8a", "#b3b3b3", "#d6d6d6", "#f0f0f0", "#ffffff"] },
+      "nav-charcoal": { "role": "neutral", "displayName": "Nav Charcoal", "canonical": "#262626", "tonalRamp": ["#0a0a0a", "#171717", "#262626", "#3d3d3d", "#5c5c5c", "#8a8a8a", "#c2c2c2", "#ededed"] },
+      "caption-gray": { "role": "neutral", "displayName": "Caption Gray", "canonical": "#4b5563", "tonalRamp": ["#111827", "#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#f3f4f6"] },
+      "hairline-gray": { "role": "neutral", "displayName": "Hairline Gray", "canonical": "#e5e7eb", "tonalRamp": ["#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f3f4f6", "#f9fafb"] },
+      "scrim-60": { "role": "neutral", "displayName": "Scrim 60", "canonical": "rgba(0,0,0,0.6)", "tonalRamp": ["rgba(0,0,0,0.9)", "rgba(0,0,0,0.8)", "rgba(0,0,0,0.7)", "rgba(0,0,0,0.6)", "rgba(0,0,0,0.45)", "rgba(0,0,0,0.3)", "rgba(0,0,0,0.15)", "rgba(0,0,0,0.05)"] },
+      "scrim-90": { "role": "neutral", "displayName": "Scrim 90", "canonical": "rgba(0,0,0,0.9)", "tonalRamp": ["rgba(0,0,0,0.95)", "rgba(0,0,0,0.9)", "rgba(0,0,0,0.8)", "rgba(0,0,0,0.65)", "rgba(0,0,0,0.5)", "rgba(0,0,0,0.35)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0.08)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Project and page titles. Playfair Display 600, tracking-tight." },
+      "body": { "displayName": "Body", "purpose": "Essay prose; justified columns beside image sequences." },
+      "label": { "displayName": "Label", "purpose": "Uppercase navigation links; state shown by underline, not color flips." },
+      "caption": { "displayName": "Caption", "purpose": "Subtitles, image captions, metadata in Caption Gray." }
+    },
+    "shadows": [
+      { "name": "floating-panel", "value": "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)", "purpose": "Dropdown menus and anything that overlays content while the page stays interactive." }
+    ],
+    "motion": [
+      { "name": "overlay-fade", "value": "opacity 150ms ease", "purpose": "Protected-image scrim overlay fade on hover." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Uppercase Playfair navigation link; darkens on hover, underlines when active.",
+      "html": "<a href=\"#\" class=\"ds-nav-link\">Projects</a>",
+      "css": ".ds-nav-link { font-family: 'Playfair Display', serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.025em; color: #262626; text-decoration: none; transition: color 0.15s ease; } .ds-nav-link:hover { color: #0a0a0a; } .ds-nav-link:focus-visible { outline: 1px solid #111111; outline-offset: 4px; }"
+    },
+    {
+      "name": "Nav Link (Active)",
+      "kind": "nav",
+      "refersTo": "nav-link-active",
+      "description": "Current-page state: ink black with a 4px-offset underline.",
+      "html": "<a href=\"#\" class=\"ds-nav-link-active\">Gallery</a>",
+      "css": ".ds-nav-link-active { font-family: 'Playfair Display', serif; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.025em; color: #111111; text-decoration: underline; text-underline-offset: 4px; }"
+    },
+    {
+      "name": "Wordmark",
+      "kind": "custom",
+      "refersTo": "nav-link",
+      "description": "Site identity: bold, widest tracking in the system, with Caption Gray subtitle.",
+      "html": "<div><a href=\"#\" class=\"ds-wordmark\">PATRICIO SALINAS A</a><span class=\"ds-wordmark-sub\">Photography, essays and visual thinking</span></div>",
+      "css": ".ds-wordmark { display: block; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.1em; color: #111111; text-decoration: none; } .ds-wordmark:hover { color: #262626; } .ds-wordmark-sub { font-family: 'Playfair Display', serif; font-size: 0.875rem; color: #4b5563; }"
+    },
+    {
+      "name": "Language Pill",
+      "kind": "chip",
+      "refersTo": "nav-link",
+      "description": "The system's one eccentric detail: italic label in a dashed 1px border.",
+      "html": "<button class=\"ds-lang-pill\">EN <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></button>",
+      "css": ".ds-lang-pill { display: inline-flex; align-items: center; gap: 4px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: #262626; background: transparent; border: 1px dashed #374151; border-radius: 4px; padding: 4px 8px; cursor: pointer; transition: color 0.15s ease; } .ds-lang-pill:hover { color: #0a0a0a; } .ds-lang-pill:focus-visible { outline: 1px solid #111111; outline-offset: 2px; }"
+    },
+    {
+      "name": "Dropdown Panel",
+      "kind": "nav",
+      "refersTo": "dropdown-panel",
+      "description": "Floating white panel with hairline border; square corners, soft shadow.",
+      "html": "<ul class=\"ds-dropdown\"><li><a href=\"#\" class=\"ds-dropdown-item\">Atacama</a></li><li><a href=\"#\" class=\"ds-dropdown-item ds-dropdown-item-active\">Walter Benjamin</a></li></ul>",
+      "css": ".ds-dropdown { list-style: none; margin: 0; padding: 0; width: 192px; background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); } .ds-dropdown-item { display: block; font-family: 'Playfair Display', serif; font-size: 0.875rem; color: #262626; text-decoration: none; padding: 8px 16px; transition: color 0.15s ease; } .ds-dropdown-item:hover { color: #0a0a0a; } .ds-dropdown-item-active { color: #111111; text-decoration: underline; text-underline-offset: 4px; }"
+    },
+    {
+      "name": "Lightbox Control",
+      "kind": "button",
+      "refersTo": "lightbox-control",
+      "description": "Circular scrim button with white icon; close/prev/next controls in the dark viewing room.",
+      "html": "<button class=\"ds-lightbox-control\" aria-label=\"Next image\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 18 6-6-6-6\"/></svg></button>",
+      "css": ".ds-lightbox-control { display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); color: #ffffff; border: none; border-radius: 9999px; padding: 8px; cursor: pointer; transition: background 0.15s ease; } .ds-lightbox-control:hover { background: rgba(0,0,0,0.8); } .ds-lightbox-control:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Image Caption",
+      "kind": "custom",
+      "refersTo": "nav-link",
+      "description": "Caption Gray metadata text beneath or beside photographs.",
+      "html": "<figcaption class=\"ds-caption\">Atacama — silver gelatin print, 2019</figcaption>",
+      "css": ".ds-caption { font-family: 'Playfair Display', serif; font-size: 0.875rem; line-height: 1.4; color: #4b5563; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Printed Essay",
+    "overview": "The site is a finely-set book of photo-essays. Text and image are equals: a justified Playfair Display column sits beside the photographs the way an essay sits beside its plates. Every visual decision defers to black-and-white photography — the interface is monochrome ink on white paper so that the only tonality on any page comes from the work itself. The visitor should feel they are reading a publication, not browsing a website. Restraint here is literary, not corporate: a serif everywhere, justified prose, uppercase letterspaced wayfinding — the conventions of fine book design, not of SaaS.",
+    "keyCharacteristics": [
+      "Monochrome ink-on-paper palette; photographs are the only source of tone",
+      "One serif family (Playfair Display, roman + italic) carries the entire voice",
+      "Refined and restrained components: typography does the signaling; chrome recedes",
+      "Essay layout: text column and image sequence side by side as equals",
+      "Three languages, one identical gravity"
+    ],
+    "rules": [
+      { "name": "The Monochrome Rule", "body": "The interface is ink, paper, and gray. Photography is the only source of tone on any page. Introducing a UI accent color is prohibited without an explicit identity decision.", "section": "colors" },
+      { "name": "The Dead Token Rule", "body": "--color-gold (#d4af37) and Abril Fatface are defined in app.css but used nowhere. They are not part of this system. Never reach for them as 'the brand accent'; remove them when convenient.", "section": "colors" },
+      { "name": "The One Family Rule", "body": "Playfair Display (roman + italic) is the entire typographic voice. Adding a second family is prohibited without an identity decision; contrast comes from weight, case, tracking, and italics.", "section": "typography" },
+      { "name": "The Typographic Signal Rule", "body": "Interactive states are typographic: active pages are underlined (text-underline-offset: 4px), hover darkens charcoal to near-black, the current language is italic. No pills, badges, or color flips.", "section": "typography" },
+      { "name": "The One Plane Rule", "body": "Surfaces are flat at rest. Shadow is a response to floating (dropdowns, lightbox), never a default card treatment.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the interface strictly monochrome (#111111 ink, #ffffff paper, the gray ramp); let photographs provide all tone.",
+      "Do use Playfair Display for everything, with case, weight (400/600/700), tracking, and italics as the only contrast tools.",
+      "Do signal interaction typographically: underline at 4px offset for active, charcoal-to-black on hover, italic for language.",
+      "Do keep borders at 1px Hairline Gray and corners square (the language pill's 4px dash and the lightbox's circular controls are the only exceptions).",
+      "Do maintain Caption Gray (#4b5563) as the floor for text contrast on white; never lighter.",
+      "Do give every animation a prefers-reduced-motion alternative — the homepage loopers must pause to static strips."
+    ],
+    "donts": [
+      "Don't use the dead tokens: no --color-gold (#d4af37) accents, no Abril Fatface. They are unused legacy and not part of the identity.",
+      "Don't drift toward 'stock photographer templates' — full-bleed hero slideshows, script logos, booking CTAs.",
+      "Don't add 'trendy agency portfolio' effects — WebGL, cursor followers, scroll-jacking; nothing may upstage the photographs.",
+      "Don't introduce 'commercial/e-commerce feel' — prices, carts, promotional badges anywhere near the work.",
+      "Don't slip into 'cold tech minimalism' — no sans-serif UI voice, no corporate gray-on-gray sterility; the restraint must stay literary.",
+      "Don't decorate with shadows, cards, or panels; depth only for things that genuinely float (dropdowns, lightbox).",
+      "Don't place text over photographs except inside the established scrim overlays."
+    ]
+  }
+}

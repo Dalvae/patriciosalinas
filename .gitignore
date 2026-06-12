@@ -25,3 +25,7 @@ src/data
 .idea/
 .vercel
 .env*.local
+
+# AI tooling ephemeral state
+.omc/
+.playwright-cli/
