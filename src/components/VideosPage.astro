@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Lang } from "../types/types";
+
+interface Props {
+  videos: CollectionEntry<"videos">;
+  lang: Lang;
+  pageTitle?: string;
+}
+
+const { videos, lang, pageTitle } = Astro.props;
+const titleFor = (video: typeof videos.data.videos[number]) =>
+  video.titles?.[lang] || video.title;
+---
+
+<section class="videos-page">
+  <div class="videos-shell">
+    <h1>{pageTitle || "Videos"}</h1>
+    <div class="videos-grid">
+      {videos.data.videos.map((video) => (
+        <figure class="video-card">
+          <iframe
+            src={`https://www.youtube.com/embed/${video.id}`}
+            title={titleFor(video)}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
+          <figcaption>{titleFor(video)}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .videos-page {
+    width: min(100%, 92rem);
+    margin-inline: auto;
+    padding-block: clamp(3rem, 7vw, 7rem);
+    padding-inline: clamp(1rem, 4vw, 4rem);
+  }
+
+  .videos-shell {
+    background: #fff;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .videos-shell h1 {
+    margin: 0 0 2rem;
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 500;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .video-card {
+    margin: 0;
+  }
+
+  .video-card iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    background: #111;
+  }
+
+  .video-card figcaption {
+    padding-top: 0.75rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+</style>

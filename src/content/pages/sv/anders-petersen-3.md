@@ -1,0 +1,51 @@
+---
+title: "Anders Petersen"
+uri: "/sv/publikationer/anders-petersen-3/"
+lang: "sv"
+type: "publication"
+translationKey: "anders-petersen"
+order: 3100
+images: [{"src":"https://www.apuntesdispersos.com/wp-content/uploads/2024/08/image-1.jpeg","alt":"","caption":""},{"src":"https://www.apuntesdispersos.com/wp-content/uploads/2024/08/image-2.jpeg","alt":"","caption":""},{"src":"https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-003.jpg","alt":"","caption":""},{"src":"https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-001.jpg","alt":"","caption":""},{"src":"https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-002.jpg","alt":"","caption":""}]
+---
+
+Det är dagar av intensiv värme denna ovanliga sommar i den vackra skärgårdsstaden som kallas Stockholm. Andersen möter mig i sitt laboratorium beläget på Gamla Stan. I en smal gränd, med stenläggning från 1600-talet, känns lokalen i källaren sval. Anders Petersen fortsätter att arbeta i huvudsak på traditionellt, analogt sätt, framkallar film och kopierar på bromidpapper. Jag finner honom tittande på sina senaste arbeten på sin dator, ett av de få tecknen som talar om att Petersen också använder, i mindre utsträckning, digital metodik.
+
+Han hälsar mig med en varm hälsning och ett «var det inte igår!!!», ett typiskt svenskt uttryck för hjärtlighet. Det var år sedan jag besökte honom. Jag finner honom nästan oförändrad, bara hans hår har vitnat och lite avslöjar att denna man nyligen fyllt 70 år. Hans vitalitet och produktivitet har inte minskat, den är lika intensiv som alltid. Hans fotografiska verksamhet började våren 1966. Som fotograf och lärare bedriver han verksamhet i olika europeiska städer, en vecka i Rom, en annan i Moskva, en annan i Paris och en annan i Stockholm. Hans utställningar, presentation av hans böcker och hans workshops tar honom ständigt från en plats till en annan. Medan han ger instruktioner till sin unga assistent om vilka kemikalier som ska användas för att göra kontaktkopior av hans senaste bilder, sätter vi oss i ett litet rum. Rummet är omgivet av en bokhylla där tusentals negativ är ordnade efter år. Där finns också hans böcker och publikationer. Vi har ett öppet, flytande samtal utan onödiga inledningar. Petersen är passionerad för fotografi.
+
+-Vad får dig att resa till Valparaíso, en stad så långt borta, på andra sidan havet?
+
+-Sergio Larraín väcker min nyfikenhet och jag är inbjuden dit för att hålla en workshop. Jag övertygades av förra årets festivalkatalog, där Antoine d’Agata deltog, med ett omslag med namnet Paraíso, liknande den första utgåvan av Valparaíso av Sergio Larraín. Underbart arbete av Larraín. Jag vet inget om staden men jag tänker på all dess geometri, trappor, hissar och kullar.
+
+Det är första gången Anders Petersen reser till Latinamerika. Hans verk är nästan okänt på kontinenten, även om han 1994 presenterades på Konstmuseet i Santiago, i en kollektiv utställning tillsammans med 9 andra svenska fotografer, kallad «Tre generationer svensk fotografi», där jag själv var curator.
+
+-Känner du till verk av latinamerikanska fotografiska författare?
+
+-Mycket lite. Förutom Larraín känner jag till Martín Chambi, Manuel Alvarez Bravo, Graciela Iturbide, Miguel Rio Branco och hans fascinerande arbete från 90-talet. Salgados verk i början, hans bok «Andra Amerika» är ett mästerverk. Hans senaste utställning, Genesis, känns dock tung för mig, nästan tråkig. När Salgado fotograferar arbetare liknar de propagandistiska bilder från Stalinperioden. Heroiska figurer som inte visar sina svagheter och jag tror att det är just genom sina svagheter som människor visar sina styrkor.
+
+-Förutom Christer Strömholm, vilka andra fotografer har påverkat ditt arbete?
+
+-Utan tvekan Ed van der Elsken. (Holländsk fotograf, självlärd, precis som Strömholm) En mästare!!! Hans första bok «Love on the Left Bank» är en verklig skola. Han gjorde den när han var kopiator på Magnum. Han presenterar porträtt i alla slags ljus, i skymningen, på eftermiddagen, i regnet, i solljuset, han presenterar kyssar, fotografi där formen är dominerande, han presenterar alla typer av fotografi. Jag har också påverkats av de tre damerna, som jag kallar dem: Diane Arbus, Nan Goldin och Lisette Model. Bland japanska fotografer måste jag nämna, framför allt, Daidō Moriyama, som tillhörde den kända «Provoke»-rörelsen.
+
+Fotografisk produktion i Japan från 50-talet och framåt är extraordinär. Petersen är en nyfiken man. En «visuell resenär», han gillar att observera allt. Han söker inspiration och njuter av mästarna inom holländskt 1600-talsmåleri, liksom av samtida konstnärers verk som Marlene Dumas och Lucian Freud. Petersen attraheras av japansk litteratur, av författare som Haruki Murakami. Han finner också sin inspiration i sina egna workshops och dialogen som uppstår med deltagarna.
+
+I ditt verbala diskurs märks ibland ett visst förakt för akademism inom fotografin.
+
+-Jag menar då att i fotograferingsögonblicket gäller inte intellektet, bara det emotionella. I slutändan har intellektet väldigt lite att göra med det visuella. Bilden har att göra med det emotionella, med vad du känner i ditt hjärta och i din mage. När jag fotograferar försöker jag lämna mitt huvud och det rationella åt sidan.
+
+<img src="https://www.apuntesdispersos.com/wp-content/uploads/2024/08/image-1.jpeg" alt="" />
+
+<img src="https://www.apuntesdispersos.com/wp-content/uploads/2024/08/image-2.jpeg" alt="" />
+
+<img src="https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-003.jpg" alt="" />
+
+<img src="https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-001.jpg" alt="" />
+
+<img src="https://www.apuntesdispersos.com/wp-content/uploads/2024/08/A-Petersen-002.jpg" alt="" />
+
+Internationell kritik har under de senaste tio åren i stor utsträckning erkänt Anders Petersens arbete. Café Lehmitz från Hamburg är hans mest kända bok och den mest kända bilden är Lilly och Rosen, använd på omslaget till Rain Dogs av den amerikanska musikern Tom Waits. Men han har också kritiska belackare, som påpekar att det i Petersens arbete finns en viss romantisering av marginaliserade grupper i samhället, som de mest autentiska. Petersen argumenterar att «jag är intresserad av människor, det spelar ingen roll nationalitet, vilken generation eller vilket socialt skikt de tillhör, det viktiga är människorna».
+
+-Hur presenterar du dig när du fotograferar?
+
+-Aldrig som fotograf. Först är jag intresserad av personen, jag etablerar en dialog, sedan fotografiet. Därför arbetar jag med små kameror. Dessutom har själva fotograferandet lite att göra med fotografi, det talar främst om personen bakom kameran. Det handlar om att formulera vårt temperament, erfarenheter, i slutändan vår personlighet.
+
+Text: Patricio Salinas A. Publicerad i El Mercurio, Santiago. 30 augusti 2014

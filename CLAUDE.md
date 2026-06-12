@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Portfolio website for Patricio Salinas, a professional photographer. The site features his visual essays exploring existential themes, memory, and identity through photography. Content is managed via WordPress (headless CMS) and served through GraphQL.
+Portfolio website for Patricio Salinas, a professional photographer. The site features his visual essays exploring existential themes, memory, and identity through photography. Content is versioned locally as Astro content collections.
 
 **Design principles:** Minimalist, intellectual aesthetic. Typography-focused with Playfair Display. Black and white photography. Clean layouts that let the work speak.
 
@@ -22,21 +22,23 @@ pnpm preview  # Preview production build locally
 - **Tailwind 4** - Configured via `@tailwindcss/vite` plugin, theme in `src/styles/app.css`
 - **React 18** - For interactive components (image gallery modal)
 - **Vercel** - Deployment adapter
-- **WordPress + GraphQL** - Headless CMS at `apuntesdispersos.com/graphql`
+- **WordPress** — legacy source only. Current build uses exported Markdown/YAML under `src/content/`.
 
 ## Architecture
 
 ### Data Flow
 
 ```
-WordPress (CMS) → GraphQL → src/lib/graphql-queries.ts → Astro pages
-                              ↓
-                    src/data/*.json (local cache)
+src/data/*-content.json snapshot → scripts/export-wp.mjs → src/content/
+src/content/pages/**/*.md → Astro render()
+src/content/{gallery,press,home,videos}/*.yaml → Astro components
 ```
 
-**Environment control:** `USE_LOCAL_DATA` env var determines data source:
-- Local dev: uses JSON files in `src/data/` (default)
-- Production (Vercel): `USE_LOCAL_DATA=false` fetches from WordPress GraphQL
+WordPress is no longer read at runtime/build. To refresh local content from the legacy snapshot, run:
+
+```bash
+node scripts/export-wp.mjs
+```
 
 ### Internationalization
 
@@ -53,17 +55,15 @@ Three languages: English (`en`), Spanish (`es`), Swedish (`sv`)
 | Component | Purpose |
 |-----------|---------|
 | `ReactProtectedImage.tsx` | Main image component with right-click protection and lightbox gallery |
-| `HomePage.astro` | Homepage with project grid |
-| `GalleryPage.astro` | Full gallery layout |
-| `PressPage.astro` | Press coverage with media-text blocks |
-| `PageContent.astro` | Generic WordPress content renderer |
+| `HomePage.astro` | Homepage rendered from `src/content/home/*.yaml` plus project data |
+| `GalleryPage.astro` | Full gallery layout rendered from `src/content/gallery/*.yaml` |
+| `PressPage.astro` | Press coverage rendered from `src/content/press/*.yaml` |
+| `VideosPage.astro` | Videos rendered from `src/content/videos/videos.yaml` |
+| `ProseContent.astro` | Generic Markdown renderer using Astro `render(entry)` |
 
 ### Content Processing
 
-WordPress content (HTML with Gutenberg blocks) is parsed and transformed:
-1. `node-html-parser` extracts images and text
-2. Images wrapped in `ReactProtectedImage` for protection
-3. `wordpress-styles.css` handles block styling
+WordPress HTML was migrated once into clean Markdown/YAML. Do not import or render Gutenberg HTML. Markdown pages are rendered with Astro's content collections `render()` API; structured pages use YAML collections and dedicated Astro components.
 
 ### Image Protection
 

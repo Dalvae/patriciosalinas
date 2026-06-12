@@ -17,7 +17,7 @@ interface ProtectedImageProps {
   alt: string;
   width?: string;
   height?: string;
-  allImages?: ImageInfo[];
+  allImages?: (ImageInfo | string)[];
   style?: React.CSSProperties;
   className?: string;
   containerClassName?: string;
@@ -101,7 +101,11 @@ export default function ProtectedImage({
   const [showOverlay, setShowOverlay] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const imageArray = allImages || [{ src, alt, caption }];
+  const imageArray: ImageInfo[] = (allImages || [{ src, alt, caption }]).map((img) =>
+    typeof img === "string" ? { src: img, alt: "" } : img
+  );
+  // Use object-contain unless caller overrides (object-cover requires fixed height)
+  const objectFitClass = className?.includes("object-") ? "" : "object-contain";
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -186,7 +190,7 @@ export default function ProtectedImage({
         <img
           src={src}
           alt={alt}
-          className={`w-full ${className} object-cover not-prose`}
+          className={`w-full ${className} ${objectFitClass} not-prose`}
         />
         {!disableOverlay && (
           <div

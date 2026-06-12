@@ -1,0 +1,23 @@
+---
+title: "Bio"
+uri: "/es/bio/"
+lang: "es"
+type: "page"
+translationKey: "bio"
+order: 6030
+images: [{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_800,h_315,c_scale/v1728182000/patriciosalinas/WhatsApp-Image-2024-10-05-at-1.07.06-PM/WhatsApp-Image-2024-10-05-at-1.07.06-PM.jpeg?_i=AA","alt":"","caption":""}]
+---
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_800,h_315,c_scale/v1728182000/patriciosalinas/WhatsApp-Image-2024-10-05-at-1.07.06-PM/WhatsApp-Image-2024-10-05-at-1.07.06-PM.jpeg?_i=AA" alt="" />
+
+*Autoretrato realizado a partir de la fotografia de Koen Wissing*
+
+Patricio Salinas A (Valparaíso 1949), es fotógrafo, periodista y escritor. Ha estudiado Sociología, Historias de las Ideas, Fotografía. Tiene un master en Fotoperiodismo en la Universidad de Sundsvall en Suecia.
+En los años 90 estuvo a cargo de la Galería fotográfica F48 (perteneciente a la Asociación de fotógrafos profesionales de Suecia) y jefe de proyectos y curador del Centrum för Fotografi en Suecia.
+La obra fotográfica de Salinas está representadas en el Centro Nacional de Arte Contemporáneo de Cerrillos, Santiago de Chile; en la Dirección de Asuntos Culturales del Ministerio de Relaciones Exteriores (DIRAC) de Chile, y en la colección permanente del Museo Moderno de Estocolmo
+
+> Indagar en la historia se convierte en una obligación moral. Como artista siento que parte de la historia que está enterrada apremia al compromiso, y a la necesidad de actuar sobre ella para transformar su discurso. La metáfora de desenterrar la memoria se vuelve literal. Un artista documenta y archiva las memorias que van surgiendo, y en un proceso de registro y difusión, las hace públicas y convierte lo íntimo y personal en colectivo. La cámara actúa entonces como una herramienta de escritura del tiempo. Una herramienta histórica que actúa en doble sentido, la excavación de lo material (cuerpo), y la excavación de lo inmaterial (evocaciones). Finalmente es el espectador de la imagen quien termina por construir el discurso
+
+:::right
+Patricio Salinas A
+:::

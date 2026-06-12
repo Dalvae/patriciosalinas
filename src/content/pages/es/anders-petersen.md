@@ -1,0 +1,51 @@
+---
+title: "Anders Petersen"
+uri: "/es/publicaciones/anders-petersen/"
+lang: "es"
+type: "publication"
+translationKey: "anders-petersen"
+order: 3100
+images: [{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_720,h_900,c_scale/v1725929703/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.28.35-PM/WhatsApp-Image-2024-09-09-at-3.28.35-PM.jpeg?_i=AA","alt":"","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_683,h_1000,c_scale/v1725929712/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.29.41-PM/WhatsApp-Image-2024-09-09-at-3.29.41-PM.jpeg?_i=AA","alt":"","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_672,h_1000,c_scale/v1725929718/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.30.06-PM/WhatsApp-Image-2024-09-09-at-3.30.06-PM.jpeg?_i=AA","alt":"","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_1000,h_795,c_scale/v1725929747/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.28.57-PM-1/WhatsApp-Image-2024-09-09-at-3.28.57-PM-1.jpeg?_i=AA","alt":"","caption":""}]
+---
+
+Son días de calor intenso en este verano inusual en esta bella ciudad-archipielago conocida como Estocolmo. Andersen me cita en su laboratorio ubicado en la isla de la Ciudad Vieja. En una callejuela estrecha, de endocados de piedras del 1600, el local ubicado en un subterráneo, se siente fresco. Anders Petersen continua trabajando, en lo escencial, en forma tradicional, análoga, revelando película y copiando en papel de bromuro. Le encuentro mirando sus últimos trabajos en su computadora, una de las pocas señales que nos habla que Petersen también utiliza, de manera menor, metodología digital.
+
+Me recibe con un cálido saludo y un “no fue ayer!!!” una típica expresión de cordialidad sueca. Hacía años que no le visitaba. Le encuentro casi igual, solo su pelo se ha emblanquecido y poco delata que este hombre ha cumplido recientemente 70 años. Su vitalidad y productividad no ha mermado, es tan intensa como siempre. Su actividad fotográfica la comenzó en la primavera del año 1966.. Fotógrafo y profesor realiza actividades en distintas ciudades europeas, una semana en Roma, otra en Moscú, otra en París y otra en Estocolmo. Sus exposiciones, presentación de sus libros y sus talleres le llevan de un lugar a otro constantemente. Mientras le entrega instrucciones a su joven asistente, de cuáles químicos utilizar para realizar los contactos de sus últimas tomas, nos sentamos en una sala pequeña. La habitación esta rodeada de una estantería, donde los miles de negativos están ordenados por año. También sus libros y publicaciones. Tenemos una conversación abierta, fluída, sin preámbulos innecesarios. Petersen es un apasionado de la fotografía.
+
+-Qué te hace viajar a Valparaíso, una ciudad tal lejana, al otro lado del océano?
+
+-Sergio Larraín despierta mi curiosidad y estoy invitado allí a dictar un taller. Me convenció el catálogo del festival del año pasado, donde participó Antoine d´Agata, con una portada con el nombre Paraíso, similar a la primera edición de Valparaíso de Sergio Larraín. Maravilloso trabajo el de Larraín. No sé nada de la ciudad pero pienso en toda su geometría, escaleras, ascensores y cerros.
+
+Es la primera vez que Anders Petersen viaja a Latinoamerica. Su obra es casi desconocida en el continente, aunque en 1994 fue presentado en el Museo de Bellas Artes en Santiago, en un colectivo junto a otros 9 fotógrafos suecos, denominada “Tres generaciones de fotografía sueca”, de la que yo mismo era curador.
+
+-Conoces la obra de autores fotográficos de Latinoamérica?
+
+-Muy poco. Además de Larraín, conozco a Martín Chambi, Manuel Alvarez Bravo, a Graciela Iturbide, a Miguel Rio Branco y su fascinante trabajo de los años 90. La obra de Salgado en sus comienzos, su libro “Otras Americas” es una obra maestra. Sin embargo, su última exposición, Génesis, me parece pesada casi aburrida. Cuando Salgado fotografía trabajadores, se asemejan a las imágenes propagandísticas del periodo estalinista. Figuras heróicas que no muestran sus debilidades y yo pienso que, justamente a través de sus debilidades las personas muestran sus fortalezas.
+
+-Además de Christer Strömholm, qué otros fotógrafos han influído en tu obra?
+
+-Sin lugar a dudas que Ed van der Elsken. (fotógrafo holandés, autodidacto, al igual que Strömholm) Un maestro!!! Su primer libro“Love on the left Bank” es una verdadera escuela. Lo realizó cuando era positivador en Magnum. Nos presenta retratos bajo todo tipo de luz, en la penumbra, en la tarde, bajo la lluvia, bajo la luz del sol, nos presenta besos, fotografia donde la forma es lo dominante, nos presenta todo tipo de fotografía. También me han influenciado, las tres damas, como les llamo: Diane Arbus, Nan Goldin y Lissete Model. Entre los fotógrafos japoneses, debo citar, en primer lugar a Daidó Moriyama, quien perteneció al reconocido movimiento “Provoke”.
+
+La producción fotográfica en Japón a partir de los años 50 es extarordinaria.Petersen es un hombre curioso. Un “voyager visual”, gusta observar todo. Busca inspiración y disfruta los maestros de la pintura holandesa del 1600, también de la obra de artistas contemporáneos como Marlene Dumas y Lucian Freud. Petersen se siente atraído por la literatura japonesa, en autores como Haruki Murakami. Su inspiración la encuentra también en sus propios talleres y el diálogo que se produce con los participantes
+
+En tu discurso verbal se denota ,a momentos, un cierto desprecio al academicismo en la fotografia
+
+-Me refiero entonces que, en el momento de fotografear, no vale el intelecto, solo lo emocional. En definitiva, el intelecto tiene muy poco que ver con lo visual. La imagen tiene que ver con lo emocional, con lo que sientes en tu corazón y en tu estómago. Cuando fotografío, intento dejar mi cabeza y lo racional a un lado.
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_720,h_900,c_scale/v1725929703/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.28.35-PM/WhatsApp-Image-2024-09-09-at-3.28.35-PM.jpeg?_i=AA" alt="" />
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_683,h_1000,c_scale/v1725929712/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.29.41-PM/WhatsApp-Image-2024-09-09-at-3.29.41-PM.jpeg?_i=AA" alt="" />
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_672,h_1000,c_scale/v1725929718/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.30.06-PM/WhatsApp-Image-2024-09-09-at-3.30.06-PM.jpeg?_i=AA" alt="" />
+
+La crítica internacional ha reconocido ampliamente en estos últimos diez años, la obra de Anders Petersen. Café Lehmitz de Hamburgo es su libro más conocido y la imagen más conocida es Lilly y Rosen, utilizada en la portada de Rain Dogs del músico norteamericano Tom Waits. Pero también tiene críticos detractores, que señalan que hay en el trabajo de Petersen un cierto romanticismo de los grupos marginados de la sociedad, como los más auténticos. Petersen argumenta que “me interesan las personas, no importa la nacionalidad, a qué generación o a qué estrato social pertenecen, lo importante son las personas”.
+
+-Cómo te presentas cuando fotografías?
+
+-Nunca como fotógrafo. Primero me interesa la persona, establezco un diálogo, luego la fotografía. Por ello trabajo con cámaras pequeñas. Además el acto de fotografear poco tiene que ver con la fotografía, nos habla en primer lugar de la persona que esta detrás de la cámara. Se trata de formular nuestro temperamento, experiencias, en definitiva de nuestra personalidad.
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1000,h_795,c_scale/v1725929747/patriciosalinas/WhatsApp-Image-2024-09-09-at-3.28.57-PM-1/WhatsApp-Image-2024-09-09-at-3.28.57-PM-1.jpeg?_i=AA" alt="" />
+
+:::right
+Texto: Patricio Salinas A. Publicado en El Mercurio, Santiago. 30 Agosto 2014
+:::

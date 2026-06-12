@@ -1,0 +1,88 @@
+---
+title: "Den sista dansen"
+uri: "/sv/publikationer/den-sista-dansen/"
+lang: "sv"
+type: "publication"
+translationKey: "the-last-dance"
+order: 3120
+images: [{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_1535,h_1026,c_scale/v1725697801/patriciosalinas/Barcelona-001_996209b7_12972cf49/Barcelona-001_996209b7_12972cf49.jpg?_i=AA","alt":"La Paloma, Barcelona","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_1049,h_1600,c_scale/v1725920720/patriciosalinas/La-concha/La-concha.jpeg?_i=AA","alt":"La Paloma, Barcelona Galeria, La noche","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_1260,h_1178,c_scale/v1725702022/patriciosalinas/La-Paloma-003-A_13616b564/La-Paloma-003-A_13616b564.jpg?_i=AA","alt":"Barcelona","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_698,c_scale/v1725702062/patriciosalinas/La-Paloma-004-A4-1/La-Paloma-004-A4-1.jpg?_i=AA","alt":"Barcelona, La Paloma","caption":""},{"src":"https://res.cloudinary.com/dwxc8s4mq/images/w_696,h_1024,c_scale/v1725490898/patriciosalinas/La-Paloma-BCN-02/La-Paloma-BCN-02.jpg?_i=AA","alt":"","caption":""}]
+---
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1535,h_1026,c_scale/v1725697801/patriciosalinas/Barcelona-001_996209b7_12972cf49/Barcelona-001_996209b7_12972cf49.jpg?_i=AA" alt="La Paloma, Barcelona" />
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1049,h_1600,c_scale/v1725920720/patriciosalinas/La-concha/La-concha.jpeg?_i=AA" alt="La Paloma, Barcelona Galeria, La noche" />
+
+### I
+
+Danslokalen «La Paloma» var ursprungligen ett järngjuteri känt för att ha skulpterat statyn av Christofer Columbus, skapad för världsutställningen 1888. Den ligger på Tigre-gatan, i utkanten av Barrio Chino eller Raval, nära Ronda Sant Antoni. Dörrarna till denna danslokal öppnades 1903, och sedan dess har den lockat ett stort antal besökare. Efter rivningen av Apolo-danslokalen 1990 är La Paloma nu den enda kvarvarande lokalen av sitt slag och den äldsta i staden.
+
+Från torsdag till söndag är «La Paloma» ett obligatoriskt resmål för servitörer och servitriser, offentligt anställda, ungdomar, pensionärer, studenter och arbetslösa. Ikväll är kön lång. Maria Antonietta väntar tålmodigt på sin tur. Hon hälsar på några äldre män bakom henne med ett brett leende. De är mycket välvårdade, med nyputs ade skor. Hon är också klädd i sin bästa klädsel. Hon bär en turkos broderad sidenklänning i 1950-talsstil; blå skor med låg klack, ett halsband som pryder hennes bara hals och matchande örhängen.
+
+Värmen denna sommar är fuktig, som alltid i Barcelona, och kropparna känns klibbiga. Vid ingången skämtar två femtioåriga män i svarta smokingar och bakåtslickat hår med stamgästerna. Många av dem har inte missat en enda helg på La Paloma på flera år. Den svagt upplysta salen är fullpackad, och några par tar diskret plats på andra våningen. Orkestern, bestående av män i vita skjortor och svarta flugor, gör entré. De börjar som vanligt med en mjuk vals. Männen rusar ivrigt fram för att bjuda upp damerna till dansgolvet. Kvinnorna, som precis anlänt till danslokalen, hinner knappt ta av sig sina ytterkläder.
+
+Maria Antonietta börjar dansa ensam. Med slutna ögon minns hon händelserna och människorna som frekventerar La Paloma. Hon har just fyllt 65 och har bott i Barcelona i mer än fyra decennier.
+
+### II
+
+Ibland påminner atmosfären på La Paloma om den populära «patacada», en traditionell arbetarfest från 1800-talet. Under dessa evenemang dansade, skrek och drack folk tills de kollapsade. Arrangörerna tvingades anställa vakter för att förhindra att festerna förvandlades till ändlösa fylleslagsmål.
+
+Manolo, servitören, erbjuder mig en kall öl medan jag ser mig omkring med nyfikenhet och förundran. «Det har inte varit ett riktigt slagsmål här på länge. Folk kommer till La Paloma för att ha kul, inte för att ställa till med problem», säger han med en röst som mer låter som en viskning.
+
+Han började arbeta på La Paloma för mer än 25 år sedan och vet allt värt att veta om Barcelona, inte bara skvallret som berättas i danslokaler utan också om dess moderna historia. På 60-talet arbetade han som fotojournalist för stadens största tidning, El Noticiero Universal, som senare gick i konkurs. Han brukade träffa andra fotografer på Ravals gator, bland dem Joan Colom och Català-Roca. «Jag har varit nära de mest betydelsefulla händelserna och skandalerna i den här staden», säger Manolo med en något mystisk ton, utan att gå in på närmare detaljer. En stund senare tar han min arm och leder mig till bordet hos en kvinna känd som «La Condesa Macarroni», en annan berömd stamgäst. «Come stai, bello?» hälsar hon mig med neapolitansk accent när hon sträcker fram handen. Trots att hon är 80 år gammal lämnar hon Italien varje sommar för att komma till Barcelona. La Paloma är den enda anledningen till hennes besök. Hon säger att hon saknar denna stad, fortfarande nostalgisk över dess början i början av 1900-talet. «Att vara i Barcelona är som att vänta på att bli förförd, det är att känna sig ung för evigt», bekänner hon.
+
+Med livliga ögon och kinder fullastade med smink når hennes halsband midjan trots flera varv runt halsen. På huvudet bär hon en stor hatt med blommor och frukter. «Under vilket tecken föddes du?» frågar hon mig abrupt. «Vågen», svarar jag något förbryllad. «Vet du vilken dag du föddes?» «En söndag.» Grevinnan ritar omedelbart upp min framtid och ger mig råd om vilka kvinnor jag bör träffa och vilket yrke jag ska välja. Hon försäkrar mig om att hon sedan barndomen har haft klärvoajanta förmågor, att hennes kapacitet är övernaturlig och att många av hennes vänner från hennes by i södra Italien fortfarande ber henne att läsa deras handflator. «Visste du att jag förutspådde månlandningen och prinsessan Dianas olycka tio år i förväg?» skryter hon.
+
+Många «grevinnor» som har passerat genom La Paloma är väl till åren. Manolo minns en katalansk kvinna som kom tills hon var över 86 år gammal, och en annan, Julia från Sevilla, som inte slutade komma förrän hon var 96. «Alla kom till La Paloma tills de inte längre kunde gå», försäkrar han.
+
+### III
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1260,h_1178,c_scale/v1725702022/patriciosalinas/La-Paloma-003-A_13616b564/La-Paloma-003-A_13616b564.jpg?_i=AA" alt="Barcelona" />
+
+Musikerna fortsätter med en cha-cha-cha och senare med en tango, en dans som introducerades i Barcelona på 20- och 30-talen, precis som i Buenos Aires och Paris. På La Paloma var under dessa år den berömda trion Irusta-Fugatoz-Demare mycket populär bland stadens arbetare. Till och med Carlos Gardel reste flera gånger till staden, där han spelade in mer än 50 skivor. Men inte alla godkände denna trend, då den provocerade fram hetsig kritik i den konservativa lokala pressen, som förkastade dess erotiska och förföriska former.
+
+Ändå överlevde tangon, och ikväll dominerar den festen. När de djupa tonerna från bandoneonens första noter hörs, bjuder en man med långa gråa polisonger upp en robust blond kvinna i trettioårsåldern, klädd i en tajt blå klänning, till dans. Paret dansar långsamt och sensuellt. Mannen försöker omfamna henne medan han följer tangons välrepeterade steg. Efter en stund tar paret center scenen. Han visar upp sin skicklighet genom att placera ett ben mellan hennes lår, snurra 90 grader och med stor precision ta ett elegant steg i form av en åtta. Bandoneonen fortsätter att sätta rytmen medan ett par älskande, bara några meter bort, beundrar varandra, speglade i de stora speglarna på dansgolvet.
+
+Maria Antonietta tröttnar inte. Hon fortsätter att dansa ensam som i trans framför orkestern. Människorna och världen runt omkring henne verkar inte existera. Scenljuset faller snett över hennes ansikte. Ikväll är hon stjärnan. Hon tänker på alla män hon har träffat på La Paloma, sin första kärlek, stunder av lycka och alla de onödiga avsked.
+
+## IV
+
+På tjugotalet, när hon började gå till danslokalen, hade La Paloma redan varit favoritplatsen för arbetare och invandrare i Barcelona sedan början av seklet. Där hade industrialiseringen nått nivåer som överträffade resten av Spaniens städer, och tusentals bönder hade migrerat till denna moderna metropol, lämnat sina byar i Andalusien, Aragonien, Extremadura och Murcia på jakt efter bättre möjligheter.
+
+De jättelika ljuskronorna, väggarna och taken dekorerade med olika regionala dansmotiv, balkongernas och lådornas neobarocka finish runt dansgolvet var så slående att de gjorde La Paloma till en sublim scensättning. Men efter några år förlorade lokalen en del av sin prakt: väggarna täcktes med vit kalk, och bjälkarna, som hade varit ornamentalt täckta, lämnades exponerade. År 1915 dekorerades den «à la française», som modet föreskrev vid den tiden, och 1919 dekorerades den med gipsskulpturer i olika stilar. Fram till 50-talet var lokalen fullpackad, men sedan dess började en nedgång som fortsatte genom 60- och 70-talen. «Vi var tvungna att anordna boxningskvällar för att locka publiken», minns Manolo med ett leende på sitt smala, skarpa ansikte.
+
+### V
+
+Maria Antonietta vet att hon inte kommer att återvända till La Paloma. Barcelona är inte längre lönsamt för henne. Att plocka upp kunder på Las Ramblas är nästan omöjligt, särskilt efter OS 1992. Flera faktorer drev bort kunderna från Las Ramblas. Rädslan för AIDS, som etablerade sig under dessa år, fick dem att föredra säkrare platser som de så kallade «avslappningsinstituten» och klubbar som annonserar sina specialiteter på tidningarnas kommersiella sidor. Samtidigt invaderades grannskapet av transvestiter som, tillsammans med invandrarflickor från Afrika och Latinamerika, tog marknaden från lokala arbetare som henne. För att göra saken värre anlände knarkare, och området blev allt våldsammare.
+
+La Rambla de Santa Mónica, liksom Bois de Boulogne i Paris, är nu helt övertagen av transvestiter som skvallrar i barerna i Ravals inre gränder. Deras skinkor och bröst är uppblåsta med billig silikon injicerad av amatörer som improviserar operationer med alla risker det innebär. Det finns inget annat alternativ: resurser saknas för att få bättre substitut av fransk tillverkning.
+
+Sinsemellan kallar transvestiterna varandra vid sina smeknamn: Marilyn, Sophia, Sara Montiel. På helgerna har de sin egen show i några av kvarterets barer, och de motstår ständiga polisrazzior som har misslyckats med att fördriva dem från Las Ramblas.
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_698,c_scale/v1725702062/patriciosalinas/La-Paloma-004-A4-1/La-Paloma-004-A4-1.jpg?_i=AA" alt="Barcelona, La Paloma" />
+
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_696,h_1024,c_scale/v1725490898/patriciosalinas/La-Paloma-BCN-02/La-Paloma-BCN-02.jpg?_i=AA" alt="" />
+
+## VI
+
+Bakom baren fortsätter jag mina samtal med Manolo om Ravals nedgång. «Den gamla Paloma dör också långsamt, och tyvärr är det oundvikligt», berättar han för mig. «Det är inte som i mitten av 80-talet, vilket var de bästa åren.» Under tiden serverar han några öl och kastar snabbt en blick över folkmassan i lokalen, som om han försökte upptäcka någon bland stamgästerna.
+
+«Ska du stanna länge?» frågar han plötsligt. «Kanske ett år till», svarar jag. «Känner du till grannskapet, har du gått runt på dess gator?» fortsätter han. «Jag har lärt känna det lite, även om det ibland är förvirrande», svarar jag. «Jag är inte förvånad», säger han med låg röst. «Det här grannskapet har gått igenom mycket.»
+
+Efter en kort paus tillägger han: «En av de äldsta danslokalerna i Barcelona, Fornos, brukade ligga på Calle Escudellers. De mest eleganta prostituerade i staden brukade träffa sjömän, soldater, poliser och tjuvar där. Idag är det området fullt av pakistanska barer och växlingskontor. Vi kommer inte att vara här länge heller. Den här platsen förändras mycket snabbt, och inte nödvändigtvis till det bättre.»
+
+Jag tittar på de dansande paren. Jag följer Maria Antonietta med blicken. Jag undrar hur många ensamma, åldrande kvinnor som har passerat genom dessa dörrar, letande efter männen de älskade, om och om igen. Kanske söker de dem fortfarande. Kanske kommer de för att finna minnet av sina tidiga år, av ett Barcelona som inte längre existerar. Även La Paloma, den byggnaden med charm från la Belle Époque, kommer att stänga sina dörrar om några år. Endast en plakett kommer att finnas kvar för att påminna om danslokalerna i arbetarklasskvarteret Raval.
+
+### VII
+
+«El Tigre» har varit stamgäst på La Paloma i över fyra decennier. Alla känner honom. Runt 70 år gammal, kort och kraftig, nästan skallig, är han en entusiastisk dansare som alltid bjuder upp de vackraste kvinnorna på golvet. Det finns inget sätt att undvika honom, eftersom han aldrig accepterar ett nej. Men ikväll dansar han ensam, svänger sina korta armar som vindmöllevingar, tävlar med Maria Antonietta om rampljuset framför orkestern.
+
+Antonio, en annan stamgäst, närmar sig och erbjuder mig en Estrella-öl. Han föredrar en Boldán, som är lite starkare. Hans nuvarande adress är en cell i korridor sju i Modelo-fängelset. Han har helgpermission. Som vanligt firar han det på La Paloma, där han känner sig säker och fri från dömande blickar. Han lägger märke till att jag har en liten kamera med mig, och efter en stund frågar han försiktigt om jag skulle kunna ta ett foto av honom. «Men inte när jag dansar, för jag kan inte dansa», varnar han med ett blygt leende.
+
+Gustavo, eller «Elektrikern» som de kallar honom på La Paloma, insisterar på att få ett foto taget med sin nya flickvän, Conchita. De träffades först här för några veckor sedan. Nu kommer de varje fredag, och han skulle vilja ha en bild för att fira sin goda tur. «Elektrikern» är en rockfanatiker. Hans smala kropp verkar vara gjord av gummi, vrider sig som om han vore besatt av djävulen. Conchita är mer diskret och dansar som en virvelvind runt Gustavo.
+
+Orkestern börjar nu en sevillana. Paquita rusar till golvet och bjuder fräckt upp killarna att dansa. Många vägrar av rädsla för att göra bort sig. Paquita är runt 25 år gammal och arbetar som servitris i en närliggande bar. Bland hennes närmaste vänner är hon känd som «manätaren». «Men ingen kommer till La Paloma för att ragga killar», säger hon med en busig glimt i ögonen. Hon anländer
+
+:::right
+***Text och foton: Patricio Salinas A***
+**Dagens Arbete, Estocolm**
+:::

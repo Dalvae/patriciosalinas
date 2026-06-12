@@ -1,14 +1,15 @@
 ---
 //src/components/layouts/Layout.astro
 import Navbar from "../components/Navbar.astro";
-import type { Page, Lang } from "../types/types";
+import type { CollectionEntry } from "astro:content";
+import type { Lang } from "../types/types";
 import Footer from "@components/Footer.astro";
 import "../styles/app.css";
 
 export interface Props {
   title: string;
   lang: Lang;
-  pages: Page[];
+  pages: CollectionEntry<"pages">[];
   image?: string;
   canonicalURL?: string;
 }

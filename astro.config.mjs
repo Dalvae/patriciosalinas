@@ -1,7 +1,8 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, passthroughImageService } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
+import directive from "remark-directive";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,8 +16,12 @@ export default defineConfig({
       },
     },
   },
+  markdown: {
+    remarkPlugins: [directive],
+  },
   adapter: vercel(),
   image: {
+    service: passthroughImageService(),
     domains: ["res.cloudinary.com"],
     remotePatterns: [{ protocol: "https" }],
   },

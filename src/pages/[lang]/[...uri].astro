@@ -1,86 +1,80 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getPages } from "../../lib/graphql-queries";
+import { getCollection, getEntry } from "astro:content";
 import type { Lang } from "../../types/types";
-import PageContent from "../../components/PageContent.astro";
+import ProseContent from "../../components/ProseContent.astro";
 import HomePage from "../../components/HomePage.astro";
-import GalleryPage from "../../components/GalleryPage.astro"; // Componente de la galería
-import PressPage from "../../components/PressPage.astro"; // Componente de prensa
-import { getProjectPageSlug } from "../../lib/project-utils";
+import GalleryPage from "../../components/GalleryPage.astro";
+import PressPage from "../../components/PressPage.astro";
+import VideosPage from "../../components/VideosPage.astro";
 
 export async function getStaticPaths() {
-  const languages: Lang[] = ["en", "es", "sv"];
-  const allPagesPerLang = await Promise.all(
-    languages.map(async (lang) => {
-      const pages = await getPages(lang);
-      const projectSlug = getProjectPageSlug(lang);
-      const projects = pages.filter((page) =>
-        page.uri.includes(`/${projectSlug}/`)
-      );
-      return pages.map((page) => ({
-        params: {
-          lang,
-          uri: page.isFrontPage
-            ? undefined
-            : page.uri.replace(`/${lang}/`, "").replace(/^\//, ""),
-        },
-        props: {
-          pages,
-          currentPage: page,
-          isHomePage: page.isFrontPage,
-          projects,
-        },
+  const pages = await getCollection("pages");
+
+  // Pre-group by language — single pass instead of O(n²) filtering inside map
+  const pagesByLang: Record<string, typeof pages> = {};
+  for (const entry of pages) {
+    (pagesByLang[entry.data.lang] ??= []).push(entry);
+  }
+
+  return pages.map((page) => {
+    const lang = page.data.lang;
+    const langPages = pagesByLang[lang] ?? [];
+
+    const projects = langPages
+      .filter((entry) => entry.data.type === "project")
+      .sort((a, b) => a.data.order - b.data.order)
+      .map((entry) => ({
+        key: entry.data.translationKey,
+        title: entry.data.title,
+        uri: entry.data.uri,
+        // Images from frontmatter — populated by export script, no runtime parsing
+        images: (entry.data.images ?? []).map((img) => img.src),
       }));
-    })
-  );
-  return allPagesPerLang.flat();
+
+    return {
+      params: {
+        lang,
+        uri: page.data.uri === "/" || /^\/(en|es|sv)\/$/.test(page.data.uri)
+          ? undefined
+          : page.data.uri.replace(/^\/(en|es|sv)\//, "").replace(/\/$/, ""),
+      },
+      props: {
+        pages: langPages,
+        page,
+        projects,
+      },
+    };
+  });
 }
 
-const { lang, uri } = Astro.params;
-const { pages, currentPage, isHomePage, projects } = Astro.props;
+const { page, pages, projects } = Astro.props;
+const lang = page.data.lang as Lang;
 
-if (!currentPage) {
+if (!page) {
   return Astro.redirect("/404");
 }
 
-function extractImagesFromContent(content: string): string[] {
-  const imgRegex = /<img.*?src="(.*?)".*?>/g;
-  const images: string[] = [];
-  let match;
-  while ((match = imgRegex.exec(content)) !== null) {
-    images.push(match[1]);
-  }
-  return images;
-}
-
-const projectsForHomePage = projects.map((project) => {
-  const images = extractImagesFromContent(project.content || "");
-  return {
-    title: project.title,
-    images: images,
-    link: project.uri,
-  };
-});
-
-// --- Verificar si la página es galería o prensa ---
-const isGallery = uri === "gallery" || uri === "galeria" || uri === "galleri";
-const isPress = uri === "press" || uri === "prensa" || uri === "pressbevakning";
+const type = page.data.type;
+// Single-entry lookups via getEntry (O(1)) instead of getCollection + find (O(n))
+const home = type === "home" ? await getEntry("home", lang) : null;
+const gallery = type === "gallery" ? await getEntry("gallery", "gallery") : null;
+const press = type === "press" ? await getEntry("press", lang) : null;
+const videos = type === "videos" ? await getEntry("videos", "videos") : null;
 ---
 
-<Layout title={currentPage.title} lang={lang as Lang} pages={pages}>
+<Layout title={page.data.title} lang={lang} pages={pages}>
   {
-    isHomePage ? (
-      <HomePage
-        content={currentPage.content || ""}
-        projects={projectsForHomePage}
-        lang={lang as Lang}
-      />
-    ) : isGallery ? (
-      <GalleryPage page={currentPage || ""} />
-    ) : isPress ? (
-      <PressPage page={currentPage || ""} />
+    type === "home" && home ? (
+      <HomePage home={home} projects={projects} lang={lang} />
+    ) : type === "gallery" && gallery ? (
+      <GalleryPage gallery={gallery} pageTitle={page.data.title} lang={lang} />
+    ) : type === "press" && press ? (
+      <PressPage press={press} pageTitle={page.data.title} />
+    ) : type === "videos" && videos ? (
+      <VideosPage videos={videos} lang={lang} pageTitle={page.data.title} />
     ) : (
-      <PageContent page={currentPage} isHomePage={isHomePage} />
+      <ProseContent entry={page} title={page.data.title} />
     )
   }
 </Layout>

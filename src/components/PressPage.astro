@@ -1,179 +1,133 @@
 ---
-import type { Page } from "../types/types";
+import type { CollectionEntry } from "astro:content";
 import ProtectedImage from "./ui/ReactProtectedImage";
-import { parse, HTMLElement, Node, NodeType } from "node-html-parser";
-import "../styles/wordpress-styles.css";
 
 interface Props {
-  page: Page;
+  press: CollectionEntry<"press">;
+  pageTitle?: string;
 }
 
-interface ImageInfo {
-  src: string;
-  alt: string;
-  width?: string;
-  height?: string;
-  caption?: string;
-  className?: string;
-}
-
-interface MediaTextContent {
-  imageInfo: ImageInfo;
-  text: string;
-  link: string;
-}
-
-const { page } = Astro.props;
-const title = page.title;
-const content = page.content || "";
-const root = parse(content);
-const allImages: ImageInfo[] = [];
-
-function processNode(
-  node: Node
-): Array<{ type: "html" | "image" | "media-text"; content: any }> {
-  if (node.nodeType === NodeType.ELEMENT_NODE) {
-    const element = node as HTMLElement;
-
-    if (element.classList.contains("wp-block-media-text")) {
-      const figure = element.querySelector(".wp-block-media-text__media");
-      const content = element.querySelector(".wp-block-media-text__content");
-
-      if (figure && content) {
-        const img = figure.querySelector("img");
-        const link = figure.querySelector("a");
-        const text = content.text.trim();
-
-        if (img) {
-          const imageInfo: ImageInfo = {
-            src: img.getAttribute("src") || "",
-            alt: img.getAttribute("alt") || "",
-            width: img.getAttribute("width") || undefined,
-            height: img.getAttribute("height") || undefined,
-            className: img.getAttribute("class") || undefined,
-          };
-          allImages.push(imageInfo);
-
-          return [
-            {
-              type: "media-text",
-              content: {
-                imageInfo,
-                text,
-                link: link?.getAttribute("href") || "",
-              } as MediaTextContent,
-            },
-          ];
-        }
-      }
-    }
-
-    if (
-      element.tagName === "FIGURE" &&
-      element.getAttribute("class")?.includes("wp-block-image")
-    ) {
-      const img = element.querySelector("img");
-      const caption = element.querySelector("figcaption");
-      if (img) {
-        const imageInfo: ImageInfo = {
-          src: img.getAttribute("src") || "",
-          alt: img.getAttribute("alt") || "",
-          width: img.getAttribute("width") || undefined,
-          height: img.getAttribute("height") || undefined,
-          caption: caption ? caption.innerHTML : undefined,
-          className: element.getAttribute("class") || undefined,
-        };
-        allImages.push(imageInfo);
-        return [
-          {
-            type: "image",
-            content: imageInfo,
-          },
-        ];
-      }
-    }
-
-    const childResults = element.childNodes.flatMap(processNode);
-    const openTag = element.toString().split(">")[0] + ">";
-    const closeTag = `</${element.tagName.toLowerCase()}>`;
-    return [
-      { type: "html", content: openTag },
-      ...childResults,
-      { type: "html", content: closeTag },
-    ];
-  } else if (node.nodeType === NodeType.TEXT_NODE) {
-    return [{ type: "html", content: node.text }];
-  }
-  return [];
-}
-
-const processedContent = root.childNodes.flatMap(processNode);
+const { press, pageTitle } = Astro.props;
+const { links, cards } = press.data;
+const cardImages = cards.map((card) => ({
+  src: card.image.src,
+  alt: card.image.alt,
+  caption: card.text,
+}));
 ---
 
-<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-  <article class="wp-blocks prose max-w-none p-2">
-    <h1 class="py-5 text-center font-semibold">{title}</h1>
-    <div class="bg-white pt-5 mb-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {
-          processedContent.map((item) => {
-            if (item.type === "html") {
-              return <Fragment set:html={item.content} />;
-            } else if (item.type === "image") {
-              return (
-                <figure class={item.content.className}>
-                  <ProtectedImage
-                    client:load
-                    src={item.content.src}
-                    alt={item.content.alt}
-                    width={item.content.width}
-                    height={item.content.height}
-                    allImages={allImages}
-                    caption={item.content.caption}
-                  />
-                </figure>
-              );
-            } else if (item.type === "media-text") {
-              const { imageInfo, text, link } =
-                item.content as MediaTextContent;
-              return (
-                <div class="card-container h-[420px]">
-                  <a href={link} class="block no-underline text-inherit h-full">
-                    <div class="card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] flex flex-col h-full">
-                      <div class="card-image overflow-hidden flex-grow relative m-5">
-                        <img
-                          src={imageInfo.src}
-                          alt={imageInfo.alt}
-                          class="absolute inset-0 w-full h-auto object-contain object-top not-prose scale-[1.01]"
-                        />
-                      </div>
-                      <div class="card-content p-5 flex-shrink-0">
-                        <p class="text-gray-800 text-center line-clamp-3">
-                          {text}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              );
-            }
-          })
-        }
+<section class="press-page">
+  <div class="press-shell">
+    <h1>{pageTitle || "Press"}</h1>
+
+    {links.length > 0 && (
+      <div class="press-links prose">
+        <ul>
+          {links.map((link) => (
+            <li>
+              <a href={link.url} target="_blank" rel="noopener noreferrer">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
-  </article>
-</div>
+    )}
+
+    {cards.length > 0 && (
+      <div class="press-grid">
+        {cards.map((card) => (
+          <a
+            href={card.url}
+            class="press-card-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <article class="press-card">
+              <ProtectedImage
+                client:load
+                src={card.image.src}
+                alt={card.image.alt}
+                allImages={cardImages}
+                caption={card.text}
+                containerClassName="press-card-media"
+              />
+              <p>{card.text}</p>
+            </article>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
 
 <style>
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .press-page {
+    width: min(100%, 92rem);
+    margin-inline: auto;
+    padding-block: clamp(3rem, 7vw, 7rem);
+    padding-inline: clamp(1rem, 4vw, 4rem);
   }
 
-  /* Remove underline from all links within the article */
-  .wp-blocks a {
+  .press-shell {
+    background: #fff;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .press-shell h1 {
+    margin: 0 0 2rem;
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 500;
+  }
+
+  .press-links ul {
+    padding-left: 1.5rem;
+    margin-block: 1rem 3rem;
+  }
+
+  .press-links li {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .press-links a {
+    color: #111;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .press-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .press-card-link {
+    color: inherit;
     text-decoration: none;
+  }
+
+  .press-card {
+    height: 100%;
+    border: 1px solid #d4d4d4;
+    background: #fff;
+  }
+
+  .press-card-media {
+    width: 100% !important;
+  }
+
+  .press-card p {
+    margin: 0;
+    padding: 1rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  @media (max-width: 640px) {
+    .press-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

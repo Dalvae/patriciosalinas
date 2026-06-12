@@ -1,90 +1,48 @@
 ---
-import { parse } from "node-html-parser";
 import ProtectedImage from "./ui/ReactProtectedImage.tsx";
+import type { CollectionEntry } from "astro:content";
 import type { Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
 
-interface ImageInfo {
-  src: string;
-  alt: string;
-  width?: string;
-  height?: string;
-  caption?: string;
-  className?: string;
-}
-
 interface Project {
+  key: string;
   title: string;
+  uri: string;
   images: string[];
-  link: string;
 }
 
 interface Props {
-  content: string;
+  home: CollectionEntry<"home">;
   projects: Project[];
   lang: Lang;
 }
 
-const { content, projects, lang } = Astro.props;
+const { home, projects, lang } = Astro.props;
 const t = useTranslations(lang);
+const projectByKey = Object.fromEntries(projects.map((project) => [project.key, project]));
 
-/* --- Parse the front-page essay into paragraphs --- */
-const root = parse(content);
-const paragraphs = root
-  .querySelectorAll("p")
-  .map((p) => ({ html: p.innerHTML.trim(), text: p.text.trim() }))
-  .filter((p) => p.text.length > 0);
-
-/* Split the opening paragraph like the book spread: the first two
-   sentences become the sans statement block, the rest the drop-cap
-   reflection. Falls back to the whole paragraph if it can't split. */
-function splitStatement(html: string): { statement: string; reflection: string } {
-  const sentences = html.split(/(?<=\.)\s+(?=[A-ZÅÄÖÉÍ])/);
-  if (sentences.length < 3) return { statement: html, reflection: "" };
-  return {
-    statement: sentences.slice(0, 2).join(" "),
-    reflection: sentences.slice(2).join(" "),
-  };
-}
-
-const intro = paragraphs[0] ? splitStatement(paragraphs[0].html) : { statement: "", reflection: "" };
-
-/* --- Featured projects, ordered to follow the essay --- */
-const featuredTitles = ["Walter Benjamin", "Atacama"];
-const featured = featuredTitles
-  .map((title) => projects.find((p) => p.title === title && p.images.length > 0))
-  .filter((p): p is Project => Boolean(p));
-
-/* Match each project with its own paragraph from the essay */
-const usedParagraphs = new Set<number>([0]);
-function paragraphFor(project: Project): string {
-  const keyword = project.title.split(" ").pop() || project.title;
-  const idx = paragraphs.findIndex(
-    (p, i) => !usedParagraphs.has(i) && p.text.toLowerCase().includes(keyword.toLowerCase())
-  );
-  if (idx === -1) return "";
-  usedParagraphs.add(idx);
-  return paragraphs[idx].html;
-}
-
-const spreads = featured.map((project, i) => {
-  const words = project.title.split(" ");
+const spreads = home.data.spreads.map((spread, i) => {
+  const project = projectByKey[spread.project];
+  const images = spread.images.length > 0
+    ? spread.images
+    : project?.images.slice(i === 0 ? 1 : 0, i === 0 ? 5 : 4) || [];
+  const words = project?.title.split(" ") || [];
   return {
     project,
-    paragraph: paragraphFor(project),
-    bigWord: words[words.length - 1],
+    paragraph: spread.paragraph,
+    bigWord: words[words.length - 1] || spread.project,
     smallWords: words.slice(0, -1).join(" "),
     flipped: i % 2 === 1,
-    // the intro photo borrows the first featured project's lead image
-    images: (i === 0 ? project.images.slice(1, 5) : project.images.slice(0, 4)),
+    images,
   };
 });
 
-const leftovers = paragraphs
-  .map((p, i) => ({ ...p, i }))
-  .filter((p) => !usedParagraphs.has(p.i));
+const intro = {
+  statement: home.data.statement,
+  reflection: home.data.reflection,
+};
 
-const introPhoto = featured[0]?.images[0];
+const introPhoto = spreads[0]?.project?.images[0];
 
 /* Aspect ratio from Cloudinary URL (…/w_1024,h_577,…) keeps layout stable */
 function aspectOf(src: string): string {
@@ -92,9 +50,10 @@ function aspectOf(src: string): string {
   return m ? `${m[1]} / ${m[2]}` : "4 / 3";
 }
 
-const imageInfo = (src: string, alt: string): ImageInfo => ({
+const imageInfo = (src: string, alt: string) => ({
   src,
   alt,
+  caption: alt,
   width: "auto",
   height: "auto",
 });
@@ -105,16 +64,16 @@ const imageInfo = (src: string, alt: string): ImageInfo => ({
   <section class="intro" data-reveal>
     <div class="intro-statement font-fira">
       <span class="rule intro-rule-v" aria-hidden="true"></span>
-      <p set:html={intro.statement} />
+      <p>{intro.statement}</p>
     </div>
 
-    {introPhoto && featured[0] && (
+    {introPhoto && spreads[0]?.project && (
       <figure class="intro-photo" style={`aspect-ratio: ${aspectOf(introPhoto)};`}>
         <ProtectedImage
           client:load
           src={introPhoto}
-          alt={`${featured[0].title} — ${t("nav.subtitle")}`}
-          allImages={[imageInfo(introPhoto, featured[0].title)]}
+          alt={`${spreads[0].project.title} — ${t("nav.subtitle")}`}
+          allImages={[imageInfo(introPhoto, `${spreads[0].project.title} — ${t("nav.subtitle")}`)]}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           className="h-full object-cover"
           containerClassName="h-full w-full"
@@ -127,63 +86,66 @@ const imageInfo = (src: string, alt: string): ImageInfo => ({
     {intro.reflection && (
       <div class="intro-reflection">
         <span class="rule intro-rule-h" aria-hidden="true"></span>
-        <p class="drop-cap" set:html={intro.reflection} />
+        <p class="drop-cap">{intro.reflection}</p>
       </div>
     )}
   </section>
 
   <!-- ——— Project spreads ——— -->
   {
-    spreads.map(({ project, paragraph, bigWord, smallWords, flipped, images }) => (
-      <article class:list={["spread", { flipped }]} data-reveal>
-        <header class="spread-title font-fira">
-          <p class="spread-kicker">
-            <span class="sq" aria-hidden="true" />
-            {smallWords || t("nav.projects")}
-          </p>
-          <a href={project.link} class="spread-name">
-            {bigWord}
-          </a>
-        </header>
-
-        <div class="spread-images">
-          <span class="rule img-rule-v" aria-hidden="true" />
-          <span class="rule img-rule-h" aria-hidden="true" />
-          {images.map((image, i) => (
-            <figure class={`ph ph-${i}`} style={`aspect-ratio: ${aspectOf(image)};`}>
-              <ProtectedImage
-                client:load
-                src={image}
-                alt={`${project.title} — ${i + 1}`}
-                allImages={images.map((img) => imageInfo(img, project.title))}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                className="h-full object-cover"
-                containerClassName="h-full w-full"
-                disableOverlay={true}
-              />
-            </figure>
-          ))}
-        </div>
-
-        {paragraph && (
-          <div class="spread-text">
-            <p set:html={paragraph} />
-            <a href={project.link} class="spread-link font-fira">
-              {t("home.viewProject")}
+    spreads.map(({ project, paragraph, bigWord, smallWords, flipped, images }) => {
+      if (!project) return null;
+      return (
+        <article class:list={["spread", { flipped }]} data-reveal>
+          <header class="spread-title font-fira">
+            <p class="spread-kicker">
+              <span class="sq" aria-hidden="true" />
+              {smallWords || t("nav.projects")}
+            </p>
+            <a href={project.uri} class="spread-name">
+              {bigWord}
             </a>
+          </header>
+
+          <div class="spread-images">
+            <span class="rule img-rule-v" aria-hidden="true" />
+            <span class="rule img-rule-h" aria-hidden="true" />
+            {images.map((image, i) => (
+              <figure class={`ph ph-${i}`} style={`aspect-ratio: ${aspectOf(image)};`}>
+                <ProtectedImage
+                  client:load
+                  src={image}
+                  alt={`${project.title} — ${i + 1}`}
+                  allImages={images.map((img, idx) => imageInfo(img, `${project.title} — ${idx + 1}`))}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  className="h-full object-cover"
+                  containerClassName="h-full w-full"
+                  disableOverlay={true}
+                />
+              </figure>
+            ))}
           </div>
-        )}
-      </article>
-    ))
+
+          {paragraph && (
+            <div class="spread-text">
+              <p>{paragraph}</p>
+              <a href={project.uri} class="spread-link font-fira">
+                {t("home.viewProject")}
+              </a>
+            </div>
+          )}
+        </article>
+      );
+    })
   }
 
   <!-- ——— Closing paragraphs, if the essay has more to say ——— -->
   {
-    leftovers.length > 0 && (
+    home.data.closing.length > 0 && (
       <section class="closing" data-reveal>
         <span class="rule rule-h closing-rule" aria-hidden="true" />
-        {leftovers.map((p) => (
-          <p set:html={p.html} />
+        {home.data.closing.map((paragraph) => (
+          <p>{paragraph}</p>
         ))}
       </section>
     )

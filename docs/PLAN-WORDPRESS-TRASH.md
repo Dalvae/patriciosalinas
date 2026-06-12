@@ -1,6 +1,6 @@
 # Plan: jubilar WordPress — migración completa a contenido nativo Astro
 
-**Estado actual:** el contenido vive en WordPress (`apuntesdispersos.com/graphql`) y se consume vía GraphQL en build (`src/lib/graphql-queries.ts`). En dev se usa un cache local `src/data/{en,es,sv}-content.json` (gitignoreado) controlado por `USE_LOCAL_DATA`. Las imágenes ya están en Cloudinary con URLs absolutas.
+**Estado actual:** migración ejecutada a contenido nativo Astro. El snapshot legacy queda en `src/data/{en,es,sv}-content.json` solo para regenerar `src/content/` con `node scripts/export-wp.mjs`; el build ya no consulta WordPress.
 
 **Meta:** contenido versionado en el repo como **markdown puro + datos estructurados**, renderizado por componentes Astro propios. Sin HTML de Gutenberg, sin `node-html-parser` en runtime, sin `wordpress-styles.css`. Las imágenes siguen en Cloudinary, referenciadas como links. Editar = tocar un archivo y push.
 
@@ -110,7 +110,7 @@ closing: "It is a visual work of fractured memory…"
 
 El lightbox (`ReactProtectedImage`) es una isla React que necesita `allImages` (todas las imágenes de la página, para prev/next). Ni el `render()` de markdown ni un plugin rehype pueden emitir islas hidratadas con props de página. La solución es la misma arquitectura de hoy con input limpio:
 
-- **`ProseContent.astro`** (reemplaza `PageContent.astro`): parsea el body markdown a AST (`remark` + `remark-directive`), recolecta `allImages`, y mapea nodos → párrafos/headings (HTML del propio remark) e imágenes/galerías → `<ProtectedImage client:load>`. Tipografía con clases propias del design system (DESIGN.md), no `prose` + `wordpress-styles.css`.
+- **`ProseContent.astro`** reemplaza `PageContent.astro` y usa `render(entry)` de Astro para Markdown limpio. Las páginas estructuradas (galería, prensa, videos, home) se renderizan desde YAML con componentes propios.
 - **`GalleryPage.astro`** / **`PressPage.astro`**: dejan de parsear HTML; iteran su YAML directo.
 - **`VideosPage.astro`** (nuevo, hoy videos pasa por PageContent): itera `videos.yaml` con un embed propio.
 - **`HomePage.astro`**: consume `home/{lang}.yaml` + colección pages; se borran `splitStatement`, el matcheo por título y el parseo HTML.

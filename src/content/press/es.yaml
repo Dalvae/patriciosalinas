@@ -1,0 +1,37 @@
+links: []
+cards:
+  - url: ""
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
+      alt: ""
+    text: La realidad de los muertos Juan Rodríguez, 2023 Barbarie
+  - url: https://revista.escaner.cl/node/6466
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_909,c_scale/v1728569286/patriciosalinas/Revista-scaner/Revista-scaner.png?_i=AA
+      alt: ""
+    text: La falta de curadores audaces se hace evidente. Revista Escaner 2012
+  - url: https://www.theclinic.cl/2018/06/11/patricio-salinas-el-fotografo-que-persiguio-a-walter-benjamin-todos-miramos-para-abajo-buscando-a-quien-pisotear/
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_964,c_scale/v1728569298/patriciosalinas/The-clinic/The-clinic.png?_i=AA
+      alt: ""
+    text: Entrevista en el periódico The Clinic. Santiago, Chile. (junio 2018)
+  - url: https://www.elmostrador.cl/cultura/2021/09/02/atacama-geometria-de-un-cautiverio-un-libro-con-texto-y-fotografias-como-partes-de-un-mismo-ser/
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_780,c_scale/v1728569233/patriciosalinas/El-mostrador/El-mostrador.png?_i=AA
+      alt: ""
+    text: Sobre Atacama, geometría de un cautivero. El Mostrador.
+  - url: https://fotoespacio.cl/fotografo/patricio-salinas
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA
+      alt: ""
+    text: Sobre la obra de Patricio Salinas A en Fotoespacio 2023
+  - url: https://es.ara.cat/misc/camino-une-atacama-portbou_1_5030539.html
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_2182,h_1720,c_scale/v1728571197/patriciosalinas/revistaara/revistaara.png?_i=AA
+      alt: ""
+    text: El camino que une Atacama con Portbou Diario Ara. Barcelona 15 de mayo 2024
+  - url: https://sis.modernamuseet.se/en/objects/details/105982?ctx=63a349047bfed32f7fe5250786ab5129fa13e9fd&idx=0
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1728569250/patriciosalinas/modernamuset/modernamuset.png?_i=AA
+      alt: ""
+    text: The Moderna Museet’s Collection
