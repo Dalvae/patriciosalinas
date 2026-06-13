@@ -29,16 +29,11 @@ pnpm preview  # Preview production build locally
 ### Data Flow
 
 ```
-src/data/*-content.json snapshot → scripts/export-wp.mjs → src/content/
 src/content/pages/**/*.md → Astro render()
 src/content/{gallery,press,home,videos}/*.yaml → Astro components
 ```
 
-WordPress is no longer read at runtime/build. To refresh local content from the legacy snapshot, run:
-
-```bash
-node scripts/export-wp.mjs
-```
+WordPress is legacy source only. The current build uses Markdown/YAML under `src/content/` and does not read WordPress snapshots.
 
 ### Internationalization
 

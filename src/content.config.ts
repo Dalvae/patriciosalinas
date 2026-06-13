@@ -1,8 +1,14 @@
-import { defineCollection } from "astro:content";
+import { defineCollection, reference } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const httpsUrl = z.string().url().regex(/^https:\/\//);
+
+const i18nField = z.object({
+  en: z.string(),
+  es: z.string(),
+  sv: z.string(),
+});
 
 const imageSchema = z.object({
   src: httpsUrl,
@@ -10,6 +16,10 @@ const imageSchema = z.object({
   caption: z.string().optional(),
   width: z.number().optional(),
   height: z.number().optional(),
+});
+
+const imageWithOptionalAltSchema = imageSchema.extend({
+  alt: z.string().optional(),
 });
 
 const pages = defineCollection({
@@ -25,20 +35,22 @@ const pages = defineCollection({
     type: z.enum(["project", "publication", "page", "hub", "home", "gallery", "press", "videos"]),
     translationKey: z.string(),
     order: z.number(),
-    images: z.array(imageSchema.extend({ caption: z.string() })).default([]),
+    images: z.array(imageSchema).default([]),
   }),
 });
 
-const i18nField = z.record(z.string()).default({});
+const galleryImageSchema = z.object({
+  src: httpsUrl,
+  alt: i18nField,
+  title: i18nField,
+  width: z.number().optional(),
+  height: z.number().optional(),
+});
 
 const gallery = defineCollection({
   loader: glob({ base: "./src/content", pattern: "gallery.yaml" }),
   schema: z.object({
-    images: z.array(z.object({
-      src: httpsUrl,
-      alt: i18nField,
-      title: i18nField,
-    })),
+    images: z.array(galleryImageSchema),
     en: z.object({ columns: z.number() }).optional(),
     es: z.object({ columns: z.number() }).optional(),
     sv: z.object({ columns: z.number() }).optional(),
@@ -53,7 +65,7 @@ const press = defineCollection({
       url: z.string().url(),
     })).default([]),
     cards: z.array(z.object({
-      url: z.string().url().or(z.literal("")),
+      url: z.string().url().optional(),
       image: z.object({
         src: httpsUrl,
         alt: z.string(),
@@ -80,9 +92,9 @@ const home = defineCollection({
     statement: z.string(),
     reflection: z.string().default(""),
     spreads: z.array(z.object({
-      project: z.string(),
+      project: reference("pages"),
       paragraph: z.string(),
-      images: z.array(httpsUrl).default([]),
+      images: z.array(imageWithOptionalAltSchema).default([]),
     })),
     closing: z.array(z.string()).default([]),
   }),

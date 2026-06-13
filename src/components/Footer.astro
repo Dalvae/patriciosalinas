@@ -1,14 +1,11 @@
 ---
-import { Mail } from "lucide-react";
 import { useTranslations } from "../i18n/utils";
 const { lang } = Astro.props;
 
 const t = useTranslations(lang);
 ---
 
-<footer
-  class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0 sm:space-x-10 py-2 lg:pl-12 lg:pr-6 px-6 footer"
->
+<footer class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0 sm:space-x-10 py-2 lg:pl-12 lg:pr-6 px-6">
   <div class="flex items-center space-x-4">
     <a
       href="https://www.instagram.com/patricio.salinas.a/"
@@ -20,11 +17,14 @@ const t = useTranslations(lang);
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
         <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+        <line x1="17.5" x1="17.51" y1="6.5" y2="6.5"></line>
       </svg>
     </a>
     <a href="mailto:patricio.salinas.a@gmail.com" aria-label="Email" class="hover:text-gray-600">
-      <Mail size={24} />
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+        <path d="m22 7-8.97 5.7a2 2 0 0 1-2.06 0L2 7"></path>
+      </svg>
     </a>
     <a
       href="https://x.com/dialogos49"

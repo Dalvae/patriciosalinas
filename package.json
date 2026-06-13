@@ -5,36 +5,29 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "export:wp": "node scripts/export-wp.mjs",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "0.9.6",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/vercel": "^9.0.4",
     "@fontsource/fira-sans": "^5.2.7",
-    "@tailwindcss/vite": "^4.1.18",
-    "@types/react": "^18.3.4",
-    "@types/react-dom": "^18.3.0",
     "astro": "^5.16.11",
     "astro-navbar": "^2.3.3",
     "lucide-react": "^0.436.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.5.4",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.6",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/vercel": "^9.0.4",
+    "@tailwindcss/vite": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "mdast-util-to-string": "^4.0.0",
-    "node-html-parser": "^7.1.0",
-    "rehype-stringify": "^10.0.1",
-    "remark": "^15.0.1",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
     "remark-directive": "^4.0.0",
-    "unified": "^11.0.5",
-    "yaml": "^2.9.0"
+    "typescript": "^5.5.4"
   }
 }

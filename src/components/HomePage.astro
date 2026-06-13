@@ -1,39 +1,56 @@
 ---
-import ProtectedImage from "./ui/ReactProtectedImage.tsx";
+import { getEntries } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import type { Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
+function aspectOf(image: SpreadImage | string): string {
+  if (typeof image === "string") return "4 / 3";
+  return image.width && image.height ? `${image.width} / ${image.height}` : "4 / 3";
+}
+import ProtectedImage from "./ui/ReactProtectedImage.tsx";
 
 interface Project {
-  key: string;
   title: string;
   uri: string;
-  images: string[];
+}
+
+interface SpreadImage {
+  src: string;
+  width?: number;
+  height?: number;
 }
 
 interface Props {
   home: CollectionEntry<"home">;
-  projects: Project[];
   lang: Lang;
 }
 
-const { home, projects, lang } = Astro.props;
-const t = useTranslations(lang);
-const projectByKey = Object.fromEntries(projects.map((project) => [project.key, project]));
+interface Spread {
+  project: Project;
+  paragraph: string;
+  bigWord: string;
+  smallWords: string;
+  flipped: boolean;
+  images: SpreadImage[];
+}
 
-const spreads = home.data.spreads.map((spread, i) => {
-  const project = projectByKey[spread.project];
-  const images = spread.images.length > 0
-    ? spread.images
-    : project?.images.slice(i === 0 ? 1 : 0, i === 0 ? 5 : 4) || [];
-  const words = project?.title.split(" ") || [];
+const { home, lang } = Astro.props;
+const t = useTranslations(lang);
+const projectEntries = await getEntries(home.data.spreads.map((spread) => spread.project));
+const spreads: Spread[] = home.data.spreads.map((spread, i) => {
+  const entry = projectEntries[i];
+  const project = {
+    title: entry.data.title,
+    uri: entry.data.uri,
+  };
+  const words = project.title.split(" ");
   return {
     project,
     paragraph: spread.paragraph,
-    bigWord: words[words.length - 1] || spread.project,
+    bigWord: words[words.length - 1] || project.title,
     smallWords: words.slice(0, -1).join(" "),
     flipped: i % 2 === 1,
-    images,
+    images: spread.images,
   };
 });
 
@@ -42,19 +59,13 @@ const intro = {
   reflection: home.data.reflection,
 };
 
-const introPhoto = spreads[0]?.project?.images[0];
+const introPhoto = spreads[0]?.images[0];
 
-/* Aspect ratio from Cloudinary URL (…/w_1024,h_577,…) keeps layout stable */
-function aspectOf(src: string): string {
-  const m = src.match(/w_(\d+),h_(\d+)/);
-  return m ? `${m[1]} / ${m[2]}` : "4 / 3";
-}
-
-const imageInfo = (src: string, alt: string) => ({
-  src,
+const imageInfo = (image: SpreadImage, alt: string) => ({
+  src: image.src,
   alt,
-  width: "auto",
-  height: "auto",
+  width: image.width?.toString() ?? "auto",
+  height: image.height?.toString() ?? "auto",
 });
 ---
 
@@ -70,7 +81,7 @@ const imageInfo = (src: string, alt: string) => ({
       <figure class="intro-photo" style={`aspect-ratio: ${aspectOf(introPhoto)};`}>
         <ProtectedImage
           client:load
-          src={introPhoto}
+          src={introPhoto.src}
           alt={`${spreads[0].project.title} — ${t("nav.subtitle")}`}
           allImages={[imageInfo(introPhoto, `${spreads[0].project.title} — ${t("nav.subtitle")}`)]}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -113,7 +124,7 @@ const imageInfo = (src: string, alt: string) => ({
               <figure class={`ph ph-${i}`} style={`aspect-ratio: ${aspectOf(image)};`}>
                 <ProtectedImage
                   client:load
-                  src={image}
+                  src={image.src}
                   alt={`${project.title} — ${i + 1}`}
                   allImages={images.map((img, idx) => imageInfo(img, `${project.title} — ${idx + 1}`))}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}

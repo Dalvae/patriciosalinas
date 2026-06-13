@@ -21,17 +21,6 @@ export async function getStaticPaths() {
     const lang = page.data.lang;
     const langPages = pagesByLang[lang] ?? [];
 
-    const projects = langPages
-      .filter((entry) => entry.data.type === "project")
-      .sort((a, b) => a.data.order - b.data.order)
-      .map((entry) => ({
-        key: entry.data.translationKey,
-        title: entry.data.title,
-        uri: entry.data.uri,
-        // Images from frontmatter — populated by export script, no runtime parsing
-        images: (entry.data.images ?? []).map((img) => img.src),
-      }));
-
     return {
       params: {
         lang,
@@ -42,13 +31,12 @@ export async function getStaticPaths() {
       props: {
         pages: langPages,
         page,
-        projects,
       },
     };
   });
 }
 
-const { page, pages, projects } = Astro.props;
+const { page, pages } = Astro.props;
 const lang = page.data.lang as Lang;
 
 if (!page) {
@@ -66,7 +54,7 @@ const videos = type === "videos" ? await getEntry("videos", "videos") : null;
 <Layout title={page.data.title} lang={lang} pages={pages}>
   {
     type === "home" && home ? (
-      <HomePage home={home} projects={projects} lang={lang} />
+      <HomePage home={home} lang={lang} />
     ) : type === "gallery" && gallery ? (
       <GalleryPage gallery={gallery} pageTitle={page.data.title} lang={lang} />
     ) : type === "press" && press ? (

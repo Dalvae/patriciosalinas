@@ -16,16 +16,16 @@ const cardImages = cards.map((card) => ({
 }));
 ---
 
-<section class="press-page">
-  <div class="press-shell">
-    <h1>{pageTitle || "Press"}</h1>
+<section class="w-full max-w-[92rem] mx-auto py-[clamp(3rem,7vw,7rem)] px-[clamp(1rem,4vw,4rem)]">
+  <div class="bg-white p-[clamp(1rem,3vw,2rem)]">
+    <h1 class="mb-8 text-center text-[clamp(2rem,4vw,3.5rem)] font-medium">{pageTitle || "Press"}</h1>
 
     {links.length > 0 && (
-      <div class="press-links prose">
-        <ul>
+      <div class="prose mb-12">
+        <ul class="mb-0 ml-6">
           {links.map((link) => (
-            <li>
-              <a href={link.url} target="_blank" rel="noopener noreferrer">
+            <li class="mb-3 last:mb-0 leading-relaxed">
+              <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-black underline underline-offset-2">
                 {link.text}
               </a>
             </li>
@@ -35,26 +35,40 @@ const cardImages = cards.map((card) => ({
     )}
 
     {cards.length > 0 && (
-      <div class="press-grid">
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-[clamp(1rem,2vw,1.5rem)]">
         {cards.map((card) => (
-          <a
-            href={card.url}
-            class="press-card-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <article class="press-card">
+          card.url ? (
+            <a
+              href={card.url}
+              class="color-inherit no-underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <article class="h-full border border-[#d4d4d4] bg-white">
+                <ProtectedImage
+                  client:load
+                  src={card.image.src}
+                  alt={card.image.alt}
+                  allImages={cardImages}
+                  caption={card.text}
+                  containerClassName="w-full"
+                />
+                <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
+              </article>
+            </a>
+          ) : (
+            <article class="h-full border border-[#d4d4d4] bg-white">
               <ProtectedImage
                 client:load
                 src={card.image.src}
                 alt={card.image.alt}
                 allImages={cardImages}
                 caption={card.text}
-                containerClassName="press-card-media"
+                containerClassName="w-full"
               />
-              <p>{card.text}</p>
+              <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
             </article>
-          </a>
+          )
         ))}
       </div>
     )}
@@ -62,71 +76,8 @@ const cardImages = cards.map((card) => ({
 </section>
 
 <style>
-  .press-page {
-    width: min(100%, 92rem);
-    margin-inline: auto;
-    padding-block: clamp(3rem, 7vw, 7rem);
-    padding-inline: clamp(1rem, 4vw, 4rem);
-  }
-
-  .press-shell {
-    background: #fff;
-    padding: clamp(1rem, 3vw, 2rem);
-  }
-
-  .press-shell h1 {
-    margin: 0 0 2rem;
-    text-align: center;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 500;
-  }
-
-  .press-links ul {
-    padding-left: 1.5rem;
-    margin-block: 1rem 3rem;
-  }
-
-  .press-links li {
-    margin-bottom: 0.75rem;
-    line-height: 1.6;
-  }
-
-  .press-links a {
-    color: #111;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .press-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  .press-card-link {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .press-card {
-    height: 100%;
-    border: 1px solid #d4d4d4;
-    background: #fff;
-  }
-
-  .press-card-media {
-    width: 100% !important;
-  }
-
-  .press-card p {
-    margin: 0;
-    padding: 1rem;
-    line-height: 1.6;
-    text-align: left;
-  }
-
   @media (max-width: 640px) {
-    .press-grid {
+    .grid-cols-\[repeat\(auto-fit\,minmax\(18rem\,1fr\)\)\] {
       grid-template-columns: 1fr;
     }
   }

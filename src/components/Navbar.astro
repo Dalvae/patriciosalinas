@@ -10,9 +10,8 @@ import type { CollectionEntry } from "astro:content";
 import type { Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
-import { ChevronDown } from "lucide-react";
 
-export interface Props {
+interface Props {
   currentPath: string;
   lang: Lang;
   pages: CollectionEntry<"pages">[];
@@ -168,9 +167,7 @@ const { structure: navStructure, bioItem } = createNavStructure(
 ---
 
 <Astronav>
-  <div
-    class="flex flex-col md:flex-row md:items-center md:justify-between pt-4 pb-1 lg:pr-6 lg:pl-12 px-6 min-h-20 nav"
-  >
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between pt-4 pb-1 lg:pr-6 lg:pl-12 px-6 min-h-20 nav">
     <div class="flex flex-col items-start">
       <div class="flex justify-between items-center w-full md:w-auto">
         <a
@@ -183,9 +180,7 @@ const { structure: navStructure, bioItem } = createNavStructure(
           <MenuIcon class="w-6 h-6 text-gray-800" />
         </div>
       </div>
-      <span class="md:hidden lg:block text-sm text-gray-600"
-        >{t("nav.subtitle")}</span
-      >
+      <span class="md:hidden lg:block text-sm text-gray-600">{t("nav.subtitle")}</span>
     </div>
     <MenuItems class="hidden md:flex md:items-center mt-4 md:mt-0">
       <ul class="flex flex-col md:flex-row md:space-x-3">
@@ -197,7 +192,9 @@ const { structure: navStructure, bioItem } = createNavStructure(
                   <button class="flex items-center uppercase text-neutral-800 hover:text-neutral-950">
                     {item.title}
                     <span class="chevron-icon ml-1 group-open:rotate-180">
-                      <ChevronDown className="w-4 h-4" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
                     </span>
                   </button>
                   <DropdownItems>
@@ -257,7 +254,9 @@ const { structure: navStructure, bioItem } = createNavStructure(
         >
           {lang.toUpperCase()}
           <span class="chevron-icon ml-1 group-open:rotate-180">
-            <ChevronDown className="w-4 h-4" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
           </span>
         </button>
         <DropdownItems>
@@ -286,20 +285,3 @@ const { structure: navStructure, bioItem } = createNavStructure(
     </MenuItems>
   </div>
 </Astronav>
-
-<style>
-  nav {
-    font-family: "Playfair Display", serif;
-  }
-  nav > a {
-    font-weight: 600;
-  }
-  .dropdown-menu.show,
-  .mobile-dropdown-menu.show {
-    display: block;
-  }
-  .active-item {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-</style>

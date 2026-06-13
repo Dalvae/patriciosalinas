@@ -72,8 +72,58 @@ function Dialog({ open, onOpenChange, children }: DialogProps) {
   );
 }
 
+function useMobileDetection() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  return isMobile;
+}
+
+function isMostlyOutOfView(rect: DOMRect, viewportHeight: number): boolean {
+  const margin = rect.height * 0.1;
+  return rect.top < -margin || rect.bottom > viewportHeight + margin;
+}
+
+function useScrollOverlay(
+  containerRef: React.RefObject<HTMLDivElement>,
+  isMobile: boolean,
+  disableOverlay: boolean
+) {
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const handleScroll = useCallback(() => {
+    if (!containerRef.current || !isMobile || disableOverlay) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    setShowOverlay(isMostlyOutOfView(rect, window.innerHeight));
+  }, [isMobile, disableOverlay]);
+
+  const debouncedHandleScroll = useCallback(
+    debounce(handleScroll, 100),
+    [handleScroll]
+  );
+
+  useEffect(() => {
+    if (isMobile && !disableOverlay) {
+      window.addEventListener("scroll", debouncedHandleScroll);
+      debouncedHandleScroll();
+    } else {
+      setShowOverlay(false);
+    }
+    return () => window.removeEventListener("scroll", debouncedHandleScroll);
+  }, [isMobile, debouncedHandleScroll, disableOverlay]);
+
+  return showOverlay;
+}
+
 function debounce(func: Function, wait: number) {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout);
@@ -82,6 +132,132 @@ function debounce(func: Function, wait: number) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+function ImageOverlay({
+  showOverlay,
+  isMobile,
+  caption,
+}: {
+  showOverlay: boolean;
+  isMobile: boolean;
+  caption?: string;
+}) {
+  return (
+    <div
+      className={`absolute inset-0 bg-black/60 flex flex-col items-start justify-between transition-opacity duration-150 ${
+        isMobile
+          ? showOverlay
+            ? "opacity-100"
+            : "opacity-0"
+          : "opacity-0 hover:opacity-100"
+      }`}
+    >
+      <div className="flex justify-end w-full p-2">
+        <Maximize2 className="h-6 w-6 text-white" />
+      </div>
+      {caption && (
+        <div
+          className="text-white w-full p-2"
+          dangerouslySetInnerHTML={{ __html: caption }}
+        />
+      )}
+    </div>
+  );
+}
+
+function ModalNavigation({
+  onPrev,
+  onNext,
+  hasMultiple,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  hasMultiple: boolean;
+}) {
+  if (!hasMultiple) return null;
+
+  return (
+    <>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onPrev();
+        }}
+        aria-label="Previous image"
+        className="absolute left-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onNext();
+        }}
+        aria-label="Next image"
+        className="absolute right-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
+    </>
+  );
+}
+
+function ModalContent({
+  imageArray,
+  dialogImageIndex,
+  onClose,
+  onPrev,
+  onNext,
+  onDialogClick,
+  preventDefaultActions,
+}: {
+  imageArray: ImageInfo[];
+  dialogImageIndex: number;
+  onClose: (e: React.MouseEvent) => void;
+  onPrev: () => void;
+  onNext: () => void;
+  onDialogClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  preventDefaultActions: (e: React.MouseEvent | React.DragEvent) => void;
+}) {
+  const currentImage = imageArray[dialogImageIndex];
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      onClick={onDialogClick}
+      onContextMenu={preventDefaultActions}
+      onDragStart={preventDefaultActions}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close modal"
+        className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
+      >
+        <X className="h-6 w-6" />
+      </button>
+      <ModalNavigation onPrev={onPrev} onNext={onNext} hasMultiple={imageArray.length > 1} />
+      <div className="relative flex flex-col xl:flex-row items-center justify-center w-full h-full px-4">
+        <div className="flex items-center justify-center w-full max-w-[1024px]">
+          <img
+            src={currentImage.src}
+            alt={currentImage.alt}
+            className="max-w-full max-h-[80vh] object-contain"
+            onContextMenu={preventDefaultActions}
+            onDragStart={preventDefaultActions}
+          />
+        </div>
+        {currentImage.caption && (
+          <div className="w-full text-center mt-4 mb-4 xl:text-left xl:mt-0 xl:mb-0 xl:ml-4 xl:w-1/4 max-w-[200px]">
+            <div
+              className="text-white text-lg "
+              dangerouslySetInnerHTML={{ __html: currentImage.caption }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function ProtectedImage({
@@ -98,9 +274,9 @@ export default function ProtectedImage({
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useMobileDetection();
+
   const imageArray: ImageInfo[] = useMemo(
     () =>
       (allImages || [{ src, alt, caption }]).map((img) =>
@@ -108,47 +284,13 @@ export default function ProtectedImage({
       ),
     [allImages, src, alt, caption]
   );
-  // Use object-contain unless caller overrides (object-cover requires fixed height)
-  const objectFitClass = className?.includes("object-") ? "" : "object-contain";
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const objectFitClass = className?.includes("object-") ? "" : "object-contain";
+  const showOverlay = useScrollOverlay(containerRef, isMobile, disableOverlay);
 
   useEffect(() => {
     setDialogImageIndex(imageArray.findIndex((img) => img.src === src));
   }, [src, imageArray]);
-
-  const handleScroll = useCallback(() => {
-    if (containerRef.current && isMobile && !disableOverlay) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      // Check if the image is mostly in view
-      const isInView =
-        rect.top >= -rect.height * 0.1 && // Top 10% or more is in view
-        rect.bottom <= viewportHeight + rect.height * 0.1; // Bottom 10% or more is in view
-
-      setShowOverlay(!isInView);
-    }
-  }, [isMobile, disableOverlay]);
-
-  const debouncedHandleScroll = useCallback(debounce(handleScroll, 100), [
-    handleScroll,
-  ]);
-
-  useEffect(() => {
-    if (isMobile && !disableOverlay) {
-      window.addEventListener("scroll", debouncedHandleScroll);
-      debouncedHandleScroll();
-    } else {
-      setShowOverlay(false);
-    }
-    return () => window.removeEventListener("scroll", debouncedHandleScroll);
-  }, [isMobile, debouncedHandleScroll, disableOverlay]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = (e: React.MouseEvent) => {
@@ -197,87 +339,23 @@ export default function ProtectedImage({
           className={`w-full ${className} ${objectFitClass} not-prose`}
         />
         {!disableOverlay && (
-          <div
-            className={`absolute inset-0 bg-black/60 flex flex-col items-start justify-between transition-opacity duration-150 ${
-              isMobile
-                ? showOverlay
-                  ? "opacity-100"
-                  : "opacity-0"
-                : "opacity-0 hover:opacity-100"
-            }`}
-          >
-            <div className="flex justify-end w-full p-2">
-              <Maximize2 className="h-6 w-6 text-white" />
-            </div>
-            {caption && (
-              <div
-                className="text-white w-full p-2"
-                dangerouslySetInnerHTML={{ __html: caption }}
-              />
-            )}
-          </div>
+          <ImageOverlay
+            showOverlay={showOverlay}
+            isMobile={isMobile}
+            caption={caption}
+          />
         )}
       </div>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          onClick={handleDialogClick}
-          onContextMenu={preventDefaultActions}
-          onDragStart={preventDefaultActions}
-        >
-          <button
-            onClick={closeModal}
-            aria-label="Close modal"
-            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
-          >
-            <X className="h-6 w-6" />
-          </button>
-          {imageArray.length > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeImage("prev");
-                }}
-                aria-label="Previous image"
-                className="absolute left-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeImage("next");
-                }}
-                aria-label="Next image"
-                className="absolute right-4 xl:top-1/2 xl:-translate-y-1/2 top-[80%] text-white bg-black bg-opacity-50 p-2 rounded-full z-10"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-            </>
-          )}
-          <div className="relative flex flex-col xl:flex-row items-center justify-center w-full h-full px-4">
-            <div className="flex items-center justify-center w-full max-w-[1024px]">
-              <img
-                src={imageArray[dialogImageIndex].src}
-                alt={imageArray[dialogImageIndex].alt}
-                className="max-w-full max-h-[80vh] object-contain"
-                onContextMenu={preventDefaultActions}
-                onDragStart={preventDefaultActions}
-              />
-            </div>
-            {imageArray[dialogImageIndex].caption && (
-              <div className="w-full text-center mt-4 mb-4 xl:text-left xl:mt-0 xl:mb-0 xl:ml-4 xl:w-1/4 max-w-[200px]">
-                <div
-                  className="text-white text-lg "
-                  dangerouslySetInnerHTML={{
-                    __html: imageArray[dialogImageIndex].caption,
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
+        <ModalContent
+          imageArray={imageArray}
+          dialogImageIndex={dialogImageIndex}
+          onClose={closeModal}
+          onPrev={() => changeImage("prev")}
+          onNext={() => changeImage("next")}
+          onDialogClick={handleDialogClick}
+          preventDefaultActions={preventDefaultActions}
+        />
       </Dialog>
     </>
   );

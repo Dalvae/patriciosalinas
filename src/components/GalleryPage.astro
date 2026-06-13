@@ -12,35 +12,16 @@ interface Props {
 const { gallery, pageTitle, lang } = Astro.props;
 const images = gallery.data.images.map((image) => ({
   src: image.src,
-  alt: image.alt[lang] || Object.values(image.alt)[0] || "",
-  caption: (image.title[lang] || Object.values(image.title)[0] || "").replace(/\|/g, "<br>"),
+  alt: image.alt[lang],
+  caption: image.title[lang].replace(/\|/g, "<br>"),
+  width: image.width?.toString() ?? "auto",
+  height: image.height?.toString() ?? "auto",
 }));
 ---
 
-<section class="gallery-page">
-  <div class="gallery-shell">
-    <h1>{pageTitle || "Gallery"}</h1>
+<section class="w-full max-w-[92rem] mx-auto py-[clamp(3rem,7vw,7rem)] px-[clamp(1rem,4vw,4rem)]">
+  <div class="bg-white p-[clamp(1rem,3vw,2rem)]">
+    <h1 class="mb-8 text-center text-[clamp(2rem,4vw,3.5rem)] font-medium">{pageTitle || "Gallery"}</h1>
     <ProjectGallery images={images} />
   </div>
 </section>
-
-<style>
-  .gallery-page {
-    width: min(100%, 92rem);
-    margin-inline: auto;
-    padding-block: clamp(3rem, 7vw, 7rem);
-    padding-inline: clamp(1rem, 4vw, 4rem);
-  }
-
-  .gallery-shell {
-    background: #fff;
-    padding: clamp(1rem, 3vw, 2rem);
-  }
-
-  .gallery-shell h1 {
-    margin: 0 0 2rem;
-    text-align: center;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 500;
-  }
-</style>

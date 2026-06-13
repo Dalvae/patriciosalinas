@@ -9,12 +9,25 @@ reflection: Mitt visuella arbete är baserat på personliga upplevelser. Från
   som jag delar, till exempel med Walter Benjamins upplevelser, såsom permanent
   rotlöshet, spricka och osäkerhet.
 spreads:
-  - project: walter-benjamin
+  - project: sv/walter-benjamin
     paragraph: I den visuella essän om Walter Benjamin närmar jag mig inte hans
       gestalt genom hans teoretiska verk, utan snarare genom fantasin och
       fiktionen, där jag utforskar vad som kan ha varit hans sårbarheter under
       hans färd genom de fransk-katalanska Pyrenéerna.
-  - project: atacama
+    images:
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725314648/patriciosalinas/DSCF7463_1063db1b2/DSCF7463_1063db1b2.jpg?_i=AA
+        width: 1024
+        height: 1024
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_573,c_scale/v1725314234/patriciosalinas/WB-009-50x40-cm/WB-009-50x40-cm.jpg?_i=AA
+        width: 1024
+        height: 573
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_548,c_scale/v1725314093/patriciosalinas/WB-002-50x-70-cm/WB-002-50x-70-cm.jpg?_i=AA
+        width: 1024
+        height: 548
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725313608/patriciosalinas/portbou-030/portbou-030.jpg?_i=AA
+        width: 1024
+        height: 1024
+  - project: sv/atacama
     paragraph: Å andra sidan utgör mitt arbete om Atacama en visuell berättelse
       utifrån min erfarenhet i fånglägret Chacabuco, under Pinochets diktatur. I
       mina återkommande resor till fånglägret Chacabuco finns ett försök att
@@ -29,10 +42,18 @@ spreads:
       korrekthet, utan tränger in i fångarnas mänskliga upplevelser och
       utforskar deras dilemman och rädslor.
     images:
-      - https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_577,c_scale/v1725700421/patriciosalinas/DSCF9370-1/DSCF9370-1.jpg?_i=AA
-      - https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_512,c_scale/v1725342631/patriciosalinas/Atacama-007/Atacama-007.jpg?_i=AA
-      - https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_454,c_scale/v1725209391/patriciosalinas/DSCF7242B/DSCF7242B.jpg?_i=AA
-      - https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_586,c_scale/v1725207355/patriciosalinas/JN-Atacama-015B/JN-Atacama-015B.jpg?_i=AA
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_577,c_scale/v1725700421/patriciosalinas/DSCF9370-1/DSCF9370-1.jpg?_i=AA
+        width: 1024
+        height: 577
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_512,c_scale/v1725342631/patriciosalinas/Atacama-007/Atacama-007.jpg?_i=AA
+        width: 1024
+        height: 512
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_454,c_scale/v1725209391/patriciosalinas/DSCF7242B/DSCF7242B.jpg?_i=AA
+        width: 1024
+        height: 454
+      - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_586,c_scale/v1725207355/patriciosalinas/JN-Atacama-015B/JN-Atacama-015B.jpg?_i=AA
+        width: 1024
+        height: 586
 closing:
   - Det är ett visuellt arbete av ett splittrat minne, där verklighet och
     fiktion är oupplösligt sammanflätade.

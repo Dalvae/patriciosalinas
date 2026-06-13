@@ -18,7 +18,10 @@ images:
       es: Portbou | Fine art 100% algodón | 1 de 10 copias
       sv: Portbou | Fine art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_588,c_scale/v1725702519/patriciosalinas/Tarragona-1/Tarragona-1.jpg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Tarragona | Fine print 100% cotton | 1 of 10 copies
       es: Tarragona | Fine print 100% Algodón | 1 de 10 copias
@@ -132,9 +135,13 @@ images:
       es: Atacama | Fine Art algodón 100% | 1 de 10 copias
       sv: Atacama | Fine Art Bomull 100% | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1378,h_933,c_scale/v1728225308/patriciosalinas/WhatsApp-Image-2024-10-06-at-11.20.49-AM/WhatsApp-Image-2024-10-06-at-11.20.49-AM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Santander, España Silver print análoga 1 of 10 copies
+      es: Santander, España Silver print análoga 1 de 10 copias
       sv: Santander, España Silver print análoga 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_548,c_scale/v1725314093/patriciosalinas/WB-002-50x-70-cm/WB-002-50x-70-cm.jpg?_i=AA
     alt:
@@ -155,49 +162,73 @@ images:
       es: Portbou | Finer Art 100% algodón
       sv: Portbou | Finer Art 100% Bomull
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_900,c_scale/v1726456601/patriciosalinas/WhatsApp-Image-2024-09-13-at-9.22.37-AM/WhatsApp-Image-2024-09-13-at-9.22.37-AM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Derviches | Silver print Analog | 1 of 10 copies
       es: Derviches | Silver print Analoga | 1 de 10 Copias
       sv: Derviches | Silver print Analog | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725039210/patriciosalinas/WB-004/WB-004.jpg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Portbou | Fine art 100% cotton | 1 of 10 copies
       es: Portbou | Fine art 100% Algodón | 1 de 10 copias
       sv: Portbou | Fine art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_581,c_scale/v1725039159/patriciosalinas/DSCF8587-B/DSCF8587-B.jpg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Portbou | Fine art 100% cotton | 1 of 10 copies
       es: Portbou | Fine art 100% algodón | 1 de 10 copias
       sv: Portbou | Fine art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1005,h_1024,c_scale/v1726457895/patriciosalinas/WhatsApp-Image-2024-09-13-at-7.37.38-PM/WhatsApp-Image-2024-09-13-at-7.37.38-PM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Stockholm | Silver print, Analog | 1 of 10 copies
       es: Stockholm | Silver print, Analoga | 1 de 10 Copias
       sv: Stockholm | Silver print, Analog | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725928382/patriciosalinas/Jorge-Luis-Borges/Jorge-Luis-Borges.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Jorge Luis Borges | Silver print, Analog | 1 of 10 copies
       es: Jorge Luis Borges | Silver print, Analoga | 1 de 10 copias
       sv: Jorge Luis Borges | Silver print, Analog | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_658,c_scale/v1725928418/patriciosalinas/WhatsApp-Image-2024-09-09-at-2.39.02-PM1/WhatsApp-Image-2024-09-09-at-2.39.02-PM1.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Atacama | Platinium Paladium copies 1/2
       es: Atacama | Platinium Paladium copias 1/2
       sv: Atacama | Platinium Paladium copies 1/2
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1727986824/patriciosalinas/WhatsApp-Image-2024-10-02-at-12.34.49-PM/WhatsApp-Image-2024-10-02-at-12.34.49-PM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Altafulla, España | Fine Art 100% cotton | 1 of 10 copies
       es: Altafulla, España | Fine Art 100% algodón | 1 de 10 copias
       sv: Altafulla, España | Fine Art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1013,h_1024,c_scale/v1727986887/patriciosalinas/WhatsApp-Image-2024-10-02-at-12.35.36-PM/WhatsApp-Image-2024-10-02-at-12.35.36-PM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Estocolmo | Silver print | 1 of 10 copies
       es: Estocolmo | Silver print | 1 de 10 copias
@@ -212,13 +243,19 @@ images:
       es: Atacama | Fine art 100% algodón | 1 de 10 copias
       sv: Atacama | Fine art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_695,c_scale/v1727987491/patriciosalinas/WhatsApp-Image-2024-10-02-at-5.53.34-PM/WhatsApp-Image-2024-10-02-at-5.53.34-PM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Barcelona | Fine Art 100% cotton | 1 of 10 copies
       es: Barcelona | Fine Art 100% algodón | 1 de 10 copias
       sv: Barcelona | Fine Art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_689,c_scale/v1727987516/patriciosalinas/WhatsApp-Image-2024-10-02-at-5.51.47-PM/WhatsApp-Image-2024-10-02-at-5.51.47-PM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Barcelona | Fine Art 100% cotton | 1 of 10 copies
       es: Barcelona | Fine Art 100% algodón | 1 de 10 copias
@@ -233,21 +270,32 @@ images:
       es: Portbou | Fine art 100% algodón | 1 de 10 copias
       sv: Portbou | Fine art 100% algodón | 1 de 10 copias
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1728225072/patriciosalinas/WhatsApp-Image-2024-10-05-at-8.46.01-AM/WhatsApp-Image-2024-10-05-at-8.46.01-AM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Portbou | Fine Art 100% cotton | 1 of 10 copies
       es: Portbou | Fine Art 100% algodón | 1 de 10 copias
       sv: Portbou | Fine Art 100% Bomull | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_707,c_scale/v1728225289/patriciosalinas/WhatsApp-Image-2024-10-05-at-8.58.49-AM/WhatsApp-Image-2024-10-05-at-8.58.49-AM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
       en: Atacama | Silver print | 1 of 10 copies
       es: Atacama | Silver print | 1 de 10 copias
       sv: Atacama | Silver print | 1 av 10 kopior
   - src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_693,c_scale/v1728225308/patriciosalinas/WhatsApp-Image-2024-10-06-at-11.20.49-AM/WhatsApp-Image-2024-10-06-at-11.20.49-AM.jpeg?_i=AA
-    alt: {}
+    alt:
+      en: Gallery photograph
+      es: Fotografía de galería
+      sv: Gallerifotografi
     title:
+      en: Santander, España Silver print análoga 1 of 10 copies
       es: Santander, España Silver print análoga 1 de 10 copias
+      sv: Santander, España Silver print análoga 1 av 10 kopior
 en:
   columns: 2
 es:
