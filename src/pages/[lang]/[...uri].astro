@@ -67,7 +67,7 @@ const allProjects = await getCollection("projects");
     type === "home" && home ? (
       <HomePage home={home} lang={lang} />
     ) : type === "gallery" && gallery ? (
-      <GalleryPage gallery={gallery} pageTitle={entry.data.title} lang={lang} />
+      <GalleryPage gallery={gallery} page={entry as PageEntry} pageTitle={entry.data.title} lang={lang} />
     ) : type === "press" && press ? (
       <PressPage press={press} pageTitle={entry.data.title} />
     ) : type === "videos" && videos ? (

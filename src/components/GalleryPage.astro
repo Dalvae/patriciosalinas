@@ -1,15 +1,17 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
 import type { Lang } from "../types/types";
 import MasonryGallery from "./MasonryGallery.astro";
 
 interface Props {
   gallery: CollectionEntry<"gallery">;
+  page?: CollectionEntry<"pages">;
   pageTitle?: string;
   lang: Lang;
 }
 
-const { gallery, pageTitle, lang } = Astro.props;
+const { gallery, page, pageTitle, lang } = Astro.props;
 const images = gallery.data.images.map((image) => ({
   src: image.src,
   alt: image.alt[lang],
@@ -17,16 +19,24 @@ const images = gallery.data.images.map((image) => ({
   width: image.width?.toString() ?? "auto",
   height: image.height?.toString() ?? "auto",
 }));
+
+const { Content } = page ? await render(page) : { Content: null };
 ---
 
 <section class="page-content">
   <div class="page-shell">
     <h1>{pageTitle || "Gallery"}</h1>
+    {Content && <div class="prose prose-lg max-w-none text-justify mb-8"><Content /></div>}
     <MasonryGallery images={images} columns={gallery.data[lang]?.columns ?? 2} />
   </div>
 </section>
 
 <style>
+  .prose {
+    --tw-prose-body: #000;
+    --tw-prose-headings: #000;
+  }
+
   .page-content {
     width: 100%;
     max-width: 72rem;
