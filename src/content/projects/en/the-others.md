@@ -71,21 +71,25 @@ Patricio Salinas A
 
 Being recognized by others is inseparable from the human condition. From its beginnings, philosophy has valued self-awareness and the search for true knowledge of oneself. Only through the recognition of others can a person constitute themselves as a distinct individual. Originally, the word “persona” meant “mask,” and through it, the individual acquired both a role and a social identity. The struggle for the mask was, in essence, the struggle for recognition.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_696,c_scale/v1725343922/patriciosalinas/Exodos-005/Exodos-005.jpg?_i=AA" alt="Estocolmo" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1725702215/patriciosalinas/Mapuches-001_13663776b/Mapuches-001_13663776b.jpg?_i=AA" alt="Galvarino, Chile" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1464,h_1074,c_scale/v1725701325/patriciosalinas/Grona-Lund/Grona-Lund.jpg?_i=AA" alt="Stockholm" />
+</div>
 
 Since the English colonial administration introduced the fingerprint classification system, the definition of a person has fundamentally changed. Identity shifted from being synonymous with “person,” a socially recognized subject, to being associated with biological data. In 1880, Bertillon developed the anthropometric-photographic system of personal identification, which soon became a standard for police forces and civil registries worldwide. With the rise of modern states, a person came to be defined by their nationality.
 
 During the Nazi regime, deportees in concentration camps were not recognized by their names or nationalities, but by numbers engraved on their arms. Today, in contemporary societies, a person is identified by their DNA. In Europe, an international DNA registry of all its citizens is in preparation, conceived even before the Covid-19 pandemic. As Giorgio Agamben insightfully observes, a person is reduced to their “biometric” data, and identity is no longer synonymous with personhood. It is defined without reference to the person.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700628/patriciosalinas/DSCF9674_1342c3c53/DSCF9674_1342c3c53.jpg?_i=AA" alt="Los otros" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_907,h_907,c_fill,g_auto/v1725698089/patriciosalinas/Bild-004/Bild-004.jpg?_i=AA" alt="" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_827,h_1024,c_scale/v1725698174/patriciosalinas/Bild-018_130572cb2/Bild-018_130572cb2.jpg?_i=AA" alt="" />
+</div>
 
 The struggle for social recognition has always been part of the human experience. In times of profound change, continuous crises, political instability, and an ever-growing number of refugees, people lose their traditional references: their country, their friends, their family, their language, and their roles in the society they once knew. In their attempt to create new spaces of recognition in the societies they enter, refugees and immigrants often encounter social exclusion. A constant feeling of humiliation invades them, reducing them to “the other,” viewed by the dominant classes as inferior or despicable, and at best, evoking only compassion or pity.
 

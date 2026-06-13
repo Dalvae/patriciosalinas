@@ -73,21 +73,25 @@ Me es fácil reconocer “al otro” ya que yo mismo soy uno de ellos. No import
 
 El ser reconocido por los otros es inseparable de todos los seres humanos. La filosofía desde sus comienzos valorizó la autoconciencia, la búsqueda de un saber verdadero sobre sí mismo. Sólo a través del reconocimiento de los otros, los hombres pueden constituirse como personas. Persona equivalía en sus orígenes a “máscara”, y a través de ésta el individuo adquiría un rol y una identidad social. La pugna por la máscara era el intento de reconocimiento.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_696,c_scale/v1725343922/patriciosalinas/Exodos-005/Exodos-005.jpg?_i=AA" alt="Estocolmo" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1725702215/patriciosalinas/Mapuches-001_13663776b/Mapuches-001_13663776b.jpg?_i=AA" alt="Galvarino, Chile" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1464,h_1074,c_scale/v1725701325/patriciosalinas/Grona-Lund/Grona-Lund.jpg?_i=AA" alt="Stockholm" />
+</div>
 
 Desde que la administración colonial inglesa incorporó el sistema de clasificación de las huellas digitales, la definición de persona cambió. Identidad pasó de ser sinónimo de “persona”, sujeto social reconocido, a un sujeto reconocido por sus datos biológicos. Alphonse Bertillon ideó en 1880 el sistema antropométrico-fotográfico de identificación personal, utilizado pronto por todas las policías y registros civiles del mundo. Con la creación de los estados modernos se identifica persona con nacionalidad.
 
 Los deportados en los campos de concentración bajo régimen nazi no eran reconocidos ni por sus nombres ni por sus nacionalidades, sino por un número grabado en sus brazos. Hoy, en las sociedades contemporáneas, se reconoce a la persona por su ADN. En Europa se prepara un registro internacional de ADN de todos sus ciudadanos, esto pensado antes de la pandemia del Covid-19. Como bien señala Giorgio Agamben, la persona es reducida a sus datos “biométricos” y la identidad ya no es sinónimo de persona, aún más, se define sin persona.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700628/patriciosalinas/DSCF9674_1342c3c53/DSCF9674_1342c3c53.jpg?_i=AA" alt="Los otros" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_907,h_907,c_fill,g_auto/v1725698089/patriciosalinas/Bild-004/Bild-004.jpg?_i=AA" alt="" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_827,h_1024,c_scale/v1725698174/patriciosalinas/Bild-018_130572cb2/Bild-018_130572cb2.jpg?_i=AA" alt="" />
+</div>
 
 La pugna de los seres humanos por conseguir un espacio de reconocimiento social ha existido desde siempre. En tiempos de grandes cambios, de crisis continuas, de inestabilidad política y de una masa de refugiados creciente, el ser humano pierde todos sus referentes de identificación: su país, sus amigos, su familia, su lengua, su rol en la sociedad que le vio crecer. En el intento de recrear nuevos espacios de reconocimientos en las sociedades a las que los refugiados o inmigrantes llegan, se encuentran a menudo con el fenómeno de la exclusión social. Un sentimiento de humillación constante les invade, se convierten en el “otro”, un ser visto por las clases dominantes como inferior y despreciable, que en el mejor de los casos despierta compasión y lástima.
 

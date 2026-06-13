@@ -69,21 +69,25 @@ Det är lätt för mig att känna igen «den andre» eftersom jag själv är en 
 
 Att bli erkänd av andra är oupplösligt förbundet med alla människor. Filosofin har sedan sina början värderat självmedvetande, sökandet efter sann kunskap om sig själv. Endast genom erkännande från andra kan människor bli personer. I sina ursprung betydde «persona» «mask», och genom den fick individen en roll och en social identitet. Kampen om masken var ett försök till erkännande.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_696,c_scale/v1725343922/patriciosalinas/Exodos-005/Exodos-005.jpg?_i=AA" alt="Estocolmo" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1725702215/patriciosalinas/Mapuches-001_13663776b/Mapuches-001_13663776b.jpg?_i=AA" alt="Galvarino, Chile" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1464,h_1074,c_scale/v1725701325/patriciosalinas/Grona-Lund/Grona-Lund.jpg?_i=AA" alt="Stockholm" />
+</div>
 
 Sedan den brittiska kolonialadministrationen införlivade systemet för fingeravtrycksklassificering har definitionen av person förändrats. Identitet gick från att vara synonymt med «person», en socialt erkänd subjekt, till ett subjekt som erkänns genom sina biologiska data. År 1880 upptäckte Bertillon det antropometrisk-fotografiska systemet för personlig identifiering, som snart användes av alla polisstyrkor och folkbokföringar världen över. Med skapandet av moderna stater blev person identifierad genom sin nationalitet.
 
 Deporterade i koncentrationsläger under nazistregimen erkändes inte genom sina namn eller nationaliteter utan genom ett nummer ingraverat på deras armar. Idag, i samtida samhällen, erkänns en person genom sitt DNA. I Europa förbereds ett internationellt DNA-register över alla dess medborgare, vilket tänktes ut före Covid-19-pandemin. Som Giorgio Agamben påpekar har personen reducerats till sina «biometriska» data, och identitet är inte längre synonymt med person. Ännu mer, det definieras utan person.
 
+<div class="image-row cols-3">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700628/patriciosalinas/DSCF9674_1342c3c53/DSCF9674_1342c3c53.jpg?_i=AA" alt="Los otros" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_907,h_907,c_fill,g_auto/v1725698089/patriciosalinas/Bild-004/Bild-004.jpg?_i=AA" alt="" />
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_827,h_1024,c_scale/v1725698174/patriciosalinas/Bild-018_130572cb2/Bild-018_130572cb2.jpg?_i=AA" alt="" />
+</div>
 
 Människans kamp för att få ett utrymme av socialt erkännande har alltid funnits. I tider av stora förändringar, kontinuerliga kriser, politisk instabilitet och en växande massa flyktingar, förlorar människan alla sina identifieringsreferenser: sitt land, sina vänner, sin familj, sitt språk, sin roll i det samhälle som såg dem växa upp. I försöket att återskapa nya erkännanderum i de samhällen flyktingar eller invandrare anländer till, möter de ofta fenomenet social uteslutning. En konstant känsla av förnedring invaderar dem, och de blir «den andre», sedda av de dominerande klasserna som underlägsna och föraktliga, och i bästa fall väcker de medlidande och medkänsla.
 
