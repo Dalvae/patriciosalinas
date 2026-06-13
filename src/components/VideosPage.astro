@@ -16,7 +16,7 @@ const titleFor = (video: typeof videos.data.videos[number]) =>
 <section class="page-content">
   <div class="page-shell">
     <h1>{pageTitle || "Videos"}</h1>
-    <div class="videos-grid">
+    <div class="videos-list">
       {videos.data.videos.map((video) => (
         <figure class="m-0">
           <iframe
@@ -54,17 +54,9 @@ const titleFor = (video: typeof videos.data.videos[number]) =>
     font-weight: 500;
   }
 
-  .videos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
-  }
-</style>
-
-<style>
-  @media (max-width: 640px) {
-    .grid-cols-\[repeat\(auto-fit\,minmax\(18rem\,1fr\)\)\] {
-      grid-template-columns: 1fr;
-    }
+  .videos-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
   }
 </style>
