@@ -22,7 +22,7 @@ const images = gallery.data.images.map((image) => ({
 <section class="page-content">
   <div class="page-shell">
     <h1>{pageTitle || "Gallery"}</h1>
-    <MasonryGallery images={images} />
+    <MasonryGallery images={images} columns={gallery.data[lang]?.columns ?? 2} />
   </div>
 </section>
 

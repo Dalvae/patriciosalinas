@@ -12,7 +12,7 @@ interface Props {
   columns?: number;
 }
 
-const { images, columns = 3 } = Astro.props;
+const { images, columns = 2 } = Astro.props;
 const allImageUrls = images.map((img) => img.src);
 
 const colsClass = `cols-${Math.min(columns, 3)}`;
