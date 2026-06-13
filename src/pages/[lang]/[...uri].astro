@@ -77,7 +77,7 @@ const allProjects = await getCollection("projects");
         <div class="page-shell">
           <ProseContent entry={entry} title={entry.data.title} />
         </div>
-        <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} columns={entry.data.galleryColumns ?? 3} />
+        <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} columns={(entry as ProjectEntry).data.galleryColumns ?? 3} />
       </div>
     ) : (
       <ProseContent entry={entry} title={entry.data.title} images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
