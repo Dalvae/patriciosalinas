@@ -28,61 +28,33 @@ Under tre vintermånader 2015 och tre veckor våren 2016 ägnade jag mig åt att
 
 Till kyrkogården där Benjamins kvarlevor finns kommer en och annan student, forskare eller vilsen turist som av en slump stöter på Portbou. Benjamins förmodade grav blickar ensamt ut mot havet.
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725314648/patriciosalinas/DSCF7463_1063db1b2/DSCF7463_1063db1b2.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_573,c_scale/v1725314234/patriciosalinas/WB-009-50x40-cm/WB-009-50x40-cm.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_548,c_scale/v1725314093/patriciosalinas/WB-002-50x-70-cm/WB-002-50x-70-cm.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725313608/patriciosalinas/portbou-030/portbou-030.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_995,c_scale/v1725309779/patriciosalinas/Portbou-004/Portbou-004.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_675,h_1024,c_scale/v1725209851/patriciosalinas/DSCF3115A/DSCF3115A.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725208909/patriciosalinas/Camino-de-Walter-Benjamin-009/Camino-de-Walter-Benjamin-009.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_812,h_812,c_fill,g_auto/v1725208808/patriciosalinas/DSCF7420_1-1/DSCF7420_1-1.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_783,h_783,c_fill,g_auto/v1725208747/patriciosalinas/DSCF6505/DSCF6505.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725208504/patriciosalinas/DSCF7496/DSCF7496.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1007,c_scale/v1725208449/patriciosalinas/DSCF7543/DSCF7543.jpg?_i=AA" alt="WB" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_998,c_scale/v1725208439/patriciosalinas/DSCF7476/DSCF7476.jpg?_i=AA" alt="Proyecto WB" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725039210/patriciosalinas/WB-004/WB-004.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_581,c_scale/v1725039159/patriciosalinas/DSCF8587-B/DSCF8587-B.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725702710/patriciosalinas/WB-0023_3742300c_137611c6e/WB-0023_3742300c_137611c6e.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1012,h_1024,c_scale/v1725702618/patriciosalinas/WB-0020_1375edbf8/WB-0020_1375edbf8.jpg?_i=AA" alt="Portbou. Nicho 563" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_624,c_scale/v1725702405/patriciosalinas/SALINc_389f934d_1370352bd/SALINc_389f934d_1370352bd.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700189/patriciosalinas/DSCF8392_3676b948_1335f57d1/DSCF8392_3676b948_1335f57d1.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_889,h_1024,c_scale/v1725700157/patriciosalinas/DSCF8287A_1334b5d12/DSCF8287A_1334b5d12.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_947,c_scale/v1725699446/patriciosalinas/DSCF3286A_13230771a/DSCF3286A_13230771a.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_901,h_905,c_scale/v1725699915/patriciosalinas/DSCF7497_EDIT_A-1/DSCF7497_EDIT_A-1.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_921,h_917,c_scale/v1725698874/patriciosalinas/Camino-de-Walter-Benjamin-003B_131472ea2/Camino-de-Walter-Benjamin-003B_131472ea2.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725699873/patriciosalinas/DSCF7334_1_3853f174_13303f7f6/DSCF7334_1_3853f174_13303f7f6.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700100/patriciosalinas/DSCF8215_370d48d3_1333a9ebb/DSCF8215_370d48d3_1333a9ebb.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1021,h_1024,c_scale/v1725699003/patriciosalinas/Camino-de-Walter-Benjamin-008-1/Camino-de-Walter-Benjamin-008-1.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_673,h_1020,c_scale/v1725699397/patriciosalinas/DSCF3115A-1/DSCF3115A-1.jpg?_i=AA" alt="Portbou" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_1024,c_scale/v1725700317/patriciosalinas/DSCF8803_1336ac717/DSCF8803_1336ac717.jpg?_i=AA" alt="" />
 
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_794,h_799,c_scale/v1725699738/patriciosalinas/DSCF6298_EDIT-A_932565cd_13289da98/DSCF6298_EDIT-A_932565cd_13289da98.jpg?_i=AA" alt="W Benjamin" />
 
 :::right
 Patricio Salinas A, maj 2016
