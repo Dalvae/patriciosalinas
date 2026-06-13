@@ -12,25 +12,19 @@ const { Content } = entry ? await render(entry) : { Content: null };
 ---
 
 {Content && (
-  <div class="page-content">
-    <div class="page-shell">
-      <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black w-full max-w-[72ch]">
-        {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
-        <Content />
-      </article>
-    </div>
-  </div>
+  <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black max-w-none">
+    {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
+    <Content />
+  </article>
 )}
 
 <style>
-  /* Force full black on all prose text */
   .prose {
     --tw-prose-body: #000;
     --tw-prose-headings: #000;
     --tw-prose-bold: #000;
   }
 
-  /* Keep only what Tailwind prose doesn't cover */
   .prose :where(h1, h2, h3) {
     font-family: "Playfair Display", serif;
   }
@@ -39,17 +33,5 @@ const { Content } = entry ? await render(entry) : { Content: null };
     width: 100%;
     max-width: 100%;
     height: auto;
-  }
-
-  .page-content {
-    width: 100%;
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
-  }
-
-  .page-shell {
-    background: #fff;
-    padding: clamp(1rem, 3vw, 2rem);
   }
 </style>

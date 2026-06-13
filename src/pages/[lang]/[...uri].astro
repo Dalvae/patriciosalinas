@@ -73,12 +73,28 @@ const allProjects = await getCollection("projects");
     ) : type === "videos" && videos ? (
       <VideosPage videos={videos} lang={lang} pageTitle={entry.data.title} />
     ) : (
-      <>
-        <ProseContent entry={entry} title={entry.data.title} />
+      <div class="page-content">
+        <div class="page-shell">
+          <ProseContent entry={entry} title={entry.data.title} />
+        </div>
         {kind === "project" && (
           <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
         )}
-      </>
+      </div>
     )
   }
 </Layout>
+
+<style>
+  .page-content {
+    width: 100%;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
+  }
+
+  .page-shell {
+    background: #fff;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+</style>
