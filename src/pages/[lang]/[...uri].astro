@@ -72,15 +72,15 @@ const allProjects = await getCollection("projects");
       <PressPage press={press} pageTitle={entry.data.title} />
     ) : type === "videos" && videos ? (
       <VideosPage videos={videos} lang={lang} pageTitle={entry.data.title} />
-    ) : (
+    ) : kind === "project" ? (
       <div class="page-content">
         <div class="page-shell">
           <ProseContent entry={entry} title={entry.data.title} />
         </div>
-        {kind === "project" && (
-          <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
-        )}
+        <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
       </div>
+    ) : (
+      <ProseContent entry={entry} title={entry.data.title} images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
     )
   }
 </Layout>

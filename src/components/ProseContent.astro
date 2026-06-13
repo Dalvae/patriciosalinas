@@ -1,21 +1,49 @@
 ---
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import ProtectedImage from "./ui/ReactProtectedImage";
+
+interface ImageData {
+  src: string;
+  alt: string;
+  caption?: string;
+}
 
 interface Props {
   entry?: CollectionEntry<"pages"> | CollectionEntry<"projects">;
   title?: string;
+  images?: ImageData[];
 }
 
-const { entry, title } = Astro.props;
+const { entry, title, images = [] } = Astro.props;
 const { Content } = entry ? await render(entry) : { Content: null };
+const allImageSrcs = images.map(img => img.src);
 ---
 
 {Content && (
-  <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black max-w-none">
-    {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
-    <Content />
-  </article>
+  <div class="page-content">
+    <div class="page-shell">
+      {images.length > 0 && (
+        <div class="inline-images">
+          {images.map((img) => (
+            <figure>
+              <ProtectedImage
+                client:load
+                src={img.src}
+                alt={img.alt}
+                allImages={allImageSrcs}
+                caption={img.caption || undefined}
+              />
+            </figure>
+          ))}
+        </div>
+      )}
+      <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black max-w-none">
+        {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
+        <Content />
+      </article>
+    </div>
+  </div>
 )}
 
 <style>
@@ -33,5 +61,19 @@ const { Content } = entry ? await render(entry) : { Content: null };
     width: 100%;
     max-width: 100%;
     height: auto;
+  }
+
+  .inline-images {
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .inline-images figure {
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+    background: #f5f5f5;
+  }
+
+  .inline-images :global(.protected-image-container) {
+    width: 100% !important;
+    height: auto !important;
   }
 </style>
