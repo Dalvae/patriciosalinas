@@ -19,24 +19,30 @@ const images = gallery.data.images.map((image) => ({
 }));
 ---
 
-<section class="content-wrapper">
-  <div class="content-card">
-    <h1 class="mb-8 text-center text-[clamp(2rem,4vw,3.5rem)] font-medium">{pageTitle || "Gallery"}</h1>
+<section class="page-content">
+  <div class="page-shell">
+    <h1>{pageTitle || "Gallery"}</h1>
     <ProjectGallery images={images} />
   </div>
 </section>
 
 <style>
-  .content-wrapper {
-    width: 100%;
-    max-width: 64rem;
+  .page-content {
+    width: min(100%, 92rem);
     margin-inline: auto;
     padding-block: clamp(3rem, 7vw, 7rem);
     padding-inline: clamp(1rem, 4vw, 4rem);
   }
 
-  .content-card {
+  .page-shell {
     background: #fff;
     padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .page-shell h1 {
+    margin: 0 0 2rem;
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 500;
   }
 </style>
