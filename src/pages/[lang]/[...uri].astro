@@ -7,7 +7,7 @@ import HomePage from "../../components/HomePage.astro";
 import GalleryPage from "../../components/GalleryPage.astro";
 import PressPage from "../../components/PressPage.astro";
 import VideosPage from "../../components/VideosPage.astro";
-import ProjectGallery from "../../components/ProjectGallery.astro";
+import MasonryGallery from "../../components/MasonryGallery.astro";
 
 type PageEntry = CollectionEntry<"pages">;
 type ProjectEntry = CollectionEntry<"projects">;
@@ -76,7 +76,7 @@ const allProjects = await getCollection("projects");
       <>
         <ProseContent entry={entry} title={entry.data.title} />
         {kind === "project" && (
-          <ProjectGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
+          <MasonryGallery images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
         )}
       </>
     )

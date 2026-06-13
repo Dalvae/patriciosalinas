@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { Lang } from "../types/types";
-import ProjectGallery from "./ProjectGallery.astro";
+import MasonryGallery from "./MasonryGallery.astro";
 
 interface Props {
   gallery: CollectionEntry<"gallery">;
@@ -22,7 +22,7 @@ const images = gallery.data.images.map((image) => ({
 <section class="page-content">
   <div class="page-shell">
     <h1>{pageTitle || "Gallery"}</h1>
-    <ProjectGallery images={images} />
+    <MasonryGallery images={images} />
   </div>
 </section>
 
