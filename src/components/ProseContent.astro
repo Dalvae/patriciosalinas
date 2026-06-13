@@ -22,7 +22,7 @@ const { Content } = entry ? await render(entry) : { Content: null };
 {Content && (
   <div class="page-content">
     <div class="page-shell">
-      <article class="prose prose-lg max-w-none text-justify hyphens-auto mx-auto text-black w-full max-w-[72ch]">
+      <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black w-full max-w-[72ch]">
         {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
         <Content />
       </article>
