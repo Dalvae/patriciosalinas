@@ -18,16 +18,16 @@ const titleFor = (video: typeof videos.data.videos[number]) =>
     <h1>{pageTitle || "Videos"}</h1>
     <div class="videos-list">
       {videos.data.videos.map((video) => (
-        <figure class="m-0">
+        <figure class="m-0 bg-[#111] rounded-sm overflow-hidden">
           <iframe
             src={`https://www.youtube.com/embed/${video.id}`}
             title={titleFor(video)}
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
-            class="w-full aspect-video border-0 bg-[#111]"
+            class="w-full aspect-video border-0"
           />
-          <figcaption class="pt-3 leading-relaxed text-center">{titleFor(video)}</figcaption>
+          <figcaption class="p-4 text-white text-lg leading-relaxed">{titleFor(video)}</figcaption>
         </figure>
       ))}
     </div>
