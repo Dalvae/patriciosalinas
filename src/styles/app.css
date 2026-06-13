@@ -52,6 +52,12 @@
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+.image-row img,
+.image-row .protected-image-container {
+  width: 100% !important;
+  height: auto !important;
+}
+
 @media (max-width: 640px) {
   .image-row.cols-2,
   .image-row.cols-3 {
