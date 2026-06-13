@@ -10,6 +10,7 @@ export interface Props {
   title: string;
   lang: Lang;
   pages: CollectionEntry<"pages">[];
+  projects?: CollectionEntry<"projects">[];
   image?: string;
   canonicalURL?: string;
 }
@@ -17,7 +18,8 @@ export interface Props {
 const { 
   title, 
   lang, 
-  pages, 
+  pages,
+  projects = [],
   image = "/og-image.jpg",
   canonicalURL,
 } = Astro.props;
@@ -103,7 +105,7 @@ const structuredData = JSON.stringify({
     <link rel="preload" href="/fonts/PlayfairDisplay-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
   </head>
   <body class="font-playfair">
-    <Navbar currentPath={currentPath} lang={lang} pages={pages} />
+    <Navbar currentPath={currentPath} lang={lang} pages={pages} projects={projects} />
     <main>
       <slot />
     </main>

@@ -32,7 +32,23 @@ const pages = defineCollection({
     title: z.string(),
     uri: z.string().regex(/^\/$|^\/(en|es|sv)(\/.*)?\/$/),
     lang: z.enum(["en", "es", "sv"]),
-    type: z.enum(["project", "publication", "page", "hub", "home", "gallery", "press", "videos"]),
+    type: z.enum(["publication", "page", "hub", "home", "gallery", "press", "videos"]),
+    translationKey: z.string(),
+    order: z.number(),
+    images: z.array(imageSchema).default([]),
+  }),
+});
+
+const projects = defineCollection({
+  loader: glob({
+    base: "./src/content/projects",
+    pattern: "**/*.md",
+    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
+  }),
+  schema: z.object({
+    title: z.string(),
+    uri: z.string().regex(/^\/$|^\/(en|es|sv)(\/.*)?\/$/),
+    lang: z.enum(["en", "es", "sv"]),
     translationKey: z.string(),
     order: z.number(),
     images: z.array(imageSchema).default([]),
@@ -92,7 +108,7 @@ const home = defineCollection({
     statement: z.string(),
     reflection: z.string().default(""),
     spreads: z.array(z.object({
-      project: reference("pages"),
+      project: reference("projects"),
       paragraph: z.string(),
       images: z.array(imageWithOptionalAltSchema).default([]),
     })),
@@ -102,6 +118,7 @@ const home = defineCollection({
 
 export const collections = {
   pages,
+  projects,
   gallery,
   press,
   videos,

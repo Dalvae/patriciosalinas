@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, getEntry } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import type { Lang } from "../../types/types";
 import ProseContent from "../../components/ProseContent.astro";
 import HomePage from "../../components/HomePage.astro";
@@ -8,61 +8,71 @@ import GalleryPage from "../../components/GalleryPage.astro";
 import PressPage from "../../components/PressPage.astro";
 import VideosPage from "../../components/VideosPage.astro";
 
-export async function getStaticPaths() {
-  const pages = await getCollection("pages");
+type PageEntry = CollectionEntry<"pages">;
+type ProjectEntry = CollectionEntry<"projects">;
 
-  // Pre-group by language — single pass instead of O(n²) filtering inside map
-  const pagesByLang: Record<string, typeof pages> = {};
-  for (const entry of pages) {
-    (pagesByLang[entry.data.lang] ??= []).push(entry);
+export async function getStaticPaths() {
+  function parseUri(uri: string): string | undefined {
+    return uri === "/" || /^\/(en|es|sv)\/$/.test(uri)
+      ? undefined
+      : uri.replace(/^\/(en|es|sv)\//, "").replace(/\/$/, "");
   }
 
-  return pages.map((page) => {
-    const lang = page.data.lang;
-    const langPages = pagesByLang[lang] ?? [];
+  const [pages, projects] = await Promise.all([
+    getCollection("pages"),
+    getCollection("projects"),
+  ]);
 
-    return {
-      params: {
-        lang,
-        uri: page.data.uri === "/" || /^\/(en|es|sv)\/$/.test(page.data.uri)
-          ? undefined
-          : page.data.uri.replace(/^\/(en|es|sv)\//, "").replace(/\/$/, ""),
-      },
-      props: {
-        pages: langPages,
-        page,
-      },
-    };
-  });
+  const pagesByLang: Record<string, typeof pages> = {};
+  for (const page of pages) (pagesByLang[page.data.lang] ??= []).push(page);
+
+  const pagePaths = pages.map((page) => ({
+    params: { lang: page.data.lang, uri: parseUri(page.data.uri) },
+    props: { pages: pagesByLang[page.data.lang] ?? [], entry: page, kind: "page" as const },
+  }));
+
+  const projectPaths = projects.map((project) => ({
+    params: { lang: project.data.lang, uri: parseUri(project.data.uri) },
+    props: { pages: pagesByLang[project.data.lang] ?? [], entry: project, kind: "project" as const },
+  }));
+
+  return [...pagePaths, ...projectPaths];
 }
 
-const { page, pages } = Astro.props;
-const lang = page.data.lang as Lang;
+const { entry, pages, kind } = Astro.props as {
+  entry: PageEntry | ProjectEntry;
+  pages: PageEntry[];
+  kind: "page" | "project";
+};
 
-if (!page) {
+const lang = entry.data.lang as Lang;
+
+if (!entry) {
   return Astro.redirect("/404");
 }
 
-const type = page.data.type;
+const type = kind === "project" ? "project" : (entry as PageEntry).data.type;
+
 // Single-entry lookups via getEntry (O(1)) instead of getCollection + find (O(n))
 const home = type === "home" ? await getEntry("home", lang) : null;
 const gallery = type === "gallery" ? await getEntry("gallery", "gallery") : null;
 const press = type === "press" ? await getEntry("press", lang) : null;
 const videos = type === "videos" ? await getEntry("videos", "videos") : null;
+const allProjects = await getCollection("projects");
 ---
 
-<Layout title={page.data.title} lang={lang} pages={pages}>
+<Layout title={entry.data.title} lang={lang} pages={pages} projects={allProjects}>
   {
     type === "home" && home ? (
       <HomePage home={home} lang={lang} />
     ) : type === "gallery" && gallery ? (
-      <GalleryPage gallery={gallery} pageTitle={page.data.title} lang={lang} />
+      <GalleryPage gallery={gallery} pageTitle={entry.data.title} lang={lang} />
     ) : type === "press" && press ? (
-      <PressPage press={press} pageTitle={page.data.title} />
+      <PressPage press={press} pageTitle={entry.data.title} />
     ) : type === "videos" && videos ? (
-      <VideosPage videos={videos} lang={lang} pageTitle={page.data.title} />
+      <VideosPage videos={videos} lang={lang} pageTitle={entry.data.title} />
     ) : (
-      <ProseContent entry={page} title={page.data.title} images={page.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
+      <ProseContent entry={entry} title={entry.data.title} images={entry.data.images.map(img => ({ src: img.src, alt: img.alt, caption: img.caption }))} />
     )
   }
 </Layout>

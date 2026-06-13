@@ -16,15 +16,14 @@
     "lucide-react": "^0.436.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.18",
-    "unist-util-visit": "^5.1.0"
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.6",
     "@astrojs/react": "^4.4.2",
     "@astrojs/vercel": "^9.0.4",
-    "@tailwindcss/vite": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "remark-directive": "^4.0.0",

@@ -16,8 +16,8 @@ const cardImages = cards.map((card) => ({
 }));
 ---
 
-<section class="w-full max-w-[92rem] mx-auto py-[clamp(3rem,7vw,7rem)] px-[clamp(1rem,4vw,4rem)]">
-  <div class="bg-white p-[clamp(1rem,3vw,2rem)]">
+<section class="content-wrapper">
+  <div class="content-card">
     <h1 class="mb-8 text-center text-[clamp(2rem,4vw,3.5rem)] font-medium">{pageTitle || "Press"}</h1>
 
     {links.length > 0 && (
@@ -35,7 +35,7 @@ const cardImages = cards.map((card) => ({
     )}
 
     {cards.length > 0 && (
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-[clamp(1rem,2vw,1.5rem)]">
+      <div class="press-grid">
         {cards.map((card) => (
           card.url ? (
             <a
@@ -76,8 +76,27 @@ const cardImages = cards.map((card) => ({
 </section>
 
 <style>
+  .content-wrapper {
+    width: 100%;
+    max-width: 92rem;
+    margin-inline: auto;
+    padding-block: clamp(3rem, 7vw, 7rem);
+    padding-inline: clamp(1rem, 4vw, 4rem);
+  }
+
+  .content-card {
+    background: #fff;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .press-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
   @media (max-width: 640px) {
-    .grid-cols-\[repeat\(auto-fit\,minmax\(18rem\,1fr\)\)\] {
+    .press-grid {
       grid-template-columns: 1fr;
     }
   }

@@ -19,9 +19,24 @@ const images = gallery.data.images.map((image) => ({
 }));
 ---
 
-<section class="w-full max-w-[92rem] mx-auto py-[clamp(3rem,7vw,7rem)] px-[clamp(1rem,4vw,4rem)]">
-  <div class="bg-white p-[clamp(1rem,3vw,2rem)]">
+<section class="content-wrapper">
+  <div class="content-card">
     <h1 class="mb-8 text-center text-[clamp(2rem,4vw,3.5rem)] font-medium">{pageTitle || "Gallery"}</h1>
     <ProjectGallery images={images} />
   </div>
 </section>
+
+<style>
+  .content-wrapper {
+    width: 100%;
+    max-width: 92rem;
+    margin-inline: auto;
+    padding-block: clamp(3rem, 7vw, 7rem);
+    padding-inline: clamp(1rem, 4vw, 4rem);
+  }
+
+  .content-card {
+    background: #fff;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+</style>

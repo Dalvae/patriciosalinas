@@ -11,13 +11,22 @@ import type { Lang } from "../types/types";
 import { useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
 
+interface NavEntry {
+  data: {
+    title: string;
+    uri: string;
+    type?: string;
+  };
+}
+
 interface Props {
   currentPath: string;
   lang: Lang;
   pages: CollectionEntry<"pages">[];
+  projects?: CollectionEntry<"projects">[];
 }
 
-const { currentPath, lang, pages } = Astro.props;
+const { currentPath, lang, pages, projects = [] } = Astro.props;
 const t = useTranslations(lang);
 
 function isCurrentItem(itemUri: string): boolean {
@@ -39,7 +48,7 @@ interface NavStructure {
   bioItem: NavItem | null;
 }
 
-function createNavStructure(pages: CollectionEntry<"pages">[], lang: Lang): NavStructure {
+function createNavStructure(pages: NavEntry[], lang: Lang): NavStructure {
   const structure: NavItem[] = [];
   const orderMap = {
     es: [
@@ -161,7 +170,7 @@ function createNavStructure(pages: CollectionEntry<"pages">[], lang: Lang): NavS
 }
 
 const { structure: navStructure, bioItem } = createNavStructure(
-  pages.filter((page) => page.data.type !== "home"),
+  [...pages.filter((page) => page.data.type !== "home"), ...projects] as NavEntry[],
   lang
 );
 ---
