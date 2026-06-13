@@ -25,8 +25,8 @@ const imageWithOptionalAltSchema = imageSchema.extend({
 const pages = defineCollection({
   loader: glob({
     base: "./src/content/pages",
-    pattern: "**/*.md",
-    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
+    pattern: "**/*.{md,mdx}",
+    generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ""),
   }),
   schema: z.object({
     title: z.string(),
@@ -42,8 +42,8 @@ const pages = defineCollection({
 const projects = defineCollection({
   loader: glob({
     base: "./src/content/projects",
-    pattern: "**/*.md",
-    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
+    pattern: "**/*.{md,mdx}",
+    generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ""),
   }),
   schema: z.object({
     title: z.string(),

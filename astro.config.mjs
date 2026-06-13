@@ -2,12 +2,13 @@ import { defineConfig, passthroughImageService } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 import react from "@astrojs/react";
+import mdx from "@astrojs/mdx";
 import directive from "remark-directive";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.patriciosalinas.com",
-  integrations: [react()],
+  integrations: [react(), mdx()],
   vite: {
     plugins: [tailwindcss()],
     server: {

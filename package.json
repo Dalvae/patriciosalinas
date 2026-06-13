@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
     "@fontsource/fira-sans": "^5.2.7",
     "astro": "^5.16.11",
     "astro-navbar": "^2.3.3",
