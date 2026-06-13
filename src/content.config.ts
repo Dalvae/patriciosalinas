@@ -52,6 +52,7 @@ const projects = defineCollection({
     translationKey: z.string(),
     order: z.number(),
     images: z.array(imageSchema).default([]),
+    galleryColumns: z.number().default(3),
   }),
 });
 
