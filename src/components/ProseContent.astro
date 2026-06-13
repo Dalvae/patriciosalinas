@@ -1,21 +1,13 @@
 ---
 import { render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import ProjectGallery from "./ProjectGallery.astro";
-
-interface ImageData {
-  src: string;
-  alt: string;
-  caption?: string;
-}
 
 interface Props {
   entry?: CollectionEntry<"pages"> | CollectionEntry<"projects">;
   title?: string;
-  images?: ImageData[];
 }
 
-const { entry, title, images = [] } = Astro.props;
+const { entry, title } = Astro.props;
 const { Content } = entry ? await render(entry) : { Content: null };
 ---
 
@@ -27,7 +19,6 @@ const { Content } = entry ? await render(entry) : { Content: null };
         <Content />
       </article>
     </div>
-    <ProjectGallery images={images} />
   </div>
 )}
 
