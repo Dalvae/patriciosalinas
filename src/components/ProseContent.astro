@@ -27,10 +27,9 @@ const { Content } = entry ? await render(entry) : { Content: null };
         <Content />
       </article>
     </div>
+    <ProjectGallery images={images} />
   </div>
 )}
-
-<ProjectGallery images={images} />
 
 <style>
   /* Force full black on all prose text */
