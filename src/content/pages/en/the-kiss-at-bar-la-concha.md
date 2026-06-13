@@ -20,10 +20,11 @@ Halil’s anticipation was immense. Finally, he could meet his Omar openly and f
 
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_605,h_454,c_scale/v1726457286/patriciosalinas/La-Concha-004/La-Concha-004.jpg?_i=AA" alt="" />
 
+<div class="image-row cols-2">
 <img src="https://res.cloudinary.com/dwxc8s4mq/images/w_550,h_413,c_scale/v1725775633/patriciosalinas/La-Concha-005_143819525/La-Concha-005_143819525.jpg?_i=AA" alt="" />
+<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1181,h_886,c_scale/v1725697990/patriciosalinas/Barcelona-004_993669b1_130108087/Barcelona-004_993669b1_130108087.jpg?_i=AA" alt="Barcelona" />
+</div>
 
 A few minutes after twelve, Omar entered the room. Halil saw him instantly despite the darkness and immediately recognized his movements and gestures when Omar asked the bartender for him. Halil took a few hesitant steps forward and, after thirty seconds, they embraced in a deep hug.
 
-They chose to sit in a corner of the room and ordered a pitcher of Moroccan tea. They hardly spoke. They looked at each other as if they wanted to read each other’s eyes. After a while, they began to dance slowly. Their bodies became more feverish with movement and music. Finally, Halil could freely kiss his Omar.
-
-<img src="https://res.cloudinary.com/dwxc8s4mq/images/w_1181,h_886,c_scale/v1725697990/patriciosalinas/Barcelona-004_993669b1_130108087/Barcelona-004_993669b1_130108087.jpg?_i=AA" alt="Barcelona" />
+They chose to sit in a corner of the room and ordered a pitcher of Moroccan tea. They hardly spoke. They looked at each other as if they wanted to read each other's eyes. After a while, they began to dance slowly. Their bodies became more feverish with movement and music. Finally, Halil could freely kiss his Omar.
