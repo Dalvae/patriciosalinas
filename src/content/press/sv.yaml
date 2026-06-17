@@ -1,5 +1,10 @@
 links: []
 cards:
+  - url: https://www.elespanol.com/el-cultural/opinion/minima_molestia_ignacio_echevarria/20260408/camino-walter-benjamin/1003744198113_13.html
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1781668521/patriciosalinas/el-cultural-camino-walter-benjamin.png
+      alt: "El Cultural — El camino de Walter Benjamin"
+    text: Kulturtidskrift, El Cultural, 27 mars 2026
   - image:
       src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
       alt: ""
