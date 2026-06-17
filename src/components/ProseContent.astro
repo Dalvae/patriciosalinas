@@ -38,7 +38,7 @@ const allImageSrcs = images.map(img => img.src);
           ))}
         </div>
       )}
-      <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black max-w-none">
+      <article class="prose prose-lg text-justify hyphens-auto mx-auto text-black max-w-none [&_h2]:text-center [&_h3]:text-center [&_h4]:text-center">
         {title && <h1 class="text-center font-semibold py-5 !text-[clamp(2rem,4vw,3.5rem)]">{title}</h1>}
         <Content />
       </article>

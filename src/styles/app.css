@@ -54,53 +54,48 @@
   padding: clamp(1rem, 3vw, 2rem);
 }
 
+/* A row of images is laid out at one shared HEIGHT; each image's width then
+   follows its own aspect ratio, so a portrait beside a landscape lines up at
+   equal height and the group reads as a centred row (like the production
+   gallery). The height is set on the image itself so every flex item sizes to
+   its real (height-derived) width and the row never collapses into a column.
+   Lives in CSS because it styles the React ProtectedImage's internals and is
+   shared verbatim by ~15 MDX files; Tailwind utilities would mean repeating
+   descendant selectors in every file. */
 .image-row {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   gap: clamp(0.75rem, 2vw, 1.5rem);
   margin-block: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-.image-row.cols-2 {
-  grid-template-columns: 1fr 1fr;
+.image-row .protected-image-container,
+.image-row img {
+  width: auto !important;
+  display: block;
 }
 
-/* cols-3 always lays out as three columns in a row. Cells share a fixed
-   height and the image fills its cell (cropped), like the print/WordPress
-   gallery, so a tall portrait can't overgrow its column and dwarf its
-   neighbours. Grid (not flex) guarantees the row never collapses to a column. */
-.image-row.cols-3 {
-  grid-template-columns: 1fr 1fr 1fr;
+.image-row.cols-2 .protected-image-container,
+.image-row.cols-2 img {
+  height: clamp(220px, 30vw, 340px) !important;
 }
 
-.image-row.cols-3 > * {
-  height: clamp(180px, 22vw, 280px);
-  min-width: 0;
-}
-
-.image-row.cols-3 .protected-image-container {
-  width: 100% !important;
-  height: 100% !important;
-}
-
+.image-row.cols-3 .protected-image-container,
 .image-row.cols-3 img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover;
+  height: clamp(150px, 17vw, 200px) !important;
 }
 
 @media (max-width: 640px) {
-  .image-row.cols-2,
-  .image-row.cols-3 {
-    grid-template-columns: 1fr;
+  .image-row {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .image-row.cols-3 > *,
-  .image-row.cols-3 .protected-image-container,
-  .image-row.cols-3 img {
+  .image-row .protected-image-container,
+  .image-row img {
     height: auto !important;
-  }
-
-  .image-row.cols-3 img {
-    object-fit: contain;
+    width: 100% !important;
   }
 }
