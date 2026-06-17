@@ -64,43 +64,33 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* cols-3 mixes portraits and landscapes. An equal-width grid would make a
-   tall portrait overgrow its column and dwarf its neighbours, so instead lay
-   the row out at an equal HEIGHT (like the print/WordPress gallery): every
-   image shares the same height and its width follows its aspect ratio. */
+/* cols-3 always lays out as three columns in a row. Cells share a fixed
+   height and the image fills its cell (cropped), like the print/WordPress
+   gallery, so a tall portrait can't overgrow its column and dwarf its
+   neighbours. Grid (not flex) guarantees the row never collapses to a column. */
 .image-row.cols-3 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .image-row.cols-3 > * {
-  height: clamp(150px, 20vw, 220px);
-  flex: 0 1 auto;
+  height: clamp(180px, 22vw, 280px);
   min-width: 0;
 }
 
 .image-row.cols-3 .protected-image-container {
+  width: 100% !important;
   height: 100% !important;
-  width: auto !important;
-  max-width: 100%;
 }
 
 .image-row.cols-3 img {
+  width: 100% !important;
   height: 100% !important;
-  width: auto !important;
-  max-width: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 @media (max-width: 640px) {
-  .image-row.cols-2 {
-    grid-template-columns: 1fr;
-  }
-
+  .image-row.cols-2,
   .image-row.cols-3 {
-    display: grid;
     grid-template-columns: 1fr;
   }
 
@@ -108,6 +98,9 @@
   .image-row.cols-3 .protected-image-container,
   .image-row.cols-3 img {
     height: auto !important;
-    width: 100% !important;
+  }
+
+  .image-row.cols-3 img {
+    object-fit: contain;
   }
 }
