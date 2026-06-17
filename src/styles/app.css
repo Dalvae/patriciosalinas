@@ -38,6 +38,22 @@
   }
 }
 
+/* Shared page-container primitives. Every page except the home uses these.
+   Defined globally so ProseContent-rendered pages (publications, exhibitions,
+   bio, …) get the same shell and margins as the dedicated page components,
+   which previously declared these only as component-scoped styles. */
+.page-content {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
+}
+
+.page-shell {
+  background: #fff;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
 .image-row {
   display: grid;
   gap: clamp(0.75rem, 2vw, 1.5rem);
@@ -48,13 +64,50 @@
   grid-template-columns: 1fr 1fr;
 }
 
+/* cols-3 mixes portraits and landscapes. An equal-width grid would make a
+   tall portrait overgrow its column and dwarf its neighbours, so instead lay
+   the row out at an equal HEIGHT (like the print/WordPress gallery): every
+   image shares the same height and its width follows its aspect ratio. */
 .image-row.cols-3 {
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.image-row.cols-3 > * {
+  height: clamp(150px, 20vw, 220px);
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.image-row.cols-3 .protected-image-container {
+  height: 100% !important;
+  width: auto !important;
+  max-width: 100%;
+}
+
+.image-row.cols-3 img {
+  height: 100% !important;
+  width: auto !important;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 @media (max-width: 640px) {
-  .image-row.cols-2,
-  .image-row.cols-3 {
+  .image-row.cols-2 {
     grid-template-columns: 1fr;
+  }
+
+  .image-row.cols-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .image-row.cols-3 > *,
+  .image-row.cols-3 .protected-image-container,
+  .image-row.cols-3 img {
+    height: auto !important;
+    width: 100% !important;
   }
 }
