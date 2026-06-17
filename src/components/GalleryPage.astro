@@ -21,13 +21,20 @@ const images = gallery.data.images.map((image) => ({
 }));
 
 const { Content } = page ? await render(page) : { Content: null };
+const introParagraphs =
+  page?.data.intro?.split(/\n\n+/).map((p) => p.trim()).filter(Boolean) ?? [];
 ---
 
 <section class="page-content">
   <div class="page-shell">
     <h1>{pageTitle || "Gallery"}</h1>
-    {Content && <div class="prose prose-lg max-w-none text-justify mb-8"><Content /></div>}
+    {introParagraphs.length > 0 && (
+      <div class="prose prose-lg max-w-none text-justify mb-8">
+        {introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    )}
     <MasonryGallery images={images} columns={gallery.data[lang]?.columns ?? 2} />
+    {Content && <div class="prose prose-lg max-w-none text-justify mt-8"><Content /></div>}
   </div>
 </section>
 

@@ -6,11 +6,11 @@ type: "gallery"
 translationKey: "gallery"
 order: 1050
 images: []
+intro: |
+  Work for sale. For more information contact
+
+  salinasstudio02@gmail.com
 ---
-
-Work for sale. For more information contact
-
-salinasstudio02@gmail.com
 
 «Silver Print» is an accepted term among English-speaking photographers and means that the image has been traditionally produced in a darkroom by exposing a negative onto photosensitive paper, either with a plastic-coated surface (RC) or fiber-based paper (considered higher quality both in tonal values and for preservation purposes).
 

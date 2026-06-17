@@ -6,11 +6,11 @@ type: "gallery"
 translationKey: "gallery"
 order: 1060
 images: []
+intro: |
+  Verk till salu, för mer information kontakta:
+
+  salinasstudio02@gmail.com
 ---
-
-Verk till salu, för mer information kontakta:
-
-salinasstudio02@gmail.com
 
 «Silver Print» är en accepterad term bland engelsktalande fotografer och betyder att bilden har producerats på traditionellt sätt i ett mörkrum genom att exponera en negativ på ljuskänsligt papper, antingen med plastbelagd yta (RC) eller fiberbaserat papper (anses vara av högre kvalitet både i tonvärden och för bevaringssyften).
 

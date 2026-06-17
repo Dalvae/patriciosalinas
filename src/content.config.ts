@@ -36,6 +36,7 @@ const pages = defineCollection({
     translationKey: z.string(),
     order: z.number(),
     images: z.array(imageSchema).default([]),
+    intro: z.string().optional(),
   }),
 });
 
