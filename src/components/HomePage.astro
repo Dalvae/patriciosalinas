@@ -288,6 +288,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
     grid-column: 1;
     grid-row: 3;
     margin-top: clamp(3rem, 8vw, 7rem);
+    padding-left: clamp(3rem, 7vw, 5.75rem);
     position: relative;
     z-index: 1;
   }
@@ -550,6 +551,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
       grid-column: 1;
       grid-row: 3;
       margin-top: 0;
+      padding-left: clamp(2rem, 8vw, 4rem);
     }
     .intro-rule-v {
       top: -1.75rem;
@@ -623,6 +625,9 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
     .closing {
       min-width: 0;
       width: 100%;
+    }
+    .intro-reflection {
+      padding-left: 0;
     }
     .intro-reflection p,
     .spread-text p,
