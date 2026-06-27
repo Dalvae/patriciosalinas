@@ -8,6 +8,7 @@ import GalleryPage from "../../components/GalleryPage.astro";
 import PressPage from "../../components/PressPage.astro";
 import VideosPage from "../../components/VideosPage.astro";
 import MasonryGallery from "../../components/MasonryGallery.astro";
+import ProjectIndex from "../../components/ProjectIndex.astro";
 
 type PageEntry = CollectionEntry<"pages">;
 type ProjectEntry = CollectionEntry<"projects">;
@@ -60,6 +61,7 @@ const gallery = type === "gallery" ? await getEntry("gallery", "gallery") : null
 const press = type === "press" ? await getEntry("press", lang) : null;
 const videos = type === "videos" ? await getEntry("videos", "videos") : null;
 const allProjects = await getCollection("projects");
+const langProjects = allProjects.filter((project) => project.data.lang === lang);
 ---
 
 <Layout title={entry.data.title} lang={lang} pages={pages} projects={allProjects}>
@@ -72,6 +74,8 @@ const allProjects = await getCollection("projects");
       <PressPage press={press} pageTitle={entry.data.title} />
     ) : type === "videos" && videos ? (
       <VideosPage videos={videos} lang={lang} pageTitle={entry.data.title} />
+    ) : type === "hub" && (entry as PageEntry).data.translationKey === "projects" ? (
+      <ProjectIndex projects={langProjects} pageTitle={entry.data.title} lang={lang} />
     ) : kind === "project" ? (
       <div class="page-content">
         <div class="page-shell">
