@@ -4,11 +4,12 @@ cards:
     image:
       src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1781668521/patriciosalinas/el-cultural-camino-walter-benjamin.png
       alt: "El Cultural — El camino de Walter Benjamin"
-    text: Revista cultural, El Cultural, 27 marzo 2026
-  - image:
+    text: El camino de Walter Benjamin, Ignacio Echevarría, El Cultural, 8 abril 2026
+  - url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
+    image:
       src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
-      alt: ""
-    text: La realidad de los muertos Juan Rodríguez, 2023 Barbarie
+      alt: "Barbarie — La realidad de los muertos"
+    text: La realidad de los muertos, Juan Rodríguez, Barbarie, 2023
   - url: https://revista.escaner.cl/node/6466
     image:
       src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_909,c_scale/v1728569286/patriciosalinas/Revista-scaner/Revista-scaner.png?_i=AA
