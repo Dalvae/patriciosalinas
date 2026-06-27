@@ -72,7 +72,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
 <div class="editorial font-playfair text-primary-600">
   <!-- ——— Spread one: the statement ——— -->
   <section class="intro" data-reveal>
-    <div class="intro-statement font-fira">
+    <div class="intro-statement">
       <span class="rule intro-rule-v" aria-hidden="true"></span>
       <p>{intro.statement}</p>
     </div>
@@ -207,18 +207,16 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
     padding-right: clamp(2.75rem, 5vw, 4.75rem);
   }
 
-  /* statement sits inside a hairline box with air below, like the book */
+  /* The statement sits on the page grid instead of inside its own frame. */
   .intro-statement {
     grid-column: 1;
     grid-row: 1;
-    display: flex;
-    gap: 1rem;
+    display: block;
     align-self: start;
     margin-top: clamp(1rem, 6vw, 5rem);
     margin-left: clamp(1rem, 4vw, 3.5rem);
     padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1.25rem, 2.5vw, 2.25rem)
       clamp(3.5rem, 7vw, 6.5rem);
-    border: 1px solid #d4d4d4;
     position: relative;
     z-index: 1;
   }
@@ -529,6 +527,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
       grid-template-columns: 1fr;
       grid-template-rows: none;
       row-gap: 2.75rem;
+      padding-right: 0;
     }
     /* mobile opens with the photograph, then the words */
     .intro-photo {
@@ -557,7 +556,8 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
       bottom: -2.5rem;
     }
     .intro-rule-h {
-      width: calc(100% + 2rem);
+      left: 0;
+      width: 100%;
     }
 
     .spread,
@@ -608,6 +608,28 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
   @media (max-width: 639px) {
     .editorial {
       gap: 4.5rem;
+    }
+    .intro-photo::before {
+      display: none;
+    }
+    .intro-rule-v {
+      display: none;
+    }
+    .intro-rule-h {
+      width: 100%;
+    }
+    .intro-reflection,
+    .spread-text,
+    .closing {
+      min-width: 0;
+      width: 100%;
+    }
+    .intro-reflection p,
+    .spread-text p,
+    .closing p {
+      max-width: 100%;
+      text-align: left;
+      overflow-wrap: break-word;
     }
     .ph-0,
     .spread.flipped .ph-0 {
