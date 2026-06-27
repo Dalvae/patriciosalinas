@@ -1,5 +1,9 @@
 links: []
 cards:
+  - image:
+      src: /press/lecho-culture-2026-06-27.jpg
+      alt: "L'Echo — De la mémoire chilienne"
+    text: "De la mémoire chilienne, Mathieu Colleyn, L'Echo, Bélgica, 27 junio 2026"
   - url: https://www.elespanol.com/el-cultural/opinion/minima_molestia_ignacio_echevarria/20260408/camino-walter-benjamin/1003744198113_13.html
     image:
       src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1781668521/patriciosalinas/el-cultural-camino-walter-benjamin.png

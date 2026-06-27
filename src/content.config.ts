@@ -3,6 +3,7 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const httpsUrl = z.string().url().regex(/^https:\/\//);
+const localAssetPath = z.string().regex(/^\/[^\s]+$/);
 
 const i18nField = z.object({
   en: z.string(),
@@ -85,7 +86,7 @@ const press = defineCollection({
     cards: z.array(z.object({
       url: z.string().url().optional(),
       image: z.object({
-        src: httpsUrl,
+        src: z.union([httpsUrl, localAssetPath]),
         alt: z.string(),
       }),
       text: z.string(),
