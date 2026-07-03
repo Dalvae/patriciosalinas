@@ -23,6 +23,9 @@ interface ProtectedImageProps {
   containerClassName?: string;
   caption?: string;
   disableOverlay?: boolean;
+  allowContextMenu?: boolean;
+  showImageId?: boolean;
+  imageId?: string;
 }
 
 interface DialogProps {
@@ -218,7 +221,7 @@ function ModalContent({
   onPrev: () => void;
   onNext: () => void;
   onDialogClick: (e: React.MouseEvent<HTMLDivElement>) => void;
-  preventDefaultActions: (e: React.MouseEvent | React.DragEvent) => void;
+  preventDefaultActions?: (e: React.MouseEvent | React.DragEvent) => void;
 }) {
   const currentImage = imageArray[dialogImageIndex];
 
@@ -271,6 +274,9 @@ export default function ProtectedImage({
   containerClassName = "",
   caption,
   disableOverlay = false,
+  allowContextMenu = false,
+  showImageId = false,
+  imageId,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
@@ -322,16 +328,22 @@ export default function ProtectedImage({
 
   const preventDefaultActions = (e: React.MouseEvent | React.DragEvent) =>
     e.preventDefault();
+  const maybePreventDefaultActions = allowContextMenu ? undefined : preventDefaultActions;
 
   return (
     <>
+      {showImageId && imageId && (
+        <div className="not-prose mb-1 select-all break-words text-[0.7rem] uppercase tracking-[0.12em] text-neutral-500">
+          {imageId}
+        </div>
+      )}
       <div
         ref={containerRef}
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
         style={{ width, height, ...style }}
         onClick={openModal}
-        onContextMenu={preventDefaultActions}
-        onDragStart={preventDefaultActions}
+        onContextMenu={maybePreventDefaultActions}
+        onDragStart={maybePreventDefaultActions}
       >
         <img
           src={src}
@@ -354,7 +366,7 @@ export default function ProtectedImage({
           onPrev={() => changeImage("prev")}
           onNext={() => changeImage("next")}
           onDialogClick={handleDialogClick}
-          preventDefaultActions={preventDefaultActions}
+          preventDefaultActions={maybePreventDefaultActions}
         />
       </Dialog>
     </>

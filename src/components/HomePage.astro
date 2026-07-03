@@ -88,6 +88,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
           className="h-full object-cover"
           containerClassName="h-full w-full"
           disableOverlay={true}
+          showImageId={false}
         />
         <span class="intro-side font-fira" aria-hidden="true">{t("nav.subtitle")}</span>
       </figure>
@@ -131,6 +132,7 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
                   className="h-full object-cover"
                   containerClassName="h-full w-full"
                   disableOverlay={true}
+                  showImageId={false}
                 />
               </figure>
             ))}

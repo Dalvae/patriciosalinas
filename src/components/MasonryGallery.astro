@@ -5,14 +5,16 @@ interface ImageData {
   src: string;
   alt: string;
   caption?: string;
+  imageId?: string;
 }
 
 interface Props {
   images: ImageData[];
   columns?: number;
+  imageDebug?: boolean;
 }
 
-const { images, columns = 3 } = Astro.props;
+const { images, columns = 3, imageDebug = false } = Astro.props;
 const allImageUrls = images.map((img) => img.src);
 
 const colsClass = `cols-${Math.min(columns, 3)}`;
@@ -29,6 +31,9 @@ const colsClass = `cols-${Math.min(columns, 3)}`;
             alt={image.alt}
             allImages={allImageUrls}
             caption={image.caption || undefined}
+            imageId={image.imageId}
+            showImageId={imageDebug}
+            allowContextMenu={imageDebug}
           />
         </figure>
       ))}

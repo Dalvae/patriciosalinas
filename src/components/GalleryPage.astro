@@ -12,10 +12,12 @@ interface Props {
 }
 
 const { gallery, page, pageTitle, lang } = Astro.props;
-const images = gallery.data.images.map((image) => ({
+const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
+const images = gallery.data.images.map((image, index) => ({
   src: image.src,
   alt: image.alt[lang],
   caption: image.title[lang].replace(/\|/g, "<br>"),
+  imageId: `PS-GAL-${String(index + 1).padStart(3, "0")}`,
   width: image.width?.toString() ?? "auto",
   height: image.height?.toString() ?? "auto",
 }));
@@ -33,7 +35,11 @@ const introParagraphs =
         {introParagraphs.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     )}
-    <MasonryGallery images={images} columns={gallery.data[lang]?.columns ?? 2} />
+    <MasonryGallery
+      images={images}
+      columns={gallery.data[lang]?.columns ?? 2}
+      imageDebug={imageDebug}
+    />
     {Content && <div class="prose prose-lg max-w-none text-justify mt-8"><Content /></div>}
   </div>
 </section>
