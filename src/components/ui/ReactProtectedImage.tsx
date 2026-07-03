@@ -329,12 +329,50 @@ export default function ProtectedImage({
   const preventDefaultActions = (e: React.MouseEvent | React.DragEvent) =>
     e.preventDefault();
   const maybePreventDefaultActions = allowContextMenu ? undefined : preventDefaultActions;
+  const copyImageId = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!imageId) return;
+    const button = e.currentTarget;
+
+    const markCopied = () => {
+      button.textContent = "Copied";
+      window.setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1200);
+    };
+
+    try {
+      await navigator.clipboard.writeText(imageId);
+      markCopied();
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = imageId;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      markCopied();
+    }
+  };
 
   return (
     <>
       {showImageId && imageId && (
-        <div className="not-prose mb-1 select-all break-words text-[0.7rem] uppercase tracking-[0.12em] text-neutral-500">
-          {imageId}
+        <div className="not-prose mb-3 flex items-center justify-between gap-3 border-2 border-black bg-white px-4 py-3 text-black shadow-[0_2px_0_#000]">
+          <span className="select-all break-words font-mono text-xl font-bold tracking-[0.08em] sm:text-2xl">
+            {imageId}
+          </span>
+          <button
+            type="button"
+            className="shrink-0 border-2 border-black bg-black px-4 py-2 font-mono text-sm font-bold uppercase tracking-[0.12em] text-white"
+            onClick={copyImageId}
+          >
+            Copy
+          </button>
         </div>
       )}
       <div
