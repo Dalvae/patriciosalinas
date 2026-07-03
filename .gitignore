@@ -28,3 +28,6 @@ pnpm-debug.log*
 # AI tooling ephemeral state
 .omc/
 .playwright-cli/
+
+# temporary asset handoff/uploads
+incoming-assets/

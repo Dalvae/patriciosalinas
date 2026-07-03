@@ -1,5 +1,10 @@
 links: []
 cards:
+  - url: https://lamaletadeportbou.com/lo-ultimo-que-vio-walter-benjamin/
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783104194/patricio-salinas/press/la-maleta-portbou-77/la-maleta-portbou-77-julio-agosto-2026-cover.jpg
+      alt: "La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin"
+    text: "Lo último que vio Walter Benjamin, Llàtzer Moix, La Maleta de Portbou Nº77, juli–augusti 2026"
   - image:
       src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1782573041/patriciosalinas/press/lecho-culture-2026-06-27.jpg
       alt: "L'Echo — De la mémoire chilienne"
@@ -40,6 +45,11 @@ cards:
       alt: ""
     text: Vägen som förbinder Atacama med Portbou. Tidningen Ara. Barcelona, 15 maj
       2024
+  - url: https://www.elmostrador.cl/cultura/critica-opinion/2024/04/20/transitos-la-huella-de-la-impermanencia-la-muestra-fotografica-de-patricio-salinas-a/
+    image:
+      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783104976/patricio-salinas/press/el-mostrador-2024-transitos-huella-impermanencia.jpg
+      alt: "El Mostrador — Tránsitos: la huella de la impermanencia"
+    text: "Tránsitos: la huella de la impermanencia, Nicolás Bernales, El Mostrador, 20 april 2024"
   - url: https://sis.modernamuseet.se/en/objects/details/105982?ctx=63a349047bfed32f7fe5250786ab5129fa13e9fd&idx=0
     image:
       src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1728569250/patriciosalinas/modernamuset/modernamuset.png?_i=AA
