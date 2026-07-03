@@ -89,6 +89,12 @@ const press = defineCollection({
         alt: z.string(),
       }),
       text: z.string(),
+      title: z.string().optional(),
+      publication: z.string().optional(),
+      author: z.string().optional(),
+      date: z.string().optional(),
+      location: z.string().optional(),
+      note: z.string().optional(),
     })).default([]),
   }),
 });

@@ -15,18 +15,36 @@ const cardImages = cards.map((card) => ({
   alt: card.image.alt,
   caption: card.text,
 }));
+
+function parsePressText(rawText: string) {
+  let parts = rawText.split(',').map(s => s.trim());
+  if (parts.length >= 2) {
+    return { title: parts[0], meta: parts.slice(1) };
+  }
+  parts = rawText.split('.').map(s => s.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    return {
+      title: parts[0],
+      meta: parts.slice(1).map((s, i) => s + (i === parts.length - 2 && rawText.endsWith('.') ? '.' : ''))
+    };
+  }
+  return { title: rawText, meta: [] as string[] };
+}
 ---
 
-<section class="page-content">
+<section class="page-content font-playfair text-[#111111]">
   <div class="page-shell">
-    <h1>{pageTitle || "Press"}</h1>
+    <header class="press-header">
+      <p>Selected coverage</p>
+      <h1>{pageTitle || "Press"}</h1>
+    </header>
 
     {links.length > 0 && (
-      <div class="prose mb-12">
-        <ul class="mb-0 ml-6">
+      <div class="max-w-3xl mx-auto mb-24 md:mb-32">
+        <ul class="space-y-6 text-center">
           {links.map((link) => (
-            <li class="mb-3 last:mb-0 leading-relaxed">
-              <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-black underline underline-offset-2">
+            <li class="leading-relaxed text-lg">
+              <a href={link.url} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-[#111111] text-[#4b5563] transition-colors duration-300">
                 {link.text}
               </a>
             </li>
@@ -36,47 +54,73 @@ const cardImages = cards.map((card) => ({
     )}
 
     {cards.length > 0 && (
-      <div class="press-grid">
-        {cards.map((card, index) => (
-          card.url ? (
-            <a
-              href={card.url}
-              class="color-inherit no-underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <article class="h-full border border-[#d4d4d4] bg-white">
-                <ProtectedImage
-                  client:load
-                  src={card.image.src}
-                  alt={card.image.alt}
-                  allImages={cardImages}
-                  caption={card.text}
-                  containerClassName="w-full"
-                  showImageId={imageDebug}
-                  allowContextMenu={imageDebug}
-                  imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
-                />
-                <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
-              </article>
-            </a>
-          ) : (
-            <article class="h-full border border-[#d4d4d4] bg-white">
-              <ProtectedImage
-                client:load
-                src={card.image.src}
-                alt={card.image.alt}
-                allImages={cardImages}
-                caption={card.text}
-                containerClassName="w-full"
-                showImageId={imageDebug}
-                allowContextMenu={imageDebug}
-                imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
-              />
-              <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
+      <div class="press-list">
+        {cards.map((card, index) => {
+          const parsed = parsePressText(card.text);
+          const title = card.title ?? parsed.title;
+          const meta = [card.author, card.publication, card.location, card.date].filter(Boolean);
+          const fallbackMeta = parsed.meta;
+          return (
+            <article class="group">
+              {index > 0 && <hr class="border-t border-[#e5e7eb] mb-16 md:mb-20" />}
+
+              {card.url ? (
+                <h2><a href={card.url} target="_blank" rel="noopener noreferrer">{title}</a></h2>
+              ) : (
+                <h2>{title}</h2>
+              )}
+
+              <div class="press-row">
+                <div class="press-media">
+                  <div class="press-frame">
+                    <ProtectedImage
+                      client:load
+                      src={card.image.src}
+                      alt={card.image.alt}
+                      allImages={cardImages}
+                      caption={card.text}
+                      className="w-full h-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+                      containerClassName="w-full h-full"
+                      showImageId={imageDebug}
+                      allowContextMenu={imageDebug}
+                      imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
+                    />
+                  </div>
+                </div>
+
+                <div class="press-copy">
+                  {meta.length > 0 && (
+                    <div class="press-meta">
+                      {meta.map((m, i) => (
+                        <p class={i === 0 ? "primary" : ""}>
+                          {m}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {meta.length === 0 && fallbackMeta.length > 0 && (
+                    <div class="press-meta">
+                      {fallbackMeta.map((m, i) => (
+                        <p class={i === 0 ? "primary" : ""}>
+                          {m}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                  {card.note && <p class="press-note">{card.note}</p>}
+
+                  {card.url && (
+                    <div class="press-action">
+                      <a href={card.url} target="_blank" rel="noopener noreferrer">
+                        Read Publication
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
             </article>
-          )
-        ))}
+          );
+        })}
       </div>
     )}
   </div>
@@ -85,9 +129,9 @@ const cardImages = cards.map((card) => ({
 <style>
   .page-content {
     width: 100%;
-    max-width: 72rem;
+    max-width: 92rem;
     margin: 0 auto;
-    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
+    padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 2.5rem);
   }
 
   .page-shell {
@@ -95,22 +139,158 @@ const cardImages = cards.map((card) => ({
     padding: clamp(1rem, 3vw, 2rem);
   }
 
-  .page-shell h1 {
-    margin: 0 0 2rem;
-    text-align: center;
-    font-size: clamp(2rem, 4vw, 3.5rem);
+  .press-header {
+    max-width: 72rem;
+    margin: 0 auto clamp(2.5rem, 6vw, 5rem);
+    border-bottom: 1px solid #111111;
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .press-header p {
+    margin: 0 0 0.75rem;
+    color: #737373;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .press-header h1 {
+    margin: 0;
+    font-size: clamp(3rem, 8vw, 7rem);
     font-weight: 500;
+    line-height: 0.95;
   }
 
-  .press-grid {
+  .press-list {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+
+  .press-list article + article {
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .press-list article {
+    position: relative;
+  }
+
+  .press-list article::before {
+    content: "";
+    position: absolute;
+    top: clamp(2.2rem, 4vw, 3.5rem);
+    left: calc(-1 * clamp(1.5rem, 7vw, 6rem));
+    width: clamp(5rem, 16vw, 13rem);
+    height: 1px;
+    background: #d4d4d4;
+    pointer-events: none;
+  }
+
+  .press-list hr {
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+    border: 0;
+    border-top: 1px solid #d4d4d4;
+  }
+
+  .press-list h2 {
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(1.75rem, 3.4vw, 3.25rem);
+    font-weight: 500;
+    line-height: 1.08;
+  }
+
+  .press-list h2 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .press-list h2 a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+  }
+
+  .press-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.25rem, 4vw, 3rem);
+    align-items: start;
   }
 
-  @media (max-width: 640px) {
-    .press-grid {
-      grid-template-columns: 1fr;
+  .press-media {
+    min-width: 0;
+  }
+
+  .press-frame {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    overflow: hidden;
+    background: #f7f7f7;
+  }
+
+  .press-copy {
+    display: grid;
+    gap: 1.5rem;
+    border-top: 1px solid #d4d4d4;
+    padding-top: 1.25rem;
+  }
+
+  .press-meta {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .press-meta p {
+    margin: 0;
+    color: #4b5563;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    line-height: 1.45;
+  }
+
+  .press-meta p.primary {
+    color: #111111;
+    font-size: clamp(1.2rem, 1.9vw, 1.55rem);
+  }
+
+  .press-note {
+    margin: 0;
+    color: #262626;
+    font-size: clamp(1rem, 1.4vw, 1.18rem);
+    line-height: 1.55;
+  }
+
+  .press-action a {
+    display: inline-block;
+    border: 1px solid #111111;
+    color: #111111;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .press-action a:hover {
+    background: #111111;
+    color: #ffffff;
+  }
+
+  @media (min-width: 880px) {
+    .press-row {
+      grid-template-columns: minmax(34rem, 1.65fr) minmax(17rem, 0.85fr);
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+    }
+
+    .press-copy {
+      min-height: 100%;
+      border-top: 1px solid #d4d4d4;
+      padding-top: 0;
+      padding-left: 0;
+      padding-top: clamp(1rem, 2vw, 1.5rem);
+    }
+  }
+
+  @media (min-width: 1180px) {
+    .press-row {
+      grid-template-columns: minmax(40rem, 1.75fr) minmax(20rem, 0.85fr);
     }
   }
 </style>

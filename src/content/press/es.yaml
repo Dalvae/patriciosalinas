@@ -1,56 +1,117 @@
 links: []
 cards:
-  - url: https://lamaletadeportbou.com/lo-ultimo-que-vio-walter-benjamin/
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783104194/patricio-salinas/press/la-maleta-portbou-77/la-maleta-portbou-77-julio-agosto-2026-cover.jpg
-      alt: "La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin"
-    text: "Lo último que vio Walter Benjamin, Llàtzer Moix, La Maleta de Portbou Nº77, julio-agosto 2026"
-  - image:
-      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1782573041/patriciosalinas/press/lecho-culture-2026-06-27.jpg
-      alt: "L'Echo — De la mémoire chilienne"
-    text: "De la mémoire chilienne, Mathieu Colleyn, L'Echo, Bélgica, 27 junio 2026"
-  - url: https://www.elespanol.com/el-cultural/opinion/minima_molestia_ignacio_echevarria/20260408/camino-walter-benjamin/1003744198113_13.html
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1781668521/patriciosalinas/el-cultural-camino-walter-benjamin.png
-      alt: "El Cultural — El camino de Walter Benjamin"
-    text: El camino de Walter Benjamin, Ignacio Echevarría, El Cultural, 8 abril 2026
-  - url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
-      alt: "Barbarie — La realidad de los muertos"
-    text: La realidad de los muertos, Juan Rodríguez, Barbarie, 2023
-  - url: https://revista.escaner.cl/node/6466
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_909,c_scale/v1728569286/patriciosalinas/Revista-scaner/Revista-scaner.png?_i=AA
-      alt: ""
-    text: La falta de curadores audaces se hace evidente. Revista Escaner 2012
-  - url: https://www.theclinic.cl/2018/06/11/patricio-salinas-el-fotografo-que-persiguio-a-walter-benjamin-todos-miramos-para-abajo-buscando-a-quien-pisotear/
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_964,c_scale/v1728569298/patriciosalinas/The-clinic/The-clinic.png?_i=AA
-      alt: ""
-    text: Entrevista en el periódico The Clinic. Santiago, Chile. (junio 2018)
-  - url: https://www.elmostrador.cl/cultura/2021/09/02/atacama-geometria-de-un-cautiverio-un-libro-con-texto-y-fotografias-como-partes-de-un-mismo-ser/
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_780,c_scale/v1728569233/patriciosalinas/El-mostrador/El-mostrador.png?_i=AA
-      alt: ""
-    text: Sobre Atacama, geometría de un cautivero. El Mostrador.
-  - url: https://fotoespacio.cl/fotografo/patricio-salinas
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA
-      alt: ""
-    text: Sobre la obra de Patricio Salinas A en Fotoespacio 2023
-  - url: https://es.ara.cat/misc/camino-une-atacama-portbou_1_5030539.html
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_2182,h_1720,c_scale/v1728571197/patriciosalinas/revistaara/revistaara.png?_i=AA
-      alt: ""
-    text: El camino que une Atacama con Portbou Diario Ara. Barcelona 15 de mayo 2024
-  - url: https://www.elmostrador.cl/cultura/critica-opinion/2024/04/20/transitos-la-huella-de-la-impermanencia-la-muestra-fotografica-de-patricio-salinas-a/
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783104976/patricio-salinas/press/el-mostrador-2024-transitos-huella-impermanencia.jpg
-      alt: "El Mostrador — Tránsitos: la huella de la impermanencia"
-    text: "Tránsitos: la huella de la impermanencia, Nicolás Bernales, El Mostrador, 20 abril 2024"
-  - url: https://sis.modernamuseet.se/en/objects/details/105982?ctx=63a349047bfed32f7fe5250786ab5129fa13e9fd&idx=0
-    image:
-      src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1728569250/patriciosalinas/modernamuset/modernamuset.png?_i=AA
-      alt: ""
-    text: The Moderna Museet’s Collection
+- url: https://lamaletadeportbou.com/lo-ultimo-que-vio-walter-benjamin/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783112958/patricio-salinas/press/screenshots/la-maleta-walter-benjamin-2026-page.png
+    alt: La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin
+  text: Lo último que vio Walter Benjamin, Llàtzer Moix, La Maleta de Portbou Nº77, julio–agosto 2026
+  title: Lo último que vio Walter Benjamin
+  publication: La Maleta de Portbou Nº77
+  author: Llàtzer Moix
+  date: julio–agosto 2026
+  location: España / español
+  note: Galería/artículo sobre las fotografías de Salinas y la última mirada de Benjamin en Portbou.
+- image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1782573041/patriciosalinas/press/lecho-culture-2026-06-27.jpg
+    alt: L'Echo — De la mémoire chilienne
+  text: De la mémoire chilienne, Mathieu Colleyn, L’Echo, Bélgica, 27 junio 2026
+  title: De la mémoire chilienne
+  publication: L'Echo
+  author: Mathieu Colleyn
+  date: 27 junio 2026
+  location: Bélgica / francés
+  note: Recorte público de la sección cultural de L’Echo, vinculado a la memoria chilena.
+- url: https://www.elespanol.com/el-cultural/opinion/minima_molestia_ignacio_echevarria/20260408/camino-walter-benjamin/1003744198113_13.html
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783112957/patricio-salinas/press/screenshots/el-cultural-walter-benjamin-2026-page.png
+    alt: El Cultural — El camino de Walter Benjamin
+  text: El camino de Walter Benjamin, Ignacio Echevarría, El Cultural, 8 abril 2026
+  title: El camino de Walter Benjamin
+  publication: El Cultural / El Español
+  author: Ignacio Echevarría
+  date: 8 abril 2026
+  location: España / español
+  note: Ensayo sobre el fotolibro de Salinas dedicado al camino de Walter Benjamin.
+- url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
+    alt: Barbarie — La realidad de los muertos
+  text: La realidad de los muertos, Barbarie, 5 septiembre 2023
+  title: La realidad de los muertos
+  publication: Barbarie
+  date: 5 septiembre 2023
+  location: Latinoamérica / español
+  note: Ensayo que conecta el trabajo de Atacama con memoria, ficción y Walter Benjamin.
+- url: https://revista.escaner.cl/node/6466
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_909,c_scale/v1728569286/patriciosalinas/Revista-scaner/Revista-scaner.png?_i=AA
+    alt: ''
+  text: 'Patricio Salinas: “La falta de curadores audaces se hace evidente”, Mane Adaro, Revista Escáner Cultural Nº151, 2012'
+  title: 'Patricio Salinas: “La falta de curadores audaces se hace evidente”'
+  publication: Revista Escáner Cultural Nº151
+  author: Mane Adaro
+  date: '2012'
+  location: Chile / español
+  note: Entrevista sobre curaduría, Benjamin y fotografía.
+- url: https://www.theclinic.cl/2018/06/11/patricio-salinas-el-fotografo-que-persiguio-a-walter-benjamin-todos-miramos-para-abajo-buscando-a-quien-pisotear/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_964,c_scale/v1728569298/patriciosalinas/The-clinic/The-clinic.png?_i=AA
+    alt: ''
+  text: Patricio Salinas, el fotógrafo que persiguió a Walter Benjamin, The Clinic, 11 junio 2018
+  title: Patricio Salinas, el fotógrafo que persiguió a Walter Benjamin
+  publication: The Clinic
+  date: 11 junio 2018
+  location: Chile / español
+  note: Entrevista/perfil centrado en Benjamin, exilio y biografía de Salinas.
+- url: https://www.elmostrador.cl/cultura/2021/09/02/atacama-geometria-de-un-cautiverio-un-libro-con-texto-y-fotografias-como-partes-de-un-mismo-ser/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_780,c_scale/v1728569233/patriciosalinas/El-mostrador/El-mostrador.png?_i=AA
+    alt: ''
+  text: 'Atacama: Geometría de un Cautiverio, El Mostrador, 2 septiembre 2021'
+  title: 'Atacama: Geometría de un Cautiverio'
+  publication: El Mostrador
+  date: 2 septiembre 2021
+  location: Chile / español
+  note: Reseña del libro Atacama y su contexto expositivo en CCLM.
+- url: https://fotoespacio.cl/fotografo/patricio-salinas
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA
+    alt: ''
+  text: Patricio Salinas – Fotoespacio, 2023
+  title: Patricio Salinas – Fotoespacio
+  publication: Fotoespacio
+  date: '2023'
+  location: Español
+  note: Perfil de artista sobre la obra de Salinas, Benjamin, Atacama y biografía.
+- url: https://es.ara.cat/misc/camino-une-atacama-portbou_1_5030539.html
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_2182,h_1720,c_scale/v1728571197/patriciosalinas/revistaara/revistaara.png?_i=AA
+    alt: ''
+  text: El camino que une Atacama con Portbou, Ara, 15 mayo 2024
+  title: El camino que une Atacama con Portbou
+  publication: Ara
+  date: 15 mayo 2024
+  location: Cataluña / español
+  note: Artículo sobre el vínculo de memoria entre Atacama y Portbou.
+- url: https://www.elmostrador.cl/cultura/critica-opinion/2024/04/20/transitos-la-huella-de-la-impermanencia-la-muestra-fotografica-de-patricio-salinas-a/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783112956/patricio-salinas/press/screenshots/el-mostrador-transitos-2024-page.png
+    alt: 'El Mostrador — Tránsitos: la huella de la impermanencia'
+  text: 'Tránsitos: la huella de la impermanencia, Nicolás Bernales, El Mostrador, 20 abril 2024'
+  title: 'Tránsitos: la huella de la impermanencia'
+  publication: El Mostrador
+  author: Nicolás Bernales
+  date: 20 abril 2024
+  location: Chile / español
+  note: Texto sobre la muestra y el díptico Benjamin/Atacama.
+- url: https://sis.modernamuseet.se/en/objects/details/105982?ctx=63a349047bfed32f7fe5250786ab5129fa13e9fd&idx=0
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_705,c_scale/v1728569250/patriciosalinas/modernamuset/modernamuset.png?_i=AA
+    alt: ''
+  text: Atacama, la geometría del cautiverio, Colección Moderna Museet
+  title: Atacama, la geometría del cautiverio
+  publication: Moderna Museet Collection
+  author: Patricio Salinas A.
+  date: 2020 / adquirido 2021
+  location: Suecia / sueco + inglés
+  note: Ficha de colección del museo; obra adquirida en 2021 y no expuesta actualmente.
