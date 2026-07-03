@@ -376,15 +376,15 @@ export default function ProtectedImage({
         />
         {showImageId && imageId && (
           <div
-            className="not-prose absolute left-3 right-3 top-3 z-20 flex items-center justify-between gap-3 border-2 border-black bg-white px-4 py-3 text-black shadow-[0_2px_0_#000]"
+            className="not-prose absolute inset-x-3 top-1/2 z-50 flex -translate-y-1/2 flex-col items-stretch gap-3 border-4 border-white bg-black/90 p-4 text-white shadow-[0_0_0_3px_#000] sm:inset-x-6 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <span className="select-all break-words font-mono text-xl font-bold tracking-[0.08em] sm:text-2xl">
+            <span className="select-all break-words text-center font-mono text-3xl font-black leading-none tracking-[0.08em] sm:text-5xl">
               {imageId}
             </span>
             <button
               type="button"
-              className="shrink-0 border-2 border-black bg-black px-4 py-2 font-mono text-sm font-bold uppercase tracking-[0.12em] text-white"
+              className="w-full border-2 border-white bg-white px-4 py-3 font-mono text-base font-black uppercase tracking-[0.16em] text-black sm:text-lg"
               onClick={copyImageId}
             >
               {copiedImageId ? "Copied" : "Copy"}
