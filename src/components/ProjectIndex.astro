@@ -12,6 +12,7 @@ interface Props {
 }
 
 const { projects, pageTitle, lang } = Astro.props;
+const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
 const t = useTranslations(lang);
 
 const sortedProjects = [...projects].sort((a, b) => b.data.order - a.data.order);
@@ -43,22 +44,34 @@ function excerptOf(project: ProjectEntry) {
     </header>
 
     <div class="projects-list">
-      {sortedProjects.map((project) => {
+      {sortedProjects.map((project, index) => {
         const image = project.data.images[0];
         const excerpt = excerptOf(project);
+        const imageId = `PS-PROJECT-${String(index + 1).padStart(3, "0")}`;
 
         return (
           <article class="project-row">
             <a href={project.data.uri} class="project-thumb" aria-label={project.data.title}>
               {image && (
-                <img
-                  src={image.src}
-                  alt={image.alt || project.data.title}
-                  loading="lazy"
-                  decoding="async"
-                  draggable="false"
-                  oncontextmenu="return false"
-                />
+                <>
+                  <img
+                    src={image.src}
+                    alt={image.alt || project.data.title}
+                    loading="lazy"
+                    decoding="async"
+                    draggable={imageDebug ? "true" : "false"}
+                    oncontextmenu={imageDebug ? undefined : "return false"}
+                  />
+                  {imageDebug && (
+                    <div class="project-debug-id" onclick="event.preventDefault(); event.stopPropagation();">
+                      <span>{imageId}</span>
+                      <button
+                        type="button"
+                        onclick={`event.preventDefault(); event.stopPropagation(); navigator.clipboard?.writeText('${imageId}'); this.textContent='Copied'; setTimeout(() => this.textContent='Copy', 1200);`}
+                      >Copy</button>
+                    </div>
+                  )}
+                </>
               )}
             </a>
 
@@ -121,10 +134,48 @@ function excerptOf(project: ProjectEntry) {
   }
 
   .project-thumb {
+    position: relative;
     display: block;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     background: #f5f5f5;
+  }
+
+  .project-debug-id {
+    position: absolute;
+    inset-inline: 0.75rem;
+    top: 50%;
+    z-index: 50;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border: 4px solid #fff;
+    background: rgb(0 0 0 / 0.9);
+    color: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 0 3px #000;
+  }
+
+  .project-debug-id span {
+    user-select: all;
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+
+  .project-debug-id button {
+    border: 2px solid #fff;
+    background: #fff;
+    color: #000;
+    padding: 0.75rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
 
   .project-thumb img {

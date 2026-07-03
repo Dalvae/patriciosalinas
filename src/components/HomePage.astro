@@ -35,6 +35,7 @@ interface Spread {
 }
 
 const { home, lang } = Astro.props;
+const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
 const t = useTranslations(lang);
 const projectEntries = await getEntries(home.data.spreads.map((spread) => spread.project));
 const spreads: Spread[] = home.data.spreads.map((spread, i) => {
@@ -67,6 +68,15 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
   width: image.width?.toString() ?? "auto",
   height: image.height?.toString() ?? "auto",
 });
+
+function homeImageId(projectUri: string, imageIndex: number) {
+  let offset = 2;
+  for (const spread of spreads) {
+    if (spread.project.uri === projectUri) break;
+    offset += spread.images.length;
+  }
+  return `PS-HOME-${String(offset + imageIndex).padStart(3, "0")}`;
+}
 ---
 
 <div class="editorial font-playfair text-primary-600">
@@ -88,7 +98,9 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
           className="h-full object-cover"
           containerClassName="h-full w-full"
           disableOverlay={true}
-          showImageId={false}
+          showImageId={imageDebug}
+          allowContextMenu={imageDebug}
+          imageId="PS-HOME-001"
         />
         <span class="intro-side font-fira" aria-hidden="true">{t("nav.subtitle")}</span>
       </figure>
@@ -132,7 +144,9 @@ const imageInfo = (image: SpreadImage, alt: string) => ({
                   className="h-full object-cover"
                   containerClassName="h-full w-full"
                   disableOverlay={true}
-                  showImageId={false}
+                  showImageId={imageDebug}
+                  allowContextMenu={imageDebug}
+                  imageId={homeImageId(project.uri, i)}
                 />
               </figure>
             ))}

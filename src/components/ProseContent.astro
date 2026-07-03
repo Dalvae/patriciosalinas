@@ -16,6 +16,7 @@ interface Props {
 }
 
 const { entry, title, images = [] } = Astro.props;
+const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
 const { Content } = entry ? await render(entry) : { Content: null };
 const allImageSrcs = images.map(img => img.src);
 ---
@@ -25,7 +26,7 @@ const allImageSrcs = images.map(img => img.src);
     <div class="page-shell">
       {images.length > 0 && (
         <div class="inline-images">
-          {images.map((img) => (
+          {images.map((img, index) => (
             <figure>
               <ProtectedImage
                 client:load
@@ -33,6 +34,9 @@ const allImageSrcs = images.map(img => img.src);
                 alt={img.alt}
                 allImages={allImageSrcs}
                 caption={img.caption || undefined}
+                showImageId={imageDebug}
+                allowContextMenu={imageDebug}
+                imageId={`PS-CONTENT-${String(index + 1).padStart(3, "0")}`}
               />
             </figure>
           ))}

@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { press, pageTitle } = Astro.props;
+const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
 const { links, cards } = press.data;
 const cardImages = cards.map((card) => ({
   src: card.image.src,
@@ -36,7 +37,7 @@ const cardImages = cards.map((card) => ({
 
     {cards.length > 0 && (
       <div class="press-grid">
-        {cards.map((card) => (
+        {cards.map((card, index) => (
           card.url ? (
             <a
               href={card.url}
@@ -52,7 +53,9 @@ const cardImages = cards.map((card) => ({
                   allImages={cardImages}
                   caption={card.text}
                   containerClassName="w-full"
-                  showImageId={false}
+                  showImageId={imageDebug}
+                  allowContextMenu={imageDebug}
+                  imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
                 />
                 <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
               </article>
@@ -66,7 +69,9 @@ const cardImages = cards.map((card) => ({
                 allImages={cardImages}
                 caption={card.text}
                 containerClassName="w-full"
-                showImageId={false}
+                showImageId={imageDebug}
+                allowContextMenu={imageDebug}
+                imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
               />
               <p class="m-0 p-4 leading-relaxed text-left">{card.text}</p>
             </article>
