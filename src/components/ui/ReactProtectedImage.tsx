@@ -280,6 +280,7 @@ export default function ProtectedImage({
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
+  const [copiedImageId, setCopiedImageId] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobileDetection();
 
@@ -333,12 +334,11 @@ export default function ProtectedImage({
     e.preventDefault();
     e.stopPropagation();
     if (!imageId) return;
-    const button = e.currentTarget;
 
     const markCopied = () => {
-      button.textContent = "Copied";
+      setCopiedImageId(true);
       window.setTimeout(() => {
-        button.textContent = "Copy";
+        setCopiedImageId(false);
       }, 1200);
     };
 
@@ -361,20 +361,6 @@ export default function ProtectedImage({
 
   return (
     <>
-      {showImageId && imageId && (
-        <div className="not-prose mb-3 flex items-center justify-between gap-3 border-2 border-black bg-white px-4 py-3 text-black shadow-[0_2px_0_#000]">
-          <span className="select-all break-words font-mono text-xl font-bold tracking-[0.08em] sm:text-2xl">
-            {imageId}
-          </span>
-          <button
-            type="button"
-            className="shrink-0 border-2 border-black bg-black px-4 py-2 font-mono text-sm font-bold uppercase tracking-[0.12em] text-white"
-            onClick={copyImageId}
-          >
-            Copy
-          </button>
-        </div>
-      )}
       <div
         ref={containerRef}
         className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
@@ -388,6 +374,23 @@ export default function ProtectedImage({
           alt={alt}
           className={`w-full ${className} ${objectFitClass} not-prose`}
         />
+        {showImageId && imageId && (
+          <div
+            className="not-prose absolute left-3 right-3 top-3 z-20 flex items-center justify-between gap-3 border-2 border-black bg-white px-4 py-3 text-black shadow-[0_2px_0_#000]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="select-all break-words font-mono text-xl font-bold tracking-[0.08em] sm:text-2xl">
+              {imageId}
+            </span>
+            <button
+              type="button"
+              className="shrink-0 border-2 border-black bg-black px-4 py-2 font-mono text-sm font-bold uppercase tracking-[0.12em] text-white"
+              onClick={copyImageId}
+            >
+              {copiedImageId ? "Copied" : "Copy"}
+            </button>
+          </div>
+        )}
         {!disableOverlay && (
           <ImageOverlay
             showOverlay={showOverlay}
