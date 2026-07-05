@@ -61,6 +61,7 @@ const galleryImageSchema = z.object({
   src: httpsUrl,
   alt: i18nField,
   title: i18nField,
+  published: z.boolean().default(true),
   width: z.number().optional(),
   height: z.number().optional(),
 });

@@ -13,14 +13,17 @@ interface Props {
 
 const { gallery, page, pageTitle, lang } = Astro.props;
 const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
-const images = gallery.data.images.map((image, index) => ({
-  src: image.src,
-  alt: image.alt[lang],
-  caption: image.title[lang].replace(/\|/g, "<br>"),
-  imageId: `PS-GAL-${String(index + 1).padStart(3, "0")}`,
-  width: image.width?.toString() ?? "auto",
-  height: image.height?.toString() ?? "auto",
-}));
+const images = gallery.data.images
+  .map((image, index) => ({
+    src: image.src,
+    alt: image.alt[lang],
+    caption: image.title[lang].replace(/\|/g, "<br>"),
+    imageId: `PS-GAL-${String(index + 1).padStart(3, "0")}`,
+    published: image.published,
+    width: image.width?.toString() ?? "auto",
+    height: image.height?.toString() ?? "auto",
+  }))
+  .filter((image) => image.published);
 
 const { Content } = page ? await render(page) : { Content: null };
 const introParagraphs =
