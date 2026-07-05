@@ -10,11 +10,16 @@ interface Props {
 const { press, pageTitle } = Astro.props;
 const imageDebug = import.meta.env.PUBLIC_IMAGE_DEBUG === "true";
 const { links, cards } = press.data;
-const cardImages = cards.map((card) => ({
-  src: card.image.src,
-  alt: card.image.alt,
-  caption: card.text,
-}));
+
+function getCardImages(card: CollectionEntry<"press">["data"]["cards"][number]) {
+  const images = card.images?.length ? card.images : [card.image];
+
+  return images.map((image) => ({
+    src: image.src,
+    alt: image.alt,
+    caption: card.text,
+  }));
+}
 
 function parsePressText(rawText: string) {
   let parts = rawText.split(',').map(s => s.trim());
@@ -60,6 +65,8 @@ function parsePressText(rawText: string) {
           const title = card.title ?? parsed.title;
           const meta = [card.author, card.publication, card.location, card.date].filter(Boolean);
           const fallbackMeta = parsed.meta;
+          const pressImages = getCardImages(card);
+          const primaryImage = pressImages[0];
           return (
             <article class="group">
               {index > 0 && <hr class="border-t border-[#e5e7eb] mb-16 md:mb-20" />}
@@ -75,10 +82,11 @@ function parsePressText(rawText: string) {
                   <div class="press-frame">
                     <ProtectedImage
                       client:load
-                      src={card.image.src}
-                      alt={card.image.alt}
-                      allImages={cardImages}
+                      src={primaryImage.src}
+                      alt={primaryImage.alt}
+                      allImages={pressImages}
                       caption={card.text}
+                      enableHoverPreview={pressImages.length > 1}
                       className="w-full h-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                       containerClassName="w-full h-full"
                       showImageId={imageDebug}

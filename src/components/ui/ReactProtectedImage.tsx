@@ -26,6 +26,7 @@ interface ProtectedImageProps {
   allowContextMenu?: boolean;
   showImageId?: boolean;
   imageId?: string;
+  enableHoverPreview?: boolean;
 }
 
 interface DialogProps {
@@ -277,6 +278,7 @@ export default function ProtectedImage({
   allowContextMenu = false,
   showImageId = false,
   imageId,
+  enableHoverPreview = false,
 }: ProtectedImageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogImageIndex, setDialogImageIndex] = useState(0);
@@ -294,12 +296,19 @@ export default function ProtectedImage({
 
   const objectFitClass = className?.includes("object-") ? "" : "object-contain";
   const showOverlay = useScrollOverlay(containerRef, isMobile, disableOverlay);
+  const hoverPreviewImage = enableHoverPreview && imageArray.length > 1 ? imageArray[1] : undefined;
 
   useEffect(() => {
     setDialogImageIndex(imageArray.findIndex((img) => img.src === src));
   }, [src, imageArray]);
 
   const openModal = () => setIsModalOpen(true);
+  const handleContainerKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openModal();
+    }
+  };
   const closeModal = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsModalOpen(false);
@@ -314,6 +323,24 @@ export default function ProtectedImage({
       );
     }
   };
+
+  useEffect(() => {
+    if (!isModalOpen || imageArray.length <= 1) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        changeImage("prev");
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        changeImage("next");
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isModalOpen, imageArray.length]);
 
   const handleDialogClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (imageArray.length > 1) {
@@ -363,17 +390,35 @@ export default function ProtectedImage({
     <>
       <div
         ref={containerRef}
-        className={`protected-image-container relative overflow-hidden cursor-pointer ${containerClassName}`}
+        className={`protected-image-container group/protected relative overflow-hidden cursor-pointer ${containerClassName}`}
         style={{ width, height, ...style }}
+        role="button"
+        tabIndex={0}
         onClick={openModal}
+        onKeyDown={handleContainerKeyDown}
         onContextMenu={maybePreventDefaultActions}
         onDragStart={maybePreventDefaultActions}
       >
         <img
           src={src}
           alt={alt}
-          className={`w-full ${className} ${objectFitClass} not-prose`}
+          className={`w-full ${className} ${objectFitClass} not-prose ${hoverPreviewImage ? "transition-opacity duration-700 ease-out group-hover/protected:opacity-0 group-focus-visible/protected:opacity-0 motion-reduce:transition-none" : ""}`}
         />
+        {hoverPreviewImage && (
+          <img
+            src={hoverPreviewImage.src}
+            alt=""
+            aria-hidden="true"
+            className={`absolute inset-0 w-full opacity-0 ${className} ${objectFitClass} not-prose transition-opacity duration-700 ease-out group-hover/protected:opacity-100 group-focus-visible/protected:opacity-100 motion-reduce:transition-none`}
+            onContextMenu={maybePreventDefaultActions}
+            onDragStart={maybePreventDefaultActions}
+          />
+        )}
+        {hoverPreviewImage && (
+          <div className="pointer-events-none absolute bottom-2 right-2 z-10 border border-white/70 bg-black/60 px-2 py-1 text-xs leading-none tracking-[0.14em] text-white">
+            1 / {imageArray.length}
+          </div>
+        )}
         {showImageId && imageId && (
           <div
             className="not-prose absolute left-2 top-2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-2 border-2 border-white bg-black/85 px-2 py-1 text-white shadow-[0_0_0_1px_#000] sm:left-3 sm:top-3 sm:px-3 sm:py-2"

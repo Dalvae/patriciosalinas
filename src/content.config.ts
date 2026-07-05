@@ -76,6 +76,11 @@ const gallery = defineCollection({
   }),
 });
 
+const pressImageSchema = z.object({
+  src: httpsUrl,
+  alt: z.string(),
+});
+
 const press = defineCollection({
   loader: glob({ base: "./src/content/press", pattern: "**/*.yaml" }),
   schema: z.object({
@@ -85,10 +90,8 @@ const press = defineCollection({
     })).default([]),
     cards: z.array(z.object({
       url: z.string().url().optional(),
-      image: z.object({
-        src: httpsUrl,
-        alt: z.string(),
-      }),
+      image: pressImageSchema,
+      images: z.array(pressImageSchema).optional(),
       text: z.string(),
       title: z.string().optional(),
       publication: z.string().optional(),
