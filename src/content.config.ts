@@ -99,6 +99,7 @@ const press = defineCollection({
       date: z.string().optional(),
       location: z.string().optional(),
       note: z.string().optional(),
+      actionLabel: z.string().optional(),
     })).default([]),
   }),
 });

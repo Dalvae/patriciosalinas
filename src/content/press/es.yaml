@@ -32,6 +32,18 @@ cards:
   date: 8 abril 2026
   location: España / español
   note: Ensayo sobre el fotolibro de Salinas dedicado al camino de Walter Benjamin.
+- url: https://www.instagram.com/reel/DV0l6MyiGdX/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783537294/patricio-salinas/press/screenshots/bjorko-project-instagram-reel-2026.jpg
+    alt: Reel de Björk-ö Project Editions sobre Patricio Antoni Salinas
+  text: 'Reel de presentación de 563: Walter Benjamin y la estética del derrumbe, Björk-ö Project Editions, Instagram, 13 marzo 2026'
+  title: 'Reel de presentación de 563: Walter Benjamin y la estética del derrumbe'
+  publication: Björk-ö Project Editions / Instagram
+  author: Björk-ö Project Editions
+  date: 13 marzo 2026
+  location: Björkö, Suecia / español + inglés
+  note: Video breve sobre el libro publicado por Björk-ö Project, plataforma de arte y pensamiento crítico cofundada por Patricio Salinas A. y Patricia Abarca de la Fuente.
+  actionLabel: Ver Reel
 - url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
@@ -78,6 +90,17 @@ cards:
   date: 2 septiembre 2021
   location: Chile / español
   note: Reseña del libro Atacama y su contexto expositivo en CCLM.
+- url: https://imagenesparamemoriar.wordpress.com/2021/08/10/el-duelo-pone-al-mundo-en-movimiento/
+  image:
+    src: https://imagenesparamemoriar.wordpress.com/wp-content/uploads/2021/08/atacama-003.jpg
+    alt: El duelo pone al mundo en movimiento
+  text: El duelo pone al mundo en movimiento, Rita Ferrer, Imágenes para memoriar, 25 noviembre 2020
+  title: El duelo pone al mundo en movimiento
+  publication: Imágenes para memoriar
+  author: Rita Ferrer
+  date: 25 noviembre 2020
+  location: Chile / español
+  note: Texto sobre Geometría de un cautiverio y el trabajo de duelo, memoria y exilio en la obra de Salinas.
 - url: https://fotoespacio.cl/fotografo/patricio-salinas
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA

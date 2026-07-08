@@ -81,7 +81,7 @@ function parsePressText(rawText: string) {
                 <div class="press-media">
                   <div class="press-frame">
                     <ProtectedImage
-                      client:load
+                      client:visible
                       src={primaryImage.src}
                       alt={primaryImage.alt}
                       allImages={pressImages}
@@ -89,6 +89,11 @@ function parsePressText(rawText: string) {
                       enableHoverPreview={pressImages.length > 1}
                       className="w-full h-full object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                       containerClassName="w-full h-full"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      sizes="(max-width: 768px) 100vw, 45vw"
+                      optimizedWidth={index === 0 ? 960 : 720}
                       showImageId={imageDebug}
                       allowContextMenu={imageDebug}
                       imageId={`PS-PRESS-${String(index + 1).padStart(3, "0")}`}
@@ -120,7 +125,7 @@ function parsePressText(rawText: string) {
                   {card.url && (
                     <div class="press-action">
                       <a href={card.url} target="_blank" rel="noopener noreferrer">
-                        Read Publication
+                        {card.actionLabel ?? "Read Publication"}
                       </a>
                     </div>
                   )}

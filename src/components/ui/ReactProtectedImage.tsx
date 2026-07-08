@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { Maximize2, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { cloudinaryDimensions, cloudinarySrcSet, optimizedCloudinarySrc } from "../../lib/images";
 
 interface ImageInfo {
   src: string;
@@ -17,6 +18,13 @@ interface ProtectedImageProps {
   alt: string;
   width?: string;
   height?: string;
+  imgWidth?: number | string;
+  imgHeight?: number | string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "auto" | "sync";
+  fetchPriority?: "high" | "low" | "auto";
+  sizes?: string;
+  optimizedWidth?: number;
   allImages?: (ImageInfo | string)[];
   style?: React.CSSProperties;
   className?: string;
@@ -269,6 +277,13 @@ export default function ProtectedImage({
   alt,
   width = "auto",
   height = "auto",
+  imgWidth,
+  imgHeight,
+  loading = "lazy",
+  decoding = "async",
+  fetchPriority,
+  sizes,
+  optimizedWidth = 960,
   allImages,
   style,
   className = "",
@@ -297,6 +312,13 @@ export default function ProtectedImage({
   const objectFitClass = className?.includes("object-") ? "" : "object-contain";
   const showOverlay = useScrollOverlay(containerRef, isMobile, disableOverlay);
   const hoverPreviewImage = enableHoverPreview && imageArray.length > 1 ? imageArray[1] : undefined;
+  const optimizedSrc = optimizedCloudinarySrc(src, { width: optimizedWidth });
+  const optimizedSrcSet = cloudinarySrcSet(src);
+  const optimizedHoverSrc = hoverPreviewImage
+    ? optimizedCloudinarySrc(hoverPreviewImage.src, { width: optimizedWidth })
+    : undefined;
+  const optimizedHoverSrcSet = hoverPreviewImage ? cloudinarySrcSet(hoverPreviewImage.src) : undefined;
+  const inferredDimensions = cloudinaryDimensions(src);
 
   useEffect(() => {
     setDialogImageIndex(imageArray.findIndex((img) => img.src === src));
@@ -400,15 +422,29 @@ export default function ProtectedImage({
         onDragStart={maybePreventDefaultActions}
       >
         <img
-          src={src}
+          src={optimizedSrc}
+          srcSet={optimizedSrcSet}
           alt={alt}
+          width={imgWidth ?? inferredDimensions?.width}
+          height={imgHeight ?? inferredDimensions?.height}
+          loading={loading}
+          decoding={decoding}
+          fetchPriority={fetchPriority}
+          sizes={sizes}
           className={`w-full ${className} ${objectFitClass} not-prose ${hoverPreviewImage ? "transition-opacity duration-700 ease-out group-hover/protected:opacity-0 group-focus-visible/protected:opacity-0 motion-reduce:transition-none" : ""}`}
+          onContextMenu={maybePreventDefaultActions}
+          onDragStart={maybePreventDefaultActions}
         />
         {hoverPreviewImage && (
           <img
-            src={hoverPreviewImage.src}
+            src={optimizedHoverSrc}
+            srcSet={optimizedHoverSrcSet}
             alt=""
             aria-hidden="true"
+            loading={loading}
+            decoding={decoding}
+            fetchPriority={fetchPriority}
+            sizes={sizes}
             className={`absolute inset-0 w-full opacity-0 ${className} ${objectFitClass} not-prose transition-opacity duration-700 ease-out group-hover/protected:opacity-100 group-focus-visible/protected:opacity-100 motion-reduce:transition-none`}
             onContextMenu={maybePreventDefaultActions}
             onDragStart={maybePreventDefaultActions}

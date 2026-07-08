@@ -32,6 +32,18 @@ cards:
   date: 8 april 2026
   location: Spanien / spanska
   note: Essä om Salinas fotobok kring Walter Benjamins väg.
+- url: https://www.instagram.com/reel/DV0l6MyiGdX/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783537294/patricio-salinas/press/screenshots/bjorko-project-instagram-reel-2026.jpg
+    alt: Reel från Björk-ö Project Editions om Patricio Antoni Salinas
+  text: 'Presentationsreel för 563: Walter Benjamin y la estética del derrumbe, Björk-ö Project Editions, Instagram, 13 mars 2026'
+  title: 'Presentationsreel för 563: Walter Benjamin y la estética del derrumbe'
+  publication: Björk-ö Project Editions / Instagram
+  author: Björk-ö Project Editions
+  date: 13 mars 2026
+  location: Björkö, Sverige / spanska + engelska
+  note: Kort video om boken utgiven av Björk-ö Project, en plattform för konst och kritiskt tänkande grundad av Patricio Salinas A. och Patricia Abarca de la Fuente.
+  actionLabel: Se Reel
 - url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
@@ -78,6 +90,17 @@ cards:
   date: 2 september 2021
   location: Chile / spanska
   note: Översikt över Atacama-boken och utställningssammanhanget på CCLM.
+- url: https://imagenesparamemoriar.wordpress.com/2021/08/10/el-duelo-pone-al-mundo-en-movimiento/
+  image:
+    src: https://imagenesparamemoriar.wordpress.com/wp-content/uploads/2021/08/atacama-003.jpg
+    alt: Sorgen sätter världen i rörelse
+  text: Sorgen sätter världen i rörelse, Rita Ferrer, Imágenes para memoriar, 25 november 2020
+  title: Sorgen sätter världen i rörelse
+  publication: Imágenes para memoriar
+  author: Rita Ferrer
+  date: 25 november 2020
+  location: Chile / spanska
+  note: Essä om Fångenskapens geometri och Salinas arbete med sorg, minne och exil.
 - url: https://fotoespacio.cl/fotografo/patricio-salinas
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA

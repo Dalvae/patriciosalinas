@@ -23,14 +23,20 @@ const colsClass = `cols-${Math.min(columns, 3)}`;
 {images.length > 0 && (
   <div class="project-gallery">
     <div class:list={["gallery-masonry", colsClass]}>
-      {images.map((image) => (
+      {images.map((image, index) => (
         <figure>
           <ProtectedImage
-            client:load
+            client:load={index === 0}
+            client:visible={index > 0}
             src={image.src}
             alt={image.alt}
             allImages={allImageUrls}
             caption={image.caption || undefined}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={index === 0 ? "high" : "auto"}
+            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+            optimizedWidth={index === 0 ? 960 : 720}
             imageId={image.imageId}
             showImageId={imageDebug}
             allowContextMenu={imageDebug}

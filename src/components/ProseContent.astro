@@ -29,11 +29,15 @@ const allImageSrcs = images.map(img => img.src);
           {images.map((img, index) => (
             <figure>
               <ProtectedImage
-                client:load
+                client:visible
                 src={img.src}
                 alt={img.alt}
                 allImages={allImageSrcs}
                 caption={img.caption || undefined}
+                loading="lazy"
+                decoding="async"
+                sizes="100vw"
+                optimizedWidth={720}
                 showImageId={imageDebug}
                 allowContextMenu={imageDebug}
                 imageId={`PS-CONTENT-${String(index + 1).padStart(3, "0")}`}

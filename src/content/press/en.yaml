@@ -32,6 +32,18 @@ cards:
   date: 8 April 2026
   location: Spain / Spanish
   note: Essay on Salinas’ Walter Benjamin photobook as a photographic essay.
+- url: https://www.instagram.com/reel/DV0l6MyiGdX/
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783537294/patricio-salinas/press/screenshots/bjorko-project-instagram-reel-2026.jpg
+    alt: Björk-ö Project Editions reel on Patricio Antoni Salinas
+  text: 'Presentation reel for 563: Walter Benjamin y la estética del derrumbe, Björk-ö Project Editions, Instagram, 13 March 2026'
+  title: 'Presentation reel for 563: Walter Benjamin y la estética del derrumbe'
+  publication: Björk-ö Project Editions / Instagram
+  author: Björk-ö Project Editions
+  date: 13 March 2026
+  location: Björkö, Sweden / Spanish + English
+  note: Short video on the book published by Björk-ö Project, an art and critical thinking platform co-founded by Patricio Salinas A. and Patricia Abarca de la Fuente.
+  actionLabel: Watch Reel
 - url: https://www.barbarie.lat/post/la-realidad-de-los-muertos
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_2514,h_1736,c_scale/v1739380953/patriciosalinas/barbarie/barbarie.png?_i=AA
@@ -78,6 +90,17 @@ cards:
   date: 2 September 2021
   location: Chile / Spanish
   note: Overview of the Atacama book and CCLM exhibition context.
+- url: https://imagenesparamemoriar.wordpress.com/2021/08/10/el-duelo-pone-al-mundo-en-movimiento/
+  image:
+    src: https://imagenesparamemoriar.wordpress.com/wp-content/uploads/2021/08/atacama-003.jpg
+    alt: Grief sets the world in motion
+  text: Grief sets the world in motion, Rita Ferrer, Imágenes para memoriar, 25 November 2020
+  title: Grief sets the world in motion
+  publication: Imágenes para memoriar
+  author: Rita Ferrer
+  date: 25 November 2020
+  location: Chile / Spanish
+  note: Essay on Geometry of Captivity and Salinas’ work on grief, memory, and exile.
 - url: https://fotoespacio.cl/fotografo/patricio-salinas
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/images/w_1024,h_868,c_scale/v1728569245/patriciosalinas/fotoespacio/fotoespacio.png?_i=AA

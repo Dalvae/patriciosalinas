@@ -98,6 +98,11 @@ function homeImageId(projectUri: string, imageIndex: number) {
           className="h-full object-cover"
           containerClassName="h-full w-full"
           disableOverlay={true}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          optimizedWidth={960}
           showImageId={imageDebug}
           allowContextMenu={imageDebug}
           imageId="PS-HOME-001"
@@ -136,7 +141,7 @@ function homeImageId(projectUri: string, imageIndex: number) {
             {images.map((image, i) => (
               <figure class={`ph ph-${i}`} style={`aspect-ratio: ${aspectOf(image)};`}>
                 <ProtectedImage
-                  client:load
+                  client:visible
                   src={image.src}
                   alt={`${project.title} — ${i + 1}`}
                   allImages={images.map((img, idx) => imageInfo(img, `${project.title} — ${idx + 1}`))}
@@ -144,6 +149,10 @@ function homeImageId(projectUri: string, imageIndex: number) {
                   className="h-full object-cover"
                   containerClassName="h-full w-full"
                   disableOverlay={true}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  optimizedWidth={720}
                   showImageId={imageDebug}
                   allowContextMenu={imageDebug}
                   imageId={homeImageId(project.uri, i)}
