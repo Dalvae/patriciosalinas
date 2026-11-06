@@ -2,8 +2,13 @@ links: []
 cards:
 - url: https://lamaletadeportbou.com/lo-ultimo-que-vio-walter-benjamin/
   image:
-    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783112958/patricio-salinas/press/screenshots/la-maleta-walter-benjamin-2026-page.png
-    alt: La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976558/patriciosalinas/press/la-maleta-de-portbou-moix-01.jpg
+    alt: La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin, sida 1
+  images:
+  - src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976558/patriciosalinas/press/la-maleta-de-portbou-moix-01.jpg
+    alt: La Maleta de Portbou Nº77 — Lo último que vio Walter Benjamin, sida 1
+  - src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976561/patriciosalinas/press/la-maleta-de-portbou-moix-02.jpg
+    alt: La Maleta de Portbou Nº77 — Llàtzer Moix, sida 2
   text: Det sista Walter Benjamin såg, Llàtzer Moix, La Maleta de Portbou nr 77, juli–augusti 2026
   title: Det sista Walter Benjamin såg
   publication: La Maleta de Portbou Nº77
@@ -23,7 +28,7 @@ cards:
   note: Offentligt klipp från L’Echos kulturdel, kopplat till chilenskt minne.
 - url: https://www.elespanol.com/el-cultural/opinion/minima_molestia_ignacio_echevarria/20260408/camino-walter-benjamin/1003744198113_13.html
   image:
-    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783112957/patricio-salinas/press/screenshots/el-cultural-walter-benjamin-2026-page.png
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976555/patriciosalinas/press/el-cultural-camino-walter-benjamin-2026-04-08.jpg
     alt: El Cultural — El camino de Walter Benjamin
   text: Walter Benjamins väg, Ignacio Echevarría, El Cultural, 8 april 2026
   title: Walter Benjamins väg
@@ -32,6 +37,17 @@ cards:
   date: 8 april 2026
   location: Spanien / spanska
   note: Essä om Salinas fotobok kring Walter Benjamins väg.
+- url: https://otambosi.blogspot.com/2026/04/o-caminho-de-walter-benjamin.html
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976565/patriciosalinas/press/tambosi-o-caminho-de-walter-benjamin-2026-04-08.jpg
+    alt: Blog do Orlando Tambosi — O caminho de Walter Benjamin
+  text: 'O caminho de Walter Benjamin, Ignacio Echevarría, Blog do Orlando Tambosi, 8 april 2026'
+  title: 'O caminho de Walter Benjamin'
+  publication: Blog do Orlando Tambosi
+  author: Ignacio Echevarría
+  date: 8 april 2026
+  location: Brasilien / spanska
+  note: 'Orlando Tambosis blogg återpublicerar Ignacio Echevarrías kolumn för El Cultural.'
 - url: https://www.instagram.com/reel/DV0l6MyiGdX/
   image:
     src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1783537294/patricio-salinas/press/screenshots/bjorko-project-instagram-reel-2026.jpg
@@ -90,6 +106,17 @@ cards:
   date: 2 september 2021
   location: Chile / spanska
   note: Översikt över Atacama-boken och utställningssammanhanget på CCLM.
+- url: https://www.bibliotecanacionaldigital.gob.cl/colecciones/BND/00/RC/RC0279846.pdf
+  image:
+    src: https://res.cloudinary.com/dwxc8s4mq/image/upload/v1793976563/patriciosalinas/press/lun-chacabuco-2020-12-08.jpg
+    alt: Las Últimas Noticias — Fotógrafo revive en un libro el año de su cautiverio en Chacabuco
+  text: 'Fotograf återupplever i en bok året av sin fångenskap i Chacabuco, Jazmín Lolas, Las Últimas Noticias, 8 december 2020'
+  title: 'Fotograf återupplever i en bok året av sin fångenskap i Chacabuco'
+  publication: Las Últimas Noticias
+  author: Jazmín Lolas
+  date: 8 december 2020
+  location: Chile / spanska
+  note: 'Reportage om Fångenskapens geometri och Salinas återkomst till fånglägret Chacabuco. Arkiv från Biblioteca Nacional Digital.'
 - url: https://imagenesparamemoriar.wordpress.com/2021/08/10/el-duelo-pone-al-mundo-en-movimiento/
   image:
     src: https://imagenesparamemoriar.wordpress.com/wp-content/uploads/2021/08/atacama-003.jpg
