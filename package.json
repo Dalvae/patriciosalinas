@@ -32,5 +32,8 @@
     "@types/react-dom": "^18.3.0",
     "remark-directive": "^4.0.0",
     "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": "26.x"
   }
 }
